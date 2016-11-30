@@ -9,7 +9,7 @@ Key polynomials, and any basis based on a divided difference type operation.
 In the monomial basis, a multivariate polynomial is seen as a linear combination
 of vectors. Where each vector represents the exponents of the given monomial.
 
-The number of variables is not set :the algebra can be understood as the projective limit
+The number of variables is not set: the algebra can be understood as the projective limit
 of all polynomial rings with a finite number of variables.
 
 EXAMPLES::
@@ -26,6 +26,53 @@ EXAMPLES::
     x[3, 2, 4] + x[1, 1, 2]
     sage: x[1,1,2] * x[3,2,4]
     x[4, 3, 6]
+
+Here is how to access a single variable::
+
+    sage: x1 = A.var(1)
+    sage: x1
+    x[1]
+    sage: x2 = A.var(2)
+    sage: x2
+    x[0, 1]
+    sage: x1 * x2
+    x[1, 1]
+
+Get back a symbolic expression::
+
+    sage: pol = A.an_element(); pol
+    2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+    sage: pol.to_expr()
+    x1*x2^2*x3^3 + 2*x1 + 3*x2 + 1
+
+You can apply many different actions on the polynomial::
+
+    sage: pol = A.an_element(); pol
+    2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+    sage: pol.divided_difference(2)
+    -x[1, 2, 2] + 3*x[0, 0, 0]
+    sage: pol.isobaric_divided_difference(2)
+    2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + 3*x[0, 0, 1]
+    sage: pol.hat_isobaric_divided_difference(2)
+    3*x[0, 0, 1] - x[1, 2, 3]
+    sage: pol.si(1)
+    3*x[1, 0, 0] + 2*x[0, 1, 0] + x[0, 0, 0] + x[2, 1, 3]
+
+The main purpose of this module is to implement different bases of the
+polynomial algebra based on these actions::
+
+    sage: Schub = A.schubert_basis()
+    sage: K = A.demazure_basis()
+    sage: Khat = A.demazure_hat_basis()
+    sage: Groth = A.grothendieck_positive_basis()
+    sage: Schub(pol)
+    -Y[1, 3, 2] - Y[3, 2, 1] - Y[1, 0, 0] + Y[1, 2, 3] + Y[0, 0, 0] + Y[4, 1, 1] + Y[3, 1, 2] + 3*Y[0, 1, 0] + Y[2, 3, 1] - Y[2, 1, 3]
+    sage: K(pol)
+    -K[2, 1, 3] - K[1, 3, 2] - K[3, 2, 1] - K[1, 0, 0] + K[1, 2, 3] + K[0, 0, 0] + K[3, 1, 2] + 3*K[0, 1, 0] + K[2, 3, 1]
+    sage: Khat(pol)
+    2*^K[1, 0, 0] + 3*^K[0, 1, 0] + ^K[0, 0, 0] + ^K[1, 2, 3]
+    sage: Groth(pol)
+    -G[1, 3, 2] - G[3, 2, 1] - G[1, 0, 0] + G[1, 2, 3] + G[0, 0, 0] + G[4, 1, 1] + G[2, 2, 3] + G[2, 3, 1] + G[3, 3, 3] + 3*G[1, 1, 0] - G[4, 1, 3] - 2*G[2, 3, 2] - G[3, 3, 2] + G[2, 3, 3] - G[2, 1, 3] + G[3, 2, 2] - G[3, 1, 3] + 3*G[0, 1, 0] + G[3, 1, 2] + G[1, 3, 3]
 
 """
 #*****************************************************************************
@@ -60,6 +107,14 @@ def MultivariatePolynomialAlgebra(base_ring, names = None, set_of_variables = 1)
     This is a polynomial ring in one or two inifinite sets of variables,
     interpreted as a multibases algebra.
 
+    INPUT:
+
+        - ``base_ring`` the base ring of the algebra
+        - ``names`` a list of maximal size 2 of names for the set of variables
+        - ``set_of_variables`` an integer default:1, if names is not set, then
+          ``set_of_variables`` is used to know on how many set of variables
+          the algebra is defined (max = 2)
+
     OUTPUT:
 
     The multivariate polynomial algebra.
@@ -93,6 +148,17 @@ def MultivariatePolynomialAlgebra(base_ring, names = None, set_of_variables = 1)
         x[0, 1]
         sage: x1 * x2
         x[1, 1]
+
+    TESTS::
+
+        sage: A = MultivariatePolynomialAlgebra(QQ); A
+        The Multivariate polynomial algebra on x over Rational Field
+        sage: A = MultivariatePolynomialAlgebra(QQ, names = ["x"]); A
+        The Multivariate polynomial algebra on x over Rational Field
+        sage: A = MultivariatePolynomialAlgebra(QQ, names = ["x", "y"]); A
+        The Multivariate polynomial algebra on x over The Multivariate polynomial algebra on y over Rational Field
+        sage: A = MultivariatePolynomialAlgebra(QQ, set_of_variables = 2); A
+        The Multivariate polynomial algebra on x over The Multivariate polynomial algebra on y over Rational Field
 
     """
     assert(base_ring in Rings())

@@ -81,6 +81,34 @@ doesn't look for a parent where the coercion could be made::
     sage: A2(A.an_element()) + A2.an_element()
     2*x[0]*y[1, 0, 0] + 3*x[0]*y[0, 1, 0] + (2*x[1,0,0]+3*x[0,1,0]+2*x[0,0,0]+x[1,2,3])*y[0, 0, 0] + x[0]*y[1, 2, 3]
 
+Some special bases have been implemented for double polynomials::
+
+    sage: from multipolynomial_bases import MultivariatePolynomialAlgebra
+    sage: A.<x,y> = MultivariatePolynomialAlgebra(QQ)
+    sage: DSchub = A.double_schubert_basis()
+    sage: DSchub[0,1]
+    y[0]*YY[0, 1]
+    sage: DSchub[0,1].expand()
+    y[0]*xA[0, 1] + y[0]*xA[1, 0] + (-yA[0,1]-yA[1,0])*xA[0, 0]
+    sage: DSchub[0,1]^2
+    (-yA[0,1,0]+yA[0,0,1])*YY[0, 1] + y[0]*YY[0, 2] + y[0]*YY[1, 1]
+    sage: DSchub(x[0,1])
+    y[0]*YY[0, 1] + (-y[0])*YY[1, 0] + (yA[0,1])*YY[0, 0]
+    sage: DSchub(y[0,1]*x[0,1])
+    (y[0,1])*YY[0, 1] + (-y[0,1])*YY[1, 0] + (y[0,2])*YY[0, 0]
+    sage: DSchub(y[0,1])
+    (y[0,1])*YY[0, 0]
+    sage: DGroth = A.double_grothendieck_basis()
+    sage: DGroth
+    The Multivariate polynomial algebra on x over The Multivariate polynomial algebra on y over Rational Field on the Double Grothendieck basis of type A
+    sage: DGroth[0,1]
+    y[0]*GG[0, 1]
+    sage: DGroth[0,1].expand()
+    y[0]*xA[0, 0] + (-yA[1,1])*xA[-1, -1]
+    sage: DGroth[3,2,3].isobaric_divided_difference(1)
+    y[0]*GG[2, 2, 3]
+    sage: DGroth[3,2,3].hat_isobaric_divided_difference(1)
+    (-y[0])*GG[3, 2, 3] + y[0]*GG[2, 2, 3]
 """
 
 #*****************************************************************************
@@ -121,9 +149,9 @@ class DoubleMultivariatePolynomialAlgebra_generic(MultivariatePolynomialAlgebra_
 
     TESTS::
 
-        sage: TestSuite(A).run()
         sage: from multipolynomial_bases import MultivariatePolynomialAlgebra
         sage: A.<x,y> = MultivariatePolynomialAlgebra(QQ)
+        sage: TestSuite(A).run()
     """
 
     def __init__(self, R, repr_var1 = 'x', repr_var2 = 'y', inversed_ring = None):
