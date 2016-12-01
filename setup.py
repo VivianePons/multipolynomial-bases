@@ -21,7 +21,7 @@ setup(
     name = "multipolynomial_bases",
     version = readfile("VERSION"), # the VERSION file is shared with the documentation
     description='Sage implementation for bases of multipolynomials',
-    long_description = readfile("README.md"), # get the long description from the README
+    long_description = readfile("README.rst"), # get the long description from the README
     url='https://github.com/VivianePons/multipolynomial-bases',
     author='Viviane Pons',
     author_email='viviane.pons@lri.fr', # choose a main contact email
