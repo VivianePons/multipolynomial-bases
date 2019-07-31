@@ -463,7 +463,7 @@ class MonomialKeyWrapper(Parent, UniqueRepresentation):
                 sage: key.ambient_space_element()
                 (1, 2, 3)
                 sage: type(key.ambient_space_element())
-                <class 'sage.combinat.root_system.ambient_space.AmbientSpace_with_category.element_class'>
+                <class 'sage.combinat.root_system.type_A.AmbientSpace_with_category.element_class'>
                 sage: key.ambient_space_element() in key.parent().ambient_space()
                 True
                 sage: w = MonomialKeyWrapper(3)
@@ -1966,7 +1966,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                     sage: M = A.monomial_basis()
                     sage: pol = M[1,2,3];pol
                     x[1, 2, 3]
-                    sage: 1/pol
+                    sage: pol**(-1)
                     x[-1, -2, -3]
                     sage: pol/2
                     1/2*x[1, 2, 3]
@@ -2050,7 +2050,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
             if not c in self.parent()._basis_keys:
                 c = self.parent()._basis_keys(c)
 
-            return self._coefficient_fast(c)
+            return super(CombinatorialFreeModule.Element, self).__getitem__(c)
 
 
         def subs(self, **args):
@@ -2388,7 +2388,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 res = m.zero()
                 for key, coeff in pol:
                     l = [key[k] for k in xrange(self.nb_variables())]
-                    exp = l[t[0]-1]
+                    exp = int(l[t[0]-1])
                     l[t[0]-1] = 0
                     res += m(l) * t[1]**exp * coeff
                 pol = res

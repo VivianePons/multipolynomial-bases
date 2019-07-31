@@ -77,7 +77,7 @@ doesn't look for a parent where the coercion could be made::
     sage: A.an_element() + A2.an_element()
     Traceback (most recent call last):
     ...
-    TypeError: unsupported operand parent(s) for '+': 'The Multivariate polynomial algebra on x over The Multivariate polynomial algebra on y over Rational Field with 3 variables on the monomial basis' and 'The Multivariate polynomial algebra on y over The Multivariate polynomial algebra on x over Rational Field with 3 variables on the monomial basis'
+    TypeError: unsupported operand parent(s) for +: 'The Multivariate polynomial algebra on x over The Multivariate polynomial algebra on y over Rational Field with 3 variables on the monomial basis' and 'The Multivariate polynomial algebra on y over The Multivariate polynomial algebra on x over Rational Field with 3 variables on the monomial basis'
     sage: A2(A.an_element()) + A2.an_element()
     2*x[0]*y[1, 0, 0] + 3*x[0]*y[0, 1, 0] + (2*x[1,0,0]+3*x[0,1,0]+2*x[0,0,0]+x[1,2,3])*y[0, 0, 0] + x[0]*y[1, 2, 3]
 
@@ -95,7 +95,7 @@ Some special bases have been implemented for double polynomials::
     sage: DSchub(x[0,1])
     y[0]*YY[0, 1] + (-y[0])*YY[1, 0] + (yA[0,1])*YY[0, 0]
     sage: DSchub(y[0,1]*x[0,1])
-    (y[0,1])*YY[0, 1] + (-y[0,1])*YY[1, 0] + (y[0,2])*YY[0, 0]
+     (y[0,1])*YY[0, 1] + (-y[0,1])*YY[1, 0] + (yA[0,2])*YY[0, 0]
     sage: DSchub(y[0,1])
     (y[0,1])*YY[0, 0]
     sage: DGroth = A.double_grothendieck_basis()
@@ -409,7 +409,7 @@ class DoubleSchubertBasis(LinearBasisOnVectors):
         sage: DSchub(x[0,1])
         y[0]*YY[0, 1] + (-y[0])*YY[1, 0] + (yA[0,1])*YY[0, 0]
         sage: DSchub(y[0,1]*x[0,1])
-        (y[0,1])*YY[0, 1] + (-y[0,1])*YY[1, 0] + (y[0,2])*YY[0, 0]
+        (y[0,1])*YY[0, 1] + (-y[0,1])*YY[1, 0] + (yA[0,2])*YY[0, 0]
         sage: DSchub(y[0,1])
         (y[0,1])*YY[0, 0]
 

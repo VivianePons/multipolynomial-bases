@@ -733,11 +733,11 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
             sage: from multipolynomial_bases import MultivariatePolynomialAlgebra
             sage: A = MultivariatePolynomialAlgebra(QQ)
             sage: def schubert_on_basis(v, basis, call_back):
-            ...     for i in xrange(len(v)-1):
-            ...         if(v[i]<v[i+1]):
-            ...             v[i], v[i+1] = v[i+1] + 1, v[i]
-            ...             return call_back(v).divided_difference(i+1)
-            ...     return basis(v)
+            ....:    for i in xrange(len(v)-1):
+            ....:        if(v[i]<v[i+1]):
+            ....:            v[i], v[i+1] = v[i+1] + 1, v[i]
+            ....:            return call_back(v).divided_difference(i+1)
+            ....:    return basis(v)
             sage: myBasis = A.linear_basis_on_vectors("A","MySchub","Y",schubert_on_basis)
             sage: pol = myBasis[2,1,3];pol
             Y[2, 1, 3]
@@ -748,7 +748,7 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
 
         We have recreated the Schubert basis. Let's see an example with parameters::
 
-            sage: def t_inverse(v, basis, call_back, t1=1, t2=1): return t1/(t2*basis(v))
+            sage: def t_inverse(v, basis, call_back, t1=1, t2=1): return t1 * (t2*basis(v))**(-1)
             sage: tInverse = A.linear_basis_on_vectors("A","tInverse","T",t_inverse, (("t1",2), ("t2",4)), triangular = None)
             sage: pol = tInverse[1,1,2]; pol
             T[1, 1, 2]
@@ -1670,11 +1670,11 @@ class FiniteRankMultivariatePolynomialAlgebra(UniqueRepresentation, Parent):
             sage: from multipolynomial_bases import MultivariatePolynomialAlgebra
             sage: A = MultivariatePolynomialAlgebra(QQ)
             sage: def schubert_on_basis(v, basis, call_back):
-            ...     for i in xrange(len(v)-1):
-            ...         if(v[i]<v[i+1]):
-            ...             v[i], v[i+1] = v[i+1] + 1, v[i]
-            ...             return call_back(v).divided_difference(i+1)
-            ...     return basis(v)
+            ....:    for i in xrange(len(v)-1):
+            ....:        if(v[i]<v[i+1]):
+            ....:            v[i], v[i+1] = v[i+1] + 1, v[i]
+            ....:            return call_back(v).divided_difference(i+1)
+            ....:    return basis(v)
             sage: myBasis = A.linear_basis_on_vectors("A","MySchub","Y",schubert_on_basis)
             sage: F3 = A.algebra_finite_nb_variables(3)
             sage: myFiniteBasis = F3.linear_basis_on_vectors(myBasis,"MySchub","Y")

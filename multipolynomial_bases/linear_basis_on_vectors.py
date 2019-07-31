@@ -406,7 +406,7 @@ class GrothendieckNegativeBasisOnVectors(LinearBasisOnVectors):
         prod = basis.one()
         for i in xrange(len(x)):
             inv_x_i = basis.var(i+1)**(-1)
-            prod *= (basis.one() - inv_x_i)**x[i]
+            prod *= (basis.one() - inv_x_i)**int(x[i])
         return prod
 
     class _divided_difference_wrapper(PolynomialRingWithBasis._divided_difference_wrapper):
