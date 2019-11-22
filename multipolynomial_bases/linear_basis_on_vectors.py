@@ -73,7 +73,7 @@ class LinearBasisOnVectors(PolynomialRingWithBasisFromMorphism):
         d2 = sum(key2)
         if (d1 > d2): return -1
         if (d1 < d2): return 1
-        for i in xrange(l-1,-1,-1):
+        for i in range(l-1,-1,-1):
             if (key1[i]>key2[i]):
                 return 1
             if (key1[i]<key2[i]):
@@ -154,7 +154,7 @@ class LinearBasisOnVectors(PolynomialRingWithBasisFromMorphism):
 
         @cached_method
         def morphism_on_basis(self, key):
-            x = [key[i] for i in xrange(self._basis.nb_variables())]
+            x = [key[i] for i in range(self._basis.nb_variables())]
             if(self._on_basis_method is None):
                 raise NotImplementedError,"No compute method has been implemented"%()
             else:
@@ -196,7 +196,7 @@ class SchubertBasisOnVectors(LinearBasisOnVectors):
 
 
     def on_basis_method(self, x, basis, call_back):
-        for i in xrange( len( x ) - 1 ):
+        for i in range( len( x ) - 1 ):
             if( x[i]<x[i+1] ):
                 x[i], x[i+1] = x[i+1]+1, x[i]
                 return call_back(x).divided_difference(i+1)
@@ -237,8 +237,8 @@ class SchubertBasisOnVectors(LinearBasisOnVectors):
             nb_variables = len(part)
         if(nb_variables< len(part)):
             return self(0)
-        key = [0 for i in xrange(nb_variables)]
-        for i in xrange(len(part)): key[i] = part[i]
+        key = [0 for i in range(nb_variables)]
+        for i in range(len(part)): key[i] = part[i]
         key.reverse()
         return self(key)
 
@@ -323,7 +323,7 @@ class SchubertBasisOnVectors(LinearBasisOnVectors):
             """
             i = self._i
             if(key[i-1] > key[i]):
-                key2 = [key[j] for j in xrange(len(key))]
+                key2 = [key[j] for j in range(len(key))]
                 key2[i-1], key2[i] = key2[i], key2[i-1]-1
                 return self._module(key2)
             return self._module.zero()
@@ -358,7 +358,7 @@ class GrothendieckPositiveBasisOnVectors(LinearBasisOnVectors):
         return abstract_polynomial_ring.grothendieck_positive_basis(self.group_type())
 
     def on_basis_method(self, x, basis, call_back):
-        for i in xrange( len( x ) - 1 ):
+        for i in range( len( x ) - 1 ):
             if( x[i]<x[i+1] ):
                 x[i], x[i+1] = x[i+1]+1, x[i]
                 res = call_back(x)
@@ -399,12 +399,12 @@ class GrothendieckNegativeBasisOnVectors(LinearBasisOnVectors):
         return abstract_polynomial_ring.grothendieck_negative_basis(self.group_type())
 
     def on_basis_method(self, x, basis, call_back):
-        for i in xrange( len( x ) - 1 ):
+        for i in range( len( x ) - 1 ):
             if( x[i]<x[i+1] ):
                 x[i], x[i+1] = x[i+1]+1, x[i]
                 return call_back(x).isobaric_divided_difference(i+1)
         prod = basis.one()
-        for i in xrange(len(x)):
+        for i in range(len(x)):
             inv_x_i = basis.var(i+1)**(-1)
             prod *= (basis.one() - inv_x_i)**int(x[i])
         return prod
@@ -469,7 +469,7 @@ class GrothendieckNegativeBasisOnVectors(LinearBasisOnVectors):
             """
             i = self._i
             if(key[i-1] > key[i]):
-                key2 = [key[j] for j in xrange(self._module.nb_variables())]
+                key2 = [key[j] for j in range(self._module.nb_variables())]
                 key2[i-1], key2[i] = key2[i], key2[i-1]-1
                 return self._module(key2)
             else:
@@ -571,13 +571,13 @@ class MacdonaldBasisOnVectors(LinearBasisOnVectors):
         v1.sort()
         v2.sort()
 
-        for i in xrange(l-1,-1,-1):
+        for i in range(l-1,-1,-1):
             if(v1[i] > v2[i]):
                 return 1
             if(v1[i] < v2[i]):
                 return -1
 
-        for i in xrange(l):
+        for i in range(l):
             if (key1[i]>key2[i]):
                 return 1
             if (key1[i]<key2[i]):
@@ -589,7 +589,7 @@ class MacdonaldBasisOnVectors(LinearBasisOnVectors):
         size = len(u)
         if(u[size-1] != 0):
             temp = u[size-1]
-            for i in xrange(size-1,0,-1): u[i] = u[i-1]
+            for i in range(size-1,0,-1): u[i] = u[i-1]
             u[0]  = temp-1
 
             res = call_back(u)
