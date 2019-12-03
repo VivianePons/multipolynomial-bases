@@ -156,7 +156,7 @@ class LinearBasisOnVectors(PolynomialRingWithBasisFromMorphism):
         def morphism_on_basis(self, key):
             x = [key[i] for i in range(self._basis.nb_variables())]
             if(self._on_basis_method is None):
-                raise NotImplementedError,"No compute method has been implemented"%()
+                raise NotImplementedError("No compute method has been implemented"%())
             else:
                 if (len(self._parameters)==0):
                     return self._on_basis_method(x, self._basis, self._call_back)
@@ -594,7 +594,7 @@ class MacdonaldBasisOnVectors(LinearBasisOnVectors):
 
             res = call_back(u)
 
-            p = [i+2 for i in xrange(size)]
+            p = [i+2 for i in range(size)]
             p[size-1] = 1
             p = Permutation( p )
             res = res.perm_vars(p)
@@ -603,15 +603,15 @@ class MacdonaldBasisOnVectors(LinearBasisOnVectors):
             res*= basis.var(size) - (-t2)**(size-1)
             return res
 
-        for i in xrange(size-1):
+        for i in range(size-1):
             if(u[i] > u[i+1]):
                 u[i], u[i+1] = u[i+1], u[i]
                 res = call_back(u)
 
                 res1 = res.hecke_generator(i+1,t1, t2)
-                w = Word( [u[j] for j in xrange(size-1,-1,-1)  ] )
+                w = Word( [u[j] for j in range(size-1,-1,-1)  ] )
                 p = w.standard_permutation()
-                u_spec = [ q**(u[j])*(-t1/t2)**(p(size-j) -1) for j in xrange(size) ]
+                u_spec = [ q**(u[j])*(-t1/t2)**(p(size-j) -1) for j in range(size) ]
                 res2 = res * (t1  + t2)/(u_spec[i+1]/u_spec[i] -1)
                 return res1 + res2
 
@@ -684,7 +684,7 @@ class DemazureBasisOnVectors(LinearBasisOnVectors):
     def on_basis_method(self, x, basis, call_back, method = "isobaric_divided_difference"):
         otype = basis.group_type()
         if(otype=="D"):
-            for i in xrange( len(x) - 1):
+            for i in range( len(x) - 1):
                 if( x[i]<x[i+1] ):
                     x[i], x[i+1] = x[i+1], x[i]
                     return getattr(call_back(x), method)(i+1)
@@ -694,7 +694,7 @@ class DemazureBasisOnVectors(LinearBasisOnVectors):
                 return getattr(call_back(x),method)(i+2)
             return basis(x)
         else:
-            for i in xrange( len( x ) - 1 ):
+            for i in range( len( x ) - 1 ):
                 if( x[i]<x[i+1] ):
                     x[i], x[i+1] = x[i+1], x[i]
                     return getattr(call_back(x), method)(i+1)
