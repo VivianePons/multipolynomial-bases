@@ -242,7 +242,7 @@ class MonomialKeyWrapper(Parent, UniqueRepresentation):
         if self.is_typed():
             return self(self.ambient_space().zero())
         else:
-            return self([0 for i in xrange(self.length())])
+            return self([0 for i in range(self.length())])
 
     def _an_element_(self):
         r"""
@@ -277,11 +277,11 @@ class MonomialKeyWrapper(Parent, UniqueRepresentation):
             sage: from multipolynomial_bases.basis import MonomialKeyWrapper
             sage: MKW = MonomialKeyWrapper(3)
             sage: g = iter(MKW)
-            sage: [next(g) for i in xrange(4)]
+            sage: [next(g) for i in range(4)]
             [[0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1]]
             sage: MKW = MonomialKeyWrapper(RootSystem("A2"))
             sage: g = iter(MKW)
-            sage: [next(g) for i in xrange(4)]
+            sage: [next(g) for i in range(4)]
             [[0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1]]
 
         TESTS ::
@@ -801,14 +801,14 @@ class PolynomialRingWithBasis(UniqueRepresentation, Parent):
         if(hasattr(self, "group_type")):
             otype = self.group_type()
             if(i<=0):
-                raise ValueError, "%s is not a valid operation number"%(i)
+                raise ValueError("%s is not a valid operation number"%(i))
             if(otype=="D" and i==1): return 2
             if(otype=="A"): return i+1
             return i
         else:
             if(otype is None): otype ="A"
             if(i<=0 or (otype=="D" and i==1)):
-                raise ValueError, "%s is not a valid operation number"%(i)
+                raise ValueError("%s is not a valid operation number"%(i))
             if(otype=="A"): return i+1
             return i
 
@@ -893,7 +893,7 @@ class PolynomialRingWithBasis(UniqueRepresentation, Parent):
             f1, f2 = f2, f1
 
         morph = f1._module_morphism(
-            lambda key : f2([key[i] for i in xrange(f2.nb_variables())]),
+            lambda key : f2([key[i] for i in range(f2.nb_variables())]),
             codomain = f2
         )
 
@@ -1891,7 +1891,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
         if(methods.has_key(method)):
             method = methods[method]
         if(self.basis_tower()._right_number_of_variables(i,otype) > self.nb_variables()):
-            raise ValueError, "%i is not a valid operation number"%(i)
+            raise ValueError("%i is not a valid operation number"%(i))
         try:
             if(otype is None):
                 wrapper = self.basis_tower()._divided_difference_wrapper(self,i, **keywords)
@@ -1903,7 +1903,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
             return self._get_morphism_backup(i , otype, method, **keywords)
         except TypeError:
             if(otype is not None and hasattr(self,"group_type")):
-                raise TypeError, "The type argument is not valid on this basis"%()
+                raise TypeError("The type argument is not valid on this basis"%())
             return self._get_morphism_backup(i , otype, method, **keywords)
         return self._module_morphism(
             on_basis,
@@ -1941,7 +1941,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
             NotImplementedError: the method bla is not implemented of this basis
 
         """
-        raise NotImplementedError, "the method %s is not implemented of this basis"%(method)
+        raise NotImplementedError("the method %s is not implemented of this basis"%(method))
 
 
     class Element(CombinatorialFreeModule.Element):
@@ -1993,7 +1993,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
             try:
                 element = element**-1
             except ValueError:
-                raise ValueError,"can not divide %s by %s"%(self, element)
+                raise ValueError("can not divide %s by %s"%(self, element))
             return self*element
 
         def __invert__(self):
@@ -2077,7 +2077,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
             - use the ``elements`` method to obtain a list of coefficients / keys to work on
 
             """
-            raise NotImplementedError, "The subs method is not implemented for elements of %s"%(self.parent())
+            raise NotImplementedError("The subs method is not implemented for elements of %s"%(self.parent()))
 
         def maxDiffDiv(self):
             r"""
@@ -2103,7 +2103,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
             M = self.parent().abstract_algebra().polynomial_ring_tower().monomial_basis()
             res = M( self )
             coeffs = list(res)
-            return sum( [coeffs[i][1] * M._maxDiffDiv_on_basis(coeffs[i][0]) for i in xrange(len(coeffs)) ])
+            return sum( [coeffs[i][1] * M._maxDiffDiv_on_basis(coeffs[i][0]) for i in range(len(coeffs)) ])
 
         def maxPi(self):
             r"""
@@ -2127,7 +2127,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 -Y[2, 2, 2]
             """
             M = self.parent().abstract_algebra().polynomial_ring_tower().monomial_basis()
-            max = [self.nb_variables() -i -1 for i in xrange(self.nb_variables())]
+            max = [self.nb_variables() -i -1 for i in range(self.nb_variables())]
             return (M(max) * self).maxDiffDiv()
 
         def nb_variables(self):
@@ -2285,7 +2285,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
             pol = m(self)
             res = m.zero()
             for key, coeff in pol:
-                l = [key[k] for k in xrange(self.nb_variables())]
+                l = [key[k] for k in range(self.nb_variables())]
                 temp = l[i-1]
                 l[i-1] = l[j-1]
                 l[j-1] = temp
@@ -2329,14 +2329,14 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 pol = pol.change_nb_variables(len(p))
                 parent = pol.parent()
             if(size<pol.nb_variables()):
-                l = [i+1 for i in xrange(pol.nb_variables())]
-                for i in xrange(size): l[i] = p[i]
+                l = [i+1 for i in range(pol.nb_variables())]
+                for i in range(size): l[i] = p[i]
                 p = Permutation( l )
             m = pol.parent().abstract_algebra().monomial_basis()
             res = m.zero()
             pol = m(pol)
             for key, coeff in pol:
-                l = [key[k] for k in xrange(pol.nb_variables())]
+                l = [key[k] for k in range(pol.nb_variables())]
                 l = p.action( l )
                 res += coeff * m(l)
             return parent(res)
@@ -2375,7 +2375,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
 
             replacing `x_i` by `x_i^2` for all vars::
 
-                sage: pol.subs_var([ (i,A.var(i)^2) for i in xrange(1,4)])
+                sage: pol.subs_var([ (i,A.var(i)^2) for i in range(1,4)])
                 x[2, 4, 6] + x[4, 4, 4]
             """
             if(type(args) is not list):
@@ -2387,7 +2387,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
             for t in args:
                 res = m.zero()
                 for key, coeff in pol:
-                    l = [key[k] for k in xrange(self.nb_variables())]
+                    l = [key[k] for k in range(self.nb_variables())]
                     exp = int(l[t[0]-1])
                     l[t[0]-1] = 0
                     res += m(l) * t[1]**exp * coeff
@@ -3270,7 +3270,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
             """
             min = self.parent().basis_tower()._right_number_of_variables(i, otype)
             if(self.nb_variables() < min):
-                raise ValueError, "%s is not a valid operation number"%(i)
+                raise ValueError("%s is not a valid operation number"%(i))
             return self
 
         def group_type(self):
@@ -3301,7 +3301,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
             try:
                 return self.parent().group_type()
             except:
-                raise AttributeError, "This polynomial has no group type"%()
+                raise AttributeError("This polynomial has no group type"%())
 
 
 
@@ -3348,7 +3348,7 @@ class PolynomialRingWithBasisFromMorphism(PolynomialRingWithBasis):
             sage: A.<x> = MultivariatePolynomialAlgebra(QQ)
             sage: from multipolynomial_bases.basis import MonomialKeyWrapper
             sage: def get_basis_keys(n): code = "A" + str(n-1); return MonomialKeyWrapper(RootSystem(code))
-            sage: def get_morphism_on_basis(n): return lambda key: x( [key[i] for i in xrange(n)])
+            sage: def get_morphism_on_basis(n): return lambda key: x( [key[i] for i in range(n)])
             sage: MyBasis = A.from_morphism_basis(1,x,get_basis_keys,get_morphism_on_basis,"My Basis", "MyX"); MyBasis
             The Multivariate polynomial algebra on x over Rational Field on the My Basis
             sage: MyBasis.an_element()
@@ -3377,7 +3377,7 @@ class PolynomialRingWithBasisFromMorphism(PolynomialRingWithBasis):
             sage: A = MultivariatePolynomialAlgebra(QQ)
             sage: m = A.monomial_basis()
             sage: def get_basis_keys(n): code = "A" + str(n-1); return RootSystem(code).ambient_space(QQ)
-            sage: def get_morphism_on_basis(n): return lambda key: m( [key[i] for i in xrange(n)])
+            sage: def get_morphism_on_basis(n): return lambda key: m( [key[i] for i in range(n)])
             sage: MyBasis = A.from_morphism_basis(1,m,get_basis_keys,get_morphism_on_basis,"My Basis", "x"); MyBasis
             The Multivariate polynomial algebra on x over Rational Field on the My Basis
         """
@@ -3407,7 +3407,7 @@ class PolynomialRingWithBasisFromMorphism(PolynomialRingWithBasis):
             sage: A = MultivariatePolynomialAlgebra(QQ)
             sage: m = A.monomial_basis()
             sage: def get_basis_keys(n): code = "A" + str(n-1); return RootSystem(code).ambient_space()
-            sage: def get_morphism_on_basis(n): return lambda key: m( [key[i] for i in xrange(n)])
+            sage: def get_morphism_on_basis(n): return lambda key: m( [key[i] for i in range(n)])
             sage: MyBasis = A.from_morphism_basis(1,m,get_basis_keys,get_morphism_on_basis,"My Basis", "x")
             sage: MyBasis._finite_rank_basis_instance(3)
             The Multivariate polynomial algebra on x over Rational Field with 3 variables on the My Basis
@@ -3425,7 +3425,7 @@ class PolynomialRingWithBasisFromMorphism(PolynomialRingWithBasis):
             sage: A = MultivariatePolynomialAlgebra(QQ)
             sage: m = A.monomial_basis()
             sage: def get_basis_keys(n): code = "A" + str(n-1); return RootSystem(code).ambient_space()
-            sage: def get_morphism_on_basis(n): return lambda key: m( [key[i] for i in xrange(n)])
+            sage: def get_morphism_on_basis(n): return lambda key: m( [key[i] for i in range(n)])
             sage: MyBasis = A.from_morphism_basis(1,m,get_basis_keys,get_morphism_on_basis,"My Basis", "x")
             sage: MyBasis.morphism_to_basis()
             The Multivariate polynomial algebra on x over Rational Field on the monomial basis
@@ -3460,7 +3460,7 @@ class FiniteRankPolynomialRingWithBasisFromMorphism(FiniteRankPolynomialRingWith
         sage: A = MultivariatePolynomialAlgebra(QQ)
         sage: M = A.monomial_basis()
         sage: def get_basis_keys(n): code = "A" + str(n-1); return RootSystem(code).ambient_space(QQ)
-        sage: def get_morphism_on_basis(n): return lambda key: M( [key[i] for i in xrange(n)])
+        sage: def get_morphism_on_basis(n): return lambda key: M( [key[i] for i in range(n)])
         sage: MyBasis = A.from_morphism_basis(1,M,get_basis_keys,get_morphism_on_basis,"My Basis", "X"); MyBasis
         The Multivariate polynomial algebra on x over Rational Field on the My Basis
         sage: from multipolynomial_bases.multivariate_polynomials import FiniteRankMultivariatePolynomialAlgebra
@@ -3480,7 +3480,7 @@ class FiniteRankPolynomialRingWithBasisFromMorphism(FiniteRankPolynomialRingWith
             sage: A = MultivariatePolynomialAlgebra(QQ)
             sage: M = A.monomial_basis()
             sage: def get_basis_keys(n): code = "A" + str(n-1); return RootSystem(code).ambient_space(QQ)
-            sage: def get_morphism_on_basis(n): return lambda key: M( [key[i] for i in xrange(n)])
+            sage: def get_morphism_on_basis(n): return lambda key: M( [key[i] for i in range(n)])
             sage: MyBasis = A.from_morphism_basis(1,M,get_basis_keys,get_morphism_on_basis,"My Basis", "X"); MyBasis
             The Multivariate polynomial algebra on x over Rational Field on the My Basis
             sage: from multipolynomial_bases.multivariate_polynomials import FiniteRankMultivariatePolynomialAlgebra
@@ -3533,7 +3533,7 @@ class FiniteRankPolynomialRingWithBasisFromMorphism(FiniteRankPolynomialRingWith
             sage: A = MultivariatePolynomialAlgebra(QQ)
             sage: m = A.monomial_basis()
             sage: def get_basis_keys(n): code = "A" + str(n-1); return RootSystem(code).ambient_space()
-            sage: def get_morphism_on_basis(n): return lambda key: m( [key[i] for i in xrange(n)])
+            sage: def get_morphism_on_basis(n): return lambda key: m( [key[i] for i in range(n)])
             sage: MyBasis = A.from_morphism_basis(1,m,get_basis_keys,get_morphism_on_basis,"My Basis", "x")
             sage: MyFiniteBasis = MyBasis.finite_rank_basis(3)
             sage: MyFiniteBasis.morphism_to_basis()
@@ -3568,7 +3568,7 @@ class FiniteRankPolynomialRingWithBasisFromMorphism(FiniteRankPolynomialRingWith
         if(self._invertible):
             return self( self.morphism_to_basis()(elt1) * self.morphism_to_basis()(elt2) )
         else:
-            raise NotImplementedError, "The product is not implemented for this basis"%()
+            raise NotImplementedError("The product is not implemented for this basis"%())
 
     def _get_morphism_backup(self, i, otype=None, method="divided_difference", **keywords):
         r"""

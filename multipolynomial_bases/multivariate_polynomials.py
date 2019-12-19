@@ -396,7 +396,7 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
         """
         if any (parent.is_parent_of(element) for parent in self.facade_for()):
             return element
-        raise TypeError, "do not know how to make '%s' an element of '%s'"%(element, self)
+        raise TypeError("do not know how to make '%s' an element of '%s'"%(element, self))
 
     def var(self, i, nb_variables = 0):
         r"""
@@ -428,7 +428,7 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
 
         """
         if(nb_variables ==0 or nb_variables < i ): nb_variables =i
-        vect = [0 for j in xrange(nb_variables)]
+        vect = [0 for j in range(nb_variables)]
         vect[i-1] = 1
         return self.monomial_basis()( vect )
 
@@ -677,7 +677,7 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
             sage: A = MultivariatePolynomialAlgebra(QQ)
             sage: m = A.monomial_basis()
             sage: def get_basis_keys(n): code = "A" + str(n-1); return RootSystem(code).ambient_space(QQ)
-            sage: def get_morphism_on_basis(n): return lambda key: m( [key[i] for i in xrange(n)])
+            sage: def get_morphism_on_basis(n): return lambda key: m( [key[i] for i in range(n)])
             sage: MyBasis = A.from_morphism_basis(1,m,get_basis_keys,get_morphism_on_basis,"My Basis", "x"); MyBasis
             The Multivariate polynomial algebra on x over Rational Field on the My Basis
             sage: MyBasis.an_element()
@@ -733,7 +733,7 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
             sage: from multipolynomial_bases import MultivariatePolynomialAlgebra
             sage: A = MultivariatePolynomialAlgebra(QQ)
             sage: def schubert_on_basis(v, basis, call_back):
-            ....:    for i in xrange(len(v)-1):
+            ....:    for i in range(len(v)-1):
             ....:        if(v[i]<v[i+1]):
             ....:            v[i], v[i+1] = v[i+1] + 1, v[i]
             ....:            return call_back(v).divided_difference(i+1)
@@ -1292,7 +1292,7 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
             xA[2, 2, 3, 0, 0] + xA[0, 0, 0, 0, 0] + 3*xA[0, 1, 0, 0, 0] + 2*xA[1, 0, 0, 0, 0]
         """
         if(nb_variables < pol.nb_variables()):
-            raise NotImplementedError, "This method doesn't reduce the number of variables, use reduce_nb_variables"%()
+            raise NotImplementedError("This method doesn't reduce the number of variables, use reduce_nb_variables")
         basis = pol.parent().basis_tower().finite_rank_basis(nb_variables)
         return basis( pol )
 
@@ -1326,13 +1326,13 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
         """
         max = 1
         for ind, coeff in pol:
-            for i in xrange(pol.nb_variables()-1,-1,-1):
+            for i in range(pol.nb_variables()-1,-1,-1):
                 if(ind[i]!=0):
                     if(i+1>max): max = i+1
                     break
         if(max==pol.nb_variables()): return pol
         codomain = pol.parent().basis_tower().finite_rank_basis(max)
-        return sum( [coeff * codomain([ind[i] for i in xrange(0,max)]) for ind, coeff in pol] )
+        return sum( [coeff * codomain([ind[i] for i in range(0,max)]) for ind, coeff in pol] )
 
     def maxDiffDiv(self, pol):
         """
@@ -1521,7 +1521,7 @@ class FiniteRankMultivariatePolynomialAlgebra(UniqueRepresentation, Parent):
         """
         if self.is_parent_of(element):
             return element
-        raise ValueError, "'%s' is not an element of '%s'"%(element, self)
+        raise ValueError("'%s' is not an element of '%s'"%(element, self))
 
 
     def an_element(self):
@@ -1623,7 +1623,7 @@ class FiniteRankMultivariatePolynomialAlgebra(UniqueRepresentation, Parent):
             sage: A = MultivariatePolynomialAlgebra(QQ)
             sage: M = A.monomial_basis()
             sage: def get_basis_keys(n): code = "A" + str(n-1); return RootSystem(code).ambient_space(QQ)
-            sage: def get_morphism_on_basis(n): return lambda key: M( [key[i] for i in xrange(n)])
+            sage: def get_morphism_on_basis(n): return lambda key: M( [key[i] for i in range(n)])
             sage: MyBasis = A.from_morphism_basis(1,M,get_basis_keys,get_morphism_on_basis,"My Basis", "X"); MyBasis
             The Multivariate polynomial algebra on x over Rational Field on the My Basis
             sage: from multipolynomial_bases.multivariate_polynomials  import FiniteRankMultivariatePolynomialAlgebra
@@ -1670,7 +1670,7 @@ class FiniteRankMultivariatePolynomialAlgebra(UniqueRepresentation, Parent):
             sage: from multipolynomial_bases import MultivariatePolynomialAlgebra
             sage: A = MultivariatePolynomialAlgebra(QQ)
             sage: def schubert_on_basis(v, basis, call_back):
-            ....:    for i in xrange(len(v)-1):
+            ....:    for i in range(len(v)-1):
             ....:        if(v[i]<v[i+1]):
             ....:            v[i], v[i+1] = v[i+1] + 1, v[i]
             ....:            return call_back(v).divided_difference(i+1)
