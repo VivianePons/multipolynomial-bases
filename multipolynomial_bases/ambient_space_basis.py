@@ -6,6 +6,7 @@ This module implements the Monomial Basis of multivariate polynomials associated
 with a group type that determines the actions on monomials.
 
 """
+from __future__ import absolute_import
 #*****************************************************************************
 #  Copyright (C) 2008-2009 Viviane Pons < pons at univ-mlv.fr  >
 #
@@ -18,7 +19,7 @@ from sage.combinat.root_system.root_system import RootSystem
 from sage.rings.integer import Integer
 from sage.structure.unique_representation import UniqueRepresentation
 
-from basis import PolynomialRingWithBasis, FiniteRankPolynomialRingWithBasis, MonomialKeyWrapper
+from .basis import PolynomialRingWithBasis, FiniteRankPolynomialRingWithBasis, MonomialKeyWrapper
 
 from sage.rings.integer_ring import ZZ
 from sage.rings.rational_field import QQ

@@ -5,6 +5,7 @@ Some basis for `MultivariatePolynomialAlgebra` and `FiniteRankMultivariatePolyno
 `SchubertBasisOnVectors`, `DemazureBasisOnVectors`, `GrothendieckBasisOnVectors`
 
 """
+from __future__ import absolute_import
 #*****************************************************************************
 #  Copyright (C) 2008-2009 Viviane Pons < pons at univ-mlv.fr  >
 #
@@ -19,7 +20,7 @@ from sage.rings.integer import Integer
 from sage.combinat.sf.sf import SymmetricFunctions
 from sage.structure.unique_representation import UniqueRepresentation
 
-from basis import PolynomialRingWithBasisFromMorphism, FiniteRankPolynomialRingWithBasisFromMorphism, PolynomialRingWithBasis
+from .basis import PolynomialRingWithBasisFromMorphism, FiniteRankPolynomialRingWithBasisFromMorphism, PolynomialRingWithBasis
 
 class LinearBasisOnVectors(PolynomialRingWithBasisFromMorphism):
     r"""

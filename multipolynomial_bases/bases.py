@@ -2,6 +2,7 @@
 r"""
 Shortcuts for most used polynomial bases
 """
+from __future__ import absolute_import
 #*****************************************************************************
 #  Copyright (C) 2008-2009 Viviane Pons < pons at univ-mlv.fr  >
 #
@@ -9,7 +10,7 @@ Shortcuts for most used polynomial bases
 #                  http://www.gnu.org/licenses/
 #*****************************************************************************
 
-from multivariate_polynomials import MultivariatePolynomialAlgebra
+from .multivariate_polynomials import MultivariatePolynomialAlgebra
 
 def SchubertPolynomials(R, basis_name = None, basis_repr= "Y", **keywords):
     r"""

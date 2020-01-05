@@ -5,6 +5,7 @@ Monomial basis
 This module implements the Monomial Basis of multivariate polynomials.
 
 """
+from __future__ import absolute_import
 #*****************************************************************************
 #  Copyright (C) 2008-2009 Viviane Pons < pons at univ-mlv.fr  >
 #
@@ -15,7 +16,7 @@ This module implements the Monomial Basis of multivariate polynomials.
 from sage.rings.integer import Integer
 from sage.structure.unique_representation import UniqueRepresentation
 
-from basis import PolynomialRingWithBasis, FiniteRankPolynomialRingWithBasis, MonomialKeyWrapper
+from .basis import PolynomialRingWithBasis, FiniteRankPolynomialRingWithBasis, MonomialKeyWrapper
 class MonomialBasis(PolynomialRingWithBasis):
     r"""
     This class implements the monomial basis. Polynomials are seen as
