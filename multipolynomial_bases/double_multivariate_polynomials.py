@@ -110,6 +110,7 @@ Some special bases have been implemented for double polynomials::
     sage: DGroth[3,2,3].hat_isobaric_divided_difference(1)
     (-y[0])*GG[3, 2, 3] + y[0]*GG[2, 2, 3]
 """
+from __future__ import absolute_import
 
 #*****************************************************************************
 #  Copyright (C) 2008-2009 Viviane Pons < pons at univ-mlv.fr  >
@@ -125,9 +126,9 @@ from sage.categories.homset import Hom
 from sage.categories.morphism import SetMorphism
 from sage.misc.cachefunc import cached_method
 from sage.misc.misc_c import prod
-from multivariate_polynomials import MultivariatePolynomialAlgebra, MultivariatePolynomialAlgebra_generic
-from basis import PolynomialRingWithBasis
-from linear_basis_on_vectors import LinearBasisOnVectors, FiniteLinearBasisOnVectors
+from .multivariate_polynomials import MultivariatePolynomialAlgebra, MultivariatePolynomialAlgebra_generic
+from .basis import PolynomialRingWithBasis
+from .linear_basis_on_vectors import LinearBasisOnVectors, FiniteLinearBasisOnVectors
 
 
 class DoubleMultivariatePolynomialAlgebra_generic(MultivariatePolynomialAlgebra_generic):
