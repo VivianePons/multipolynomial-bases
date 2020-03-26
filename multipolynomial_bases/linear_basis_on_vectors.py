@@ -39,15 +39,10 @@ class LinearBasisOnVectors(PolynomialRingWithBasisFromMorphism):
         self._monomial_basis_with_type = monomial_basis_with_type
         get_morphism_on_basis = self._get_morphism_on_basis
 
-        if(not keywords.has_key("triangular")): keywords["triangular"] = "upper"
+        if(not "triangular" in keywords): keywords["triangular"] = "upper"
         if(not keywords["triangular"] is None):
-            if(not keywords.has_key("key")):
-                cmp = self.cmp
-                if(keywords.has_key("cmp")):
-                    cmp = keywords["cmp"]
-                    del keywords["cmp"]
-                from functools import cmp_to_key
-                keywords["key"] = cmp_to_key(cmp)
+            if(not "cmp" in keywords):
+                keywords["cmp"] = self.cmp
 
         self._keywords = keywords
 
@@ -264,7 +259,7 @@ class SchubertBasisOnVectors(LinearBasisOnVectors):
             sage: schur = SF.schur()
             sage: y = schur([3,2,1]) + schur([2,1])
             sage: Schub.from_schur(y)
-            Y[0, 1, 2] + Y[1, 2, 3]
+            Y[1, 2, 3] + Y[0, 1, 2]
 
         """
         schur = list(schur)
@@ -363,7 +358,7 @@ class GrothendieckPositiveBasisOnVectors(LinearBasisOnVectors):
             if( x[i]<x[i+1] ):
                 x[i], x[i+1] = x[i+1]+1, x[i]
                 res = call_back(x)
-                fact = (basis.one() - basis.var(i+2))/basis.var(i+1)
+                fact = (basis.one() - basis.var(i+2)) * basis.var(i+1)**(-1)
                 return (fact * res).isobaric_divided_difference(i+1)
         return basis(x)
 
@@ -491,7 +486,7 @@ class GrothendieckNegativeBasisOnVectors(LinearBasisOnVectors):
                 sage: pol = Groth[3,2,3]
                 sage: key = list(pol)[0][0]
                 sage: wrapp.hat_isobaric_divided_difference_on_basis(key)
-                -G[3, 2, 3] + G[2, 2, 3]
+                G[2, 2, 3] - G[3, 2, 3]
                 sage: pol = Groth[2,3,3]
                 sage: key = list(pol)[0][0]
                 sage: wrapp.hat_isobaric_divided_difference_on_basis(key)

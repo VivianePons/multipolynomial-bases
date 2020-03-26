@@ -1,9 +1,9 @@
 # This Makefile is for convenience as a remider and shortcut for most used commands
 
 # Package folder
-PACKAGE = sage_sample
+PACKAGE = multipolynomial_bases
 
-# chage to your sage command
+# change to your sage command
 SAGE = ~/sage/sage
 
 all: install test

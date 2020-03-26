@@ -288,9 +288,9 @@ class MonomialKeyWrapper(Parent, UniqueRepresentation):
 
             sage: MKW = MonomialKeyWrapper(3)
             sage: g = iter(MKW)
-            sage: g.next() in MKW
+            sage: next(g) in MKW
             True
-            sage: type(g.next())
+            sage: type(next(g))
             <class 'multipolynomial_bases.basis.MonomialKeyWrapper.element_class'>
 
         """
@@ -577,12 +577,12 @@ class PolynomialRingWithBasis(UniqueRepresentation, Parent):
             sage: m.basis_repr()
             'x'
             sage: m.an_element()
-            2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+            x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
             sage: Schub = A.schubert_basis()
             sage: Schub.basis_repr()
             'Y'
             sage: Schub.an_element()
-            2*Y[1, 0, 0] + Y[2, 2, 3] + Y[0, 0, 0] + 3*Y[0, 1, 0]
+            Y[2, 2, 3] + Y[0, 0, 0] + 2*Y[1, 0, 0] + 3*Y[0, 1, 0]
 
         """
         return self._basis_repr
@@ -603,7 +603,7 @@ class PolynomialRingWithBasis(UniqueRepresentation, Parent):
             sage: m = A.monomial_basis()
             sage: Schub = A.schubert_basis()
             sage: m(Schub.an_element())
-            x[2, 3, 2] + 5*x[1, 0, 0] + x[3, 2, 2] + x[0, 0, 0] + x[2, 2, 3] + 3*x[0, 1, 0]
+            x[3, 2, 2] + x[2, 3, 2] + x[2, 2, 3] + x[0, 0, 0] + 5*x[1, 0, 0] + 3*x[0, 1, 0]
 
         The coercion exists only between the monomial basis on 3 variables and the
         Schubert basis on 3 variables. So when the monomial basis on all variables
@@ -616,12 +616,12 @@ class PolynomialRingWithBasis(UniqueRepresentation, Parent):
         EXAMPLES::
 
             sage: pol = m.an_element(); pol
-            2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+            x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
             sage: key = list(pol)[0][0]
             sage: key
-            [1, 0, 0]
+            [1, 2, 3]
             sage: m(key)
-            x[1, 0, 0]
+            x[1, 2, 3]
 
         As ``m`` is not itself a ``CombinatorialFreeModule``, it needs to identify ``key``
         as a key of its finite basis.
@@ -854,7 +854,7 @@ class PolynomialRingWithBasis(UniqueRepresentation, Parent):
             M[1]
             sage: Mac2 = Mac.finite_rank_basis(2)
             sage: Mac2(pol)
-            ((-t1-t2)/(t1*q+t2))*M[0, 1] + (1/(-t2))*M[1, 0] + (t1-1)*M[0, 0]
+            (1/(-t2))*M[1, 0] + ((-t1-t2)/(t1*q+t2))*M[0, 1] + (t1-1)*M[0, 0]
 
         """
         if(self._variables_auto_coerce):
@@ -884,9 +884,9 @@ class PolynomialRingWithBasis(UniqueRepresentation, Parent):
             sage: m2 = m.finite_rank_basis(2)
             sage: m3 = m.finite_rank_basis(3)
             sage: m2.an_element()
-            x[1, 2] + 3*x[0, 1] + 2*x[1, 0] + x[0, 0]
+            x[1, 2] + x[0, 0] + 2*x[1, 0] + 3*x[0, 1]
             sage: m3(m2.an_element())
-            2*x[1, 0, 0] + x[1, 2, 0] + x[0, 0, 0] + 3*x[0, 1, 0]
+            x[1, 2, 0] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
 
         """
         if(f1.nb_variables() > f2.nb_variables()):
@@ -910,7 +910,7 @@ class PolynomialRingWithBasis(UniqueRepresentation, Parent):
             sage: A = MultivariatePolynomialAlgebra(QQ)
             sage: m = A.monomial_basis()
             sage: m.an_element()
-            2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+            x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
 
         """
         return self.finite_rank_basis(3).an_element()
@@ -928,13 +928,13 @@ class PolynomialRingWithBasis(UniqueRepresentation, Parent):
             sage: m = A.monomial_basis()
             sage: pol = m.an_element()
             sage: pol
-            2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+            x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
             sage: list(pol)
-            [([1, 0, 0], 2), ([0, 1, 0], 3), ([0, 0, 0], 1), ([1, 2, 3], 1)]
+            [([1, 2, 3], 1), ([0, 0, 0], 1), ([1, 0, 0], 2), ([0, 1, 0], 3)]
             sage: key = list(pol)[0][0]; key
-            [1, 0, 0]
+            [1, 2, 3]
             sage: m.term(key)
-            x[1, 0, 0]
+            x[1, 2, 3]
 
         """
         nb_variables = len(key)
@@ -971,30 +971,30 @@ class PolynomialRingWithBasis(UniqueRepresentation, Parent):
             sage: def affine(self,key): return self.divided_difference_on_basis(key) - self._module(key)
             sage: x.add_operator("affDiff",affine)
             sage: pol = x.an_element(); pol
-            2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+            x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
             sage: pol.isobaric_divided_difference(2)
-            2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + 3*x[0, 0, 1]
+            x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0] + 3*x[0, 0, 1]
             sage: pol.divided_difference(1) - pol
-            -x[1, 1, 3] - 2*x[1, 0, 0] - 3*x[0, 1, 0] - 2*x[0, 0, 0] - x[1, 2, 3]
+            -x[1, 1, 3] - 2*x[0, 0, 0] - x[1, 2, 3] - 2*x[1, 0, 0] - 3*x[0, 1, 0]
             sage: pol.divided_difference(1,otype="C")
             x[0, 2, 3] + 2*x[0, 0, 0]
             sage: pol2 = pol.divided_difference(1,otype="C") - pol; pol2
-            x[0, 2, 3] - 2*x[1, 0, 0] - 3*x[0, 1, 0] + x[0, 0, 0] - x[1, 2, 3]
+            x[0, 2, 3] + x[0, 0, 0] - x[1, 2, 3] - 2*x[1, 0, 0] - 3*x[0, 1, 0]
             sage: pol.apply_morphism(1, method="affDiff")
-            -2*x[1, 0, 0] - x[1, 1, 3] - 3*x[0, 1, 0] - 2*x[0, 0, 0] - x[1, 2, 3]
+            -x[1, 1, 3] - x[1, 2, 3] - 2*x[0, 0, 0] - 2*x[1, 0, 0] - 3*x[0, 1, 0]
             sage: pol2 = pol.apply_morphism(1,method="affDiff", otype="C")
             sage: pol2
-            -2*x[1, 0, 0] + x[0, 2, 3] - 3*x[0, 1, 0] + x[0, 0, 0] - x[1, 2, 3]
+            x[0, 2, 3] - x[1, 2, 3] + x[0, 0, 0] - 2*x[1, 0, 0] - 3*x[0, 1, 0]
             sage: xA = A.monomial_basis_with_type("A")
             sage: pol2 = xA(pol2)
             sage: pol2
-            -2*xA[1, 0, 0] + xA[0, 2, 3] - 3*xA[0, 1, 0] + xA[0, 0, 0] - xA[1, 2, 3]
+            xA[0, 2, 3] - xA[1, 2, 3] + xA[0, 0, 0] - 2*xA[1, 0, 0] - 3*xA[0, 1, 0]
             sage: pol2 = pol2.isobaric_divided_difference(2)
             sage: pol2 = x(pol2)
             sage: pol2
-            -2*x[1, 0, 0] - 3*x[0, 1, 0] + x[0, 0, 0] - 3*x[0, 0, 1]
+            x[0, 0, 0] - 2*x[1, 0, 0] - 3*x[0, 1, 0] - 3*x[0, 0, 1]
             sage: pol.apply_composed_morphism([("affDiff",1,"C"),("pi",2)])
-            -2*x[1, 0, 0] - 3*x[0, 1, 0] + x[0, 0, 0] - 3*x[0, 0, 1]
+            x[0, 0, 0] - 2*x[1, 0, 0] - 3*x[0, 1, 0] - 3*x[0, 0, 1]
 
         """
         setattr(self._divided_difference_wrapper, name +"_on_basis", method)
@@ -1333,7 +1333,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
             sage: m3 = m.finite_rank_basis(3)
             sage: key = list(m3.an_element())[0][0]
             sage: m3._repr_term(key)
-            'x[1, 0, 0]'
+            'x[1, 2, 3]'
         """
         return self._basis_repr+str(c)
 
@@ -1426,7 +1426,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
             sage: Schub3.var(1)
             Y[1, 0, 0]
             sage: Schub3.var(2)
-            -Y[1, 0, 0] + Y[0, 1, 0]
+            Y[0, 1, 0] - Y[1, 0, 0]
             sage: m3.var(4)
             x[0, 0, 0, 1]
             sage: Schub3.var(4)
@@ -1483,7 +1483,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
             ..::
                 sage: morph = m3.divided_difference_morphism(1,"B")
                 sage: morph(pol)
-                x[-1, 2, 2] + x[0, 2, 2]
+                x[0, 2, 2] + x[-1, 2, 2]
 
             On a typed basis, the polynomial type is used and giving a
             value to the ``otype`` will raise an exception. The operation
@@ -1498,14 +1498,14 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: A = MultivariatePolynomialAlgebra(QQ)
                 sage: mb = A.monomial_basis_with_type("B")
                 sage: pol = mb.an_element(); pol
-                2*xB[1, 0, 0] + xB[2, 2, 3] + xB[0, 0, 0] + 3*xB[0, 1, 0]
+                xB[2, 2, 3] + xB[0, 0, 0] + 2*xB[1, 0, 0] + 3*xB[0, 1, 0]
                 sage: mb3 = pol.parent()
                 sage: morph = mb3.divided_difference_morphism(2)
                 sage: morph(pol)
                 -xB[2, 2, 2] + 3*xB[0, 0, 0]
                 sage: morph = mb3.divided_difference_morphism(3)
                 sage: morph(pol)
-                xB[2, 2, 2] + xB[2, 2, -2] + xB[2, 2, 1] + xB[2, 2, -3] + xB[2, 2, -1] + xB[2, 2, 0]
+                xB[2, 2, 2] + xB[2, 2, 1] + xB[2, 2, 0] + xB[2, 2, -1] + xB[2, 2, -2] + xB[2, 2, -3]
                 sage: morph = mb3.divided_difference_morphism(3,"C")
                 Traceback (most recent call last):
                 ...
@@ -1551,7 +1551,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: morph
                 Generic endomorphism of The Multivariate polynomial algebra on x over Rational Field with 3 variables on the monomial basis
                 sage: morph(pol)
-                x[1, 2, 1] + x[2, 1, 1]
+                x[2, 1, 1] + x[1, 2, 1]
 
             The operation type is given either by the ``otype`` argument or
             by the type of polynomial.
@@ -1563,7 +1563,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
             ..::
                 sage: morph = m3.isobaric_divided_difference_morphism(1,"B")
                 sage: morph(pol)
-                x[0, 1, 1] + x[1, 1, 1] + x[2, 1, 1] + x[-1, 1, 1] + x[-2, 1, 1]
+                x[2, 1, 1] + x[1, 1, 1] + x[0, 1, 1] + x[-1, 1, 1] + x[-2, 1, 1]
 
 
             On a typed basis, the polynomial type is used and giving a
@@ -1583,9 +1583,9 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: mb3 = pol.parent()
                 sage: morph = mb3.isobaric_divided_difference_morphism(1)
                 sage: morph(pol)
-                xB[1, 2, 1] + xB[2, 1, 1]
+                xB[2, 1, 1] + xB[1, 2, 1]
                 sage: pol.isobaric_divided_difference(3)
-                xB[2, 1, -1] + xB[2, 1, 1] + xB[2, 1, 0]
+                xB[2, 1, 1] + xB[2, 1, 0] + xB[2, 1, -1]
                 sage: morph = mb3.isobaric_divided_difference_morphism(3, "C")
                 Traceback (most recent call last):
                 ...
@@ -1644,7 +1644,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
             ..::
                 sage: morph = m3.hat_isobaric_divided_difference_morphism(1,"B")
                 sage: morph(pol)
-                x[0, 1, 1] + x[1, 1, 1] + x[-1, 1, 1] + x[-2, 1, 1]
+                x[1, 1, 1] + x[0, 1, 1] + x[-1, 1, 1] + x[-2, 1, 1]
 
             On a typed basis, the polynomial type is used. Giving a
             value to the ``otype`` argument will raise an exception. The operation
@@ -1666,7 +1666,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 xB[1, 2, 1]
                 sage: morph = mb3.hat_isobaric_divided_difference_morphism(3)
                 sage: morph(pol)
-                xB[2, 1, -1] + xB[2, 1, 0]
+                xB[2, 1, 0] + xB[2, 1, -1]
                 sage: morph = mb3.hat_isobaric_divided_difference_morphism(3, "C")
                 Traceback (most recent call last):
                 ...
@@ -1704,13 +1704,13 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: K.<t1,t2> = QQ[]
                 sage: A = MultivariatePolynomialAlgebra(K)
                 sage: pol = A.an_element(); pol
-                2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+                x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
                 sage: m3 = pol.parent()
                 sage: morph = m3.hecke_generator_morphism(2)
                 sage: morph
                 Generic endomorphism of The Multivariate polynomial algebra on x over Multivariate Polynomial Ring in t1, t2 over Rational Field with 3 variables on the monomial basis
                 sage: morph(pol)
-                2*t1*x[1, 0, 0] + (3*t1+3*t2)*x[0, 1, 0] + t1*x[0, 0, 0] + 3*t1*x[0, 0, 1] + (-t2)*x[1, 3, 2]
+                (-t2)*x[1, 3, 2] + t1*x[0, 0, 0] + 2*t1*x[1, 0, 0] + (3*t1+3*t2)*x[0, 1, 0] + 3*t1*x[0, 0, 1]
 
             """
         if(t1 is None): t1 = self.base_ring()(var('t1'))
@@ -1757,24 +1757,24 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: pol = m[2,1,1]
                 sage: morph = m3.get_composed_morphism([("x",1),("d",1)])
                 sage: morph(pol)
-                x[1, 2, 1] + x[2, 1, 1]
+                x[2, 1, 1] + x[1, 2, 1]
                 sage: morph = m3.get_composed_morphism([("pi",1)])
                 sage: morph(pol)
-                x[1, 2, 1] + x[2, 1, 1]
+                x[2, 1, 1] + x[1, 2, 1]
                 sage: morph = m3.get_composed_morphism([("pi",2,"B"),("s",1,"C"),("hatpi",2,"D")])
                 sage: morph(pol)
-                -x[0, 1, 1] - x[-2, 1, 1] - x[-2, -1, 1] - x[-1, 1, 1] - x[-2, 0, 1] - x[-1, 0, 1]
+                -x[-2, 1, 1] - x[-1, 1, 1] - x[-2, 0, 1] - x[-1, 0, 1] - x[0, 1, 1] - x[-2, -1, 1]
 
             On a typed basis, no type parameter should be sent.
             ..::
                 sage: mb = A.monomial_basis_with_type("B")
                 sage: pol = mb.an_element()
                 sage: pol
-                2*xB[1, 0, 0] + xB[2, 2, 3] + xB[0, 0, 0] + 3*xB[0, 1, 0]
+                xB[2, 2, 3] + xB[0, 0, 0] + 2*xB[1, 0, 0] + 3*xB[0, 1, 0]
                 sage: mb3 = pol.parent()
                 sage: morph = mb3.get_composed_morphism([("d",2),("pi",1),("hatpi",3)])
                 sage: morph(pol)
-                -xB[2, 2, 1] - xB[2, 2, -1] - xB[2, 2, -2] - xB[2, 2, 0]
+                -xB[2, 2, 1] - xB[2, 2, 0] - xB[2, 2, -1] - xB[2, 2, -2]
                 sage: morph = mb3.get_composed_morphism([("d",2,"C"),("pi",1),("hatpi",3)])
                 Traceback (most recent call last):
                 ...
@@ -1829,7 +1829,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: from multipolynomial_bases import MultivariatePolynomialAlgebra
                 sage: A = MultivariatePolynomialAlgebra(QQ)
                 sage: pol = A.an_element();pol
-                2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+                x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
                 sage: m3 = pol.parent()
                 sage: morph = m3.get_morphism(1); morph
                 Generic endomorphism of The Multivariate polynomial algebra on x over Rational Field with 3 variables on the monomial basis
@@ -1838,7 +1838,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: morph = m3.get_morphism(1, method="pi"); morph
                 Generic endomorphism of The Multivariate polynomial algebra on x over Rational Field with 3 variables on the monomial basis
                 sage: morph(pol)
-                 2*x[1, 0, 0] + 2*x[0, 1, 0] + x[0, 0, 0]
+                 x[0, 0, 0] + 2*x[1, 0, 0] + 2*x[0, 1, 0]
 
             The ``otype`` argument can be used on untyped polynomials (like
             elements of the monomial basis).
@@ -1849,7 +1849,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: morph = m3.get_morphism(1, otype="B"); morph
                 Generic endomorphism of The Multivariate polynomial algebra on x over Rational Field with 3 variables on the monomial basis
                 sage: morph(pol)
-                x[0, 2, 3] + 2*x[-1, 0, 0] + 2*x[0, 0, 0] + x[-1, 2, 3]
+                x[0, 2, 3] + x[-1, 2, 3] + 2*x[0, 0, 0] + 2*x[-1, 0, 0]
                 sage: mb = A.monomial_basis_with_type("B")
                 sage: pol = mb(pol)
                 sage: mb3 = pol.parent()
@@ -1862,7 +1862,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 -xB[1, 1, 3] - xB[0, 0, 0]
                 sage: morph = mb3.get_morphism(3)
                 sage: morph(pol)
-                xB[1, 2, 1] + xB[1, 2, -3] + xB[1, 2, 2] + xB[1, 2, -2] + xB[1, 2, 0] + xB[1, 2, -1]
+                xB[1, 2, 2] + xB[1, 2, 1] + xB[1, 2, 0] + xB[1, 2, -1] + xB[1, 2, -2] + xB[1, 2, -3]
 
         The method actually looks into the class for a divided difference
         wrapper class in which it looks for an on basis method corresponding
@@ -1888,7 +1888,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
         methods["pi"] = "isobaric_divided_difference"
         methods["hatpi"] = "hat_isobaric_divided_difference"
 
-        if(methods.has_key(method)):
+        if(method in methods):
             method = methods[method]
         if(self.basis_tower()._right_number_of_variables(i,otype) > self.nb_variables()):
             raise ValueError("%i is not a valid operation number"%(i))
@@ -1949,7 +1949,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
         The upperclass for all polynomials elements : they are subclasses
         ``CombinatorialFreeModule`` elements
         """
-        def __div__(self, element):
+        def __truediv__(self, element):
             """
                 Division by a coefficient or by an invertible element
 
@@ -1979,17 +1979,17 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                     sage: pol/(pol+pol2)
                     Traceback (most recent call last):
                     ...
-                    ValueError: can not divide x[1, 2, 3] by x[1, 1, 1] + x[1, 2, 3]
+                    ValueError: can not divide x[1, 2, 3] by x[1, 2, 3] + x[1, 1, 1]
                     sage: Schub = A.schubert_basis("A");
                     sage: y = Schub.an_element(); y
-                    2*Y[1, 0, 0] + Y[2, 2, 3] + Y[0, 0, 0] + 3*Y[0, 1, 0]
+                    Y[2, 2, 3] + Y[0, 0, 0] + 2*Y[1, 0, 0] + 3*Y[0, 1, 0]
                     sage: y/pol
-                    Y[1, 1, -1] + Y[2, 0, -1] + Y[1, 0, 0] + Y[-1, -2, -3] + 5*Y[0, -2, -3] + 3*Y[-1, -1, -3]
+                    Y[-1, -2, -3] + 3*Y[-1, -1, -3] + 5*Y[0, -2, -3] + Y[1, 0, 0] + Y[1, 1, -1] + Y[2, 0, -1]
 
 
             """
             if(element in self.base_ring()):
-                return super(FiniteRankPolynomialRingWithBasis.Element, self).__div__(element)
+                return super(FiniteRankPolynomialRingWithBasis.Element, self).__truediv__(element)
             try:
                 element = element**-1
             except ValueError:
@@ -2013,7 +2013,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: Schub = A.schubert_basis()
                 sage: pol = Schub(m[1,2,3])
                 sage: pol
-                -Y[1, 3, 2] + Y[3, 1, 2] - Y[3, 2, 1] + Y[2, 3, 1] - Y[2, 1, 3] + Y[4, 1, 1] + Y[1, 2, 3]
+                Y[1, 2, 3] - Y[2, 1, 3] - Y[1, 3, 2] + Y[3, 1, 2] + Y[2, 3, 1] - Y[3, 2, 1] + Y[4, 1, 1]
                 sage: pol^-1
                 x[-1, -2, -3]
 
@@ -2032,7 +2032,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: A = MultivariatePolynomialAlgebra(QQ)
                 sage: m = A.monomial_basis()
                 sage: pol = m[0,0,1] + m[2,1]; pol
-                x[2, 1, 0] + x[0, 0, 1]
+                x[0, 0, 1] + x[2, 1, 0]
                 sage: pol[2,1,0]
                 1
                 sage: ma = A.monomial_basis_with_type("A")
@@ -2148,7 +2148,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: pol2.nb_variables()
                 2
                 sage: sum = pol1 + pol2; sum
-                x[2, 2, 0] + x[1, 2, 3]
+                x[1, 2, 3] + x[2, 2, 0]
                 sage: sum.nb_variables()
                 3
             """
@@ -2203,11 +2203,11 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: A = MultivariatePolynomialAlgebra(QQ)
                 sage: M = A.monomial_basis()
                 sage: pol = M[1,2,2,0,0] + M[2,5]; pol
-                x[2, 5, 0, 0, 0] + x[1, 2, 2, 0, 0]
+                x[1, 2, 2, 0, 0] + x[2, 5, 0, 0, 0]
                 sage: pol.nb_variables()
                 5
                 sage: red = pol.reduce_nb_variables(); red
-                x[2, 5, 0] + x[1, 2, 2]
+                x[1, 2, 2] + x[2, 5, 0]
                 sage: red.nb_variables()
                 3
                 sage: red == pol
@@ -2234,9 +2234,9 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: A = MultivariatePolynomialAlgebra(QQ)
                 sage: m = A.monomial_basis()
                 sage: pol = m[0,0,1] + m[2,1]; pol
-                x[2, 1, 0] + x[0, 0, 1]
+                x[0, 0, 1] + x[2, 1, 0]
                 sage: pol.elements()
-                [([2, 1, 0], 1), ([0, 0, 1], 1)]
+                [([0, 0, 1], 1), ([2, 1, 0], 1)]
                 sage: ma = A.monomial_basis_with_type("A")
                 sage: pol = ma[2,2,1,0]
                 sage: pol = 3*ma[2,2,1,0] + 2*ma[1,1,3];pol
@@ -2272,14 +2272,14 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: A = MultivariatePolynomialAlgebra(QQ)
                 sage: M = A.monomial_basis()
                 sage: pol = M[1,2,3] + M[3,2,1]; pol
-                x[3, 2, 1] + x[1, 2, 3]
+                x[1, 2, 3] + x[3, 2, 1]
                 sage: res = pol.swap_vars(1,2); res
-                x[2, 3, 1] + x[2, 1, 3]
+                x[2, 1, 3] + x[2, 3, 1]
                 sage: Schub = A.schubert_basis("A")
                 sage: y = Schub(pol); y
-                -Y[2, 1, 3] - Y[1, 3, 2] + Y[1, 2, 3] + Y[4, 1, 1] + Y[3, 1, 2] + Y[2, 3, 1]
+                Y[1, 2, 3] - Y[2, 1, 3] - Y[1, 3, 2] + Y[3, 1, 2] + Y[2, 3, 1] + Y[4, 1, 1]
                 sage: y.swap_vars(1,2)
-                -Y[2, 2, 2] + Y[2, 1, 3] - Y[4, 1, 1] - Y[3, 1, 2]
+                Y[2, 1, 3] - Y[2, 2, 2] - Y[3, 1, 2] - Y[4, 1, 1]
             """
             m = self.parent().abstract_algebra().monomial_basis()
             pol = m(self)
@@ -2309,17 +2309,15 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: from multipolynomial_bases import MultivariatePolynomialAlgebra
                 sage: A = MultivariatePolynomialAlgebra(QQ)
                 sage: pol = A.an_element(); pol
-                2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+                x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
                 sage: p = Permutation([3,2,1])
                 sage: pol.perm_vars(p)
-                3*x[0, 1, 0] + x[0, 0, 0] + 2*x[0, 0, 1] + x[3, 2, 1]
+                x[3, 2, 1] + x[0, 0, 0] + 2*x[0, 0, 1] + 3*x[0, 1, 0]
                 sage: Schub = A.schubert_basis()
                 sage: pol = Schub.an_element();pol
-                2*Y[1, 0, 0] + Y[2, 2, 3] + Y[0, 0, 0] + 3*Y[0, 1, 0]
+                Y[2, 2, 3] + Y[0, 0, 0] + 2*Y[1, 0, 0] + 3*Y[0, 1, 0]
                 sage: pol.perm_vars(p)
-                -3*Y[1, 0, 0] - 2*Y[0, 1, 0] + Y[0, 0, 0] + 5*Y[0, 0, 1] + Y[2, 2, 3]
-                sage: pol.expand()
-                xA[2, 3, 2] + 5*xA[1, 0, 0] + xA[3, 2, 2] + xA[0, 0, 0] + xA[2, 2, 3] + 3*xA[0, 1, 0]
+                Y[0, 0, 0] + 5*Y[0, 0, 1] - 2*Y[0, 1, 0] - 3*Y[1, 0, 0] + Y[2, 2, 3]
 
             """
             size = len(p)
@@ -2361,7 +2359,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: A = MultivariatePolynomialAlgebra(QQ)
                 sage: M = A.monomial_basis()
                 sage: pol = M[1,2,3] + M[2,2,2];pol
-                x[2, 2, 2] + x[1, 2, 3]
+                x[1, 2, 3] + x[2, 2, 2]
 
             replacing `x_1` by `x_1^2`::
 
@@ -2413,9 +2411,9 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: Schub = A.schubert_basis()
                 sage: Schub3 = Schub.finite_rank_basis(3)
                 sage: pol = m[0,0,1] + m[2,1]; pol
-                x[2, 1, 0] + x[0, 0, 1]
+                x[0, 0, 1] + x[2, 1, 0]
                 sage: pol.subs_basis(Schub3)
-                Y[2, 1, 0] + Y[0, 0, 1]
+                Y[0, 0, 1] + Y[2, 1, 0]
 
 
             """
@@ -2436,7 +2434,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: A = MultivariatePolynomialAlgebra(QQ)
                 sage: m = A.monomial_basis()
                 sage: pol = m[0,0,1] + m[2,1]; pol
-                x[2, 1, 0] + x[0, 0, 1]
+                x[0, 0, 1] + x[2, 1, 0]
                 sage: d = {(2,1,0):0}
                 sage: pol.subs_on_keys(d)
                 x[0, 0, 1]
@@ -2445,7 +2443,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
             res = []
             for (key,c) in self.elements():
                 key = tuple(key)
-                if(d.has_key(key)):
+                if(key in d):
                     res.append(c*d[key])
                 else:
                     res.append(c*self.parent()(key))
@@ -2472,9 +2470,9 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: K = K.fraction_field()
                 sage: A = MultivariatePolynomialAlgebra(K)
                 sage: pol = t1 + (t1 +t2 +q) * A.var(2);pol
-                (t1+t2+q)*x[0, 1] + t1*x[0, 0]
+                t1*x[0, 0] + (t1+t2+q)*x[0, 1]
                 sage: pol.subs_on_coeffs(t1=t2)
-                (2*t2+q)*x[0, 1] + t2*x[0, 0]
+                t2*x[0, 0] + (2*t2+q)*x[0, 1]
 
             """
             f = lambda x: x.subs(in_dict, **kwds)
@@ -2507,7 +2505,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: m = A.monomial_basis()
                 sage: pol = m.an_element()
                 sage: pol
-                2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+                x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
                 sage: pol.to_expr()
                 x1*x2^2*x3^3 + 2*x1 + 3*x2 + 1
                 sage: var('a,b,c')
@@ -2517,9 +2515,9 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 a*b^2*c^3 + 2*a + 3*b + 1
                 sage: Schub = A.schubert_basis()
                 sage: pol = Schub.an_element(); pol
-                2*Y[1, 0, 0] + Y[2, 2, 3] + Y[0, 0, 0] + 3*Y[0, 1, 0]
+                Y[2, 2, 3] + Y[0, 0, 0] + 2*Y[1, 0, 0] + 3*Y[0, 1, 0]
                 sage: m(pol)
-                x[2, 3, 2] + 5*x[1, 0, 0] + x[3, 2, 2] + x[0, 0, 0] + x[2, 2, 3] + 3*x[0, 1, 0]
+                x[3, 2, 2] + x[2, 3, 2] + x[2, 2, 3] + x[0, 0, 0] + 5*x[1, 0, 0] + 3*x[0, 1, 0]
                 sage: pol.to_expr()
                 x1^3*x2^2*x3^2 + x1^2*x2^3*x3^2 + x1^2*x2^2*x3^3 + 5*x1 + 3*x2 + 1
                 sage: pol.to_expr(alphabet = alphabet)
@@ -2595,7 +2593,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
 
             ..::
                 sage: pol.divided_difference(1,"B")
-                x[-1, 2, 2] + x[0, 2, 2]
+                x[0, 2, 2] + x[-1, 2, 2]
 
             If the operation number is greater than the number of variables,
             the polynomial is changed so that operation can apply (only on
@@ -2618,11 +2616,11 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: A = MultivariatePolynomialAlgebra(QQ)
                 sage: mb = A.monomial_basis_with_type("B")
                 sage: pol = mb.an_element(); pol
-                2*xB[1, 0, 0] + xB[2, 2, 3] + xB[0, 0, 0] + 3*xB[0, 1, 0]
+                xB[2, 2, 3] + xB[0, 0, 0] + 2*xB[1, 0, 0] + 3*xB[0, 1, 0]
                 sage: pol.divided_difference(2)
                 -xB[2, 2, 2] + 3*xB[0, 0, 0]
                 sage: pol.divided_difference(3)
-                xB[2, 2, 2] + xB[2, 2, -2] + xB[2, 2, 1] + xB[2, 2, -3] + xB[2, 2, -1] + xB[2, 2, 0]
+                xB[2, 2, 2] + xB[2, 2, 1] + xB[2, 2, 0] + xB[2, 2, -1] + xB[2, 2, -2] + xB[2, 2, -3]
                 sage: pol.divided_difference(3, "C")
                 Traceback (most recent call last):
                 ...
@@ -2682,7 +2680,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: m = A.monomial_basis()
                 sage: pol = m[2,1,1]
                 sage: pol.isobaric_divided_difference(1)
-                x[1, 2, 1] + x[2, 1, 1]
+                x[2, 1, 1] + x[1, 2, 1]
 
             The operation type is given either by the ``otype`` argument or
             by the type of polynomial.
@@ -2693,7 +2691,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
 
             ..::
                 sage: pol.isobaric_divided_difference(1,"B")
-                x[0, 1, 1] + x[1, 1, 1] + x[2, 1, 1] + x[-1, 1, 1] + x[-2, 1, 1]
+                x[2, 1, 1] + x[1, 1, 1] + x[0, 1, 1] + x[-1, 1, 1] + x[-2, 1, 1]
 
             If the operation number is greater than the number of variables,
             the polynomial is changed so that operation can apply (only on
@@ -2701,7 +2699,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
 
             ..::
                 sage: pol.isobaric_divided_difference(3)
-                x[2, 1, 0, 1] + x[2, 1, 1, 0]
+                x[2, 1, 1, 0] + x[2, 1, 0, 1]
 
             On a typed basis, the polynomial type is used and giving a
             value to the ``otype`` will raise an exception. The operation
@@ -2718,9 +2716,9 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: pol = mb[2,1,1]; pol
                 xB[2, 1, 1]
                 sage: pol.isobaric_divided_difference(1)
-                xB[1, 2, 1] + xB[2, 1, 1]
+                xB[2, 1, 1] + xB[1, 2, 1]
                 sage: pol.isobaric_divided_difference(3)
-                xB[2, 1, -1] + xB[2, 1, 1] + xB[2, 1, 0]
+                xB[2, 1, 1] + xB[2, 1, 0] + xB[2, 1, -1]
                 sage: pol.isobaric_divided_difference(3, "C")
                 Traceback (most recent call last):
                 ...
@@ -2791,7 +2789,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
 
             ..::
                 sage: pol.hat_isobaric_divided_difference(1,"B")
-                x[0, 1, 1] + x[1, 1, 1] + x[-1, 1, 1] + x[-2, 1, 1]
+                x[1, 1, 1] + x[0, 1, 1] + x[-1, 1, 1] + x[-2, 1, 1]
 
             If the operation number is greater than the number of variables,
             the polynomial is changed so that operation can apply (only on
@@ -2818,7 +2816,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: pol.hat_isobaric_divided_difference(1)
                 xB[1, 2, 1]
                 sage: pol.hat_isobaric_divided_difference(3)
-                xB[2, 1, -1] + xB[2, 1, 0]
+                xB[2, 1, 0] + xB[2, 1, -1]
                 sage: pol.hat_isobaric_divided_difference(3, "C")
                 Traceback (most recent call last):
                 ...
@@ -2843,7 +2841,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: pol
                 Y[1, 4, 2]
                 sage: pol.hat_isobaric_divided_difference(2)
-                -Y[1, 4, 2] + Y[1, 2, 4]
+                Y[1, 2, 4] - Y[1, 4, 2]
 
             """
             return self.apply_morphism(i, otype, "hat_isobaric_divided_difference")
@@ -2928,19 +2926,16 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
 
                 sage: K = A.demazure_basis()
                 sage: pol = K[1,4,2]
-                sage: pol = K[1,4,2]
                 sage: pol.si(2)
-                K[4, 1, 2] + K[3, 1, 3] + K[1, 2, 4] - K[1, 3, 3] - K[1, 4, 2]
+                K[1, 2, 4] - K[1, 3, 3] + K[3, 1, 3] - K[1, 4, 2] + K[4, 1, 2]
                 sage: KB = A.demazure_basis("B")
                 sage: pol = KB[1,4,2]
                 sage: pol.si(3)
-                -K[2, 4, 0] + K[1, 4, -2] - K[1, 4, -1] - K[1, 4, 2]
+                K[1, 4, -2] - K[1, 4, -1] - K[2, 4, 0] - K[1, 4, 2]
                 sage: Schub = A.schubert_basis()
                 sage: pol = Schub[1,4,2]
-                sage: pol
-                Y[1, 4, 2]
                 sage: pol.si(2)
-                -Y[1, 4, 2] - Y[1, 3, 3] + Y[1, 2, 4] + Y[3, 1, 3]
+                Y[1, 2, 4] - Y[1, 3, 3] + Y[3, 1, 3] - Y[1, 4, 2]
 
             """
             return self.apply_morphism(i, otype, "si")
@@ -2969,9 +2964,9 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: K.<t1,t2> = QQ[]
                 sage: A = MultivariatePolynomialAlgebra(K)
                 sage: pol = A.an_element(); pol
-                2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+                x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
                 sage: pol.hecke_generator(2)
-                2*t1*x[1, 0, 0] + (3*t1+3*t2)*x[0, 1, 0] + t1*x[0, 0, 0] + 3*t1*x[0, 0, 1] + (-t2)*x[1, 3, 2]
+                (-t2)*x[1, 3, 2] + t1*x[0, 0, 0] + 2*t1*x[1, 0, 0] + (3*t1+3*t2)*x[0, 1, 0] + 3*t1*x[0, 0, 1]
 
             If the operation number is greater than the number of variables,
             the polynomial is changed so that operation can apply (only on
@@ -2979,7 +2974,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
 
             ..::
                 sage: pol.hecke_generator(3)
-                (t1+t2)*x[1, 2, 1, 2] + 2*t1*x[1, 0, 0, 0] + t1*x[1, 2, 0, 3] + (t1+t2)*x[1, 2, 3, 0] + (t1+t2)*x[1, 2, 2, 1] + 3*t1*x[0, 1, 0, 0] + t1*x[0, 0, 0, 0]
+                (t1+t2)*x[1, 2, 3, 0] + (t1+t2)*x[1, 2, 2, 1] + (t1+t2)*x[1, 2, 1, 2] + t1*x[1, 2, 0, 3] + t1*x[0, 0, 0, 0] + 2*t1*x[1, 0, 0, 0] + 3*t1*x[0, 1, 0, 0]
 
             The operation is only defined in type ``A``, if used on typed
             basis different from ``A``, an exception is raised.
@@ -2997,11 +2992,11 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: Dem = A.demazure_basis()
                 sage: pol = Dem[1,4,2]
                 sage: pol.hecke_generator(2)
-                (-t2)*K[4, 1, 2] + (-t2)*K[3, 1, 3] + t1*K[1, 2, 4] + t2*K[1, 3, 3] + t2*K[1, 4, 2]
+                t1*K[1, 2, 4] + t2*K[1, 3, 3] + (-t2)*K[3, 1, 3] + t2*K[1, 4, 2] + (-t2)*K[4, 1, 2]
                 sage: Schub = A.schubert_basis()
                 sage: pol = Schub[1,4,2]
                 sage: pol.hecke_generator(2)
-                t2*Y[1, 4, 2] + t2*Y[1, 3, 3] + t1*Y[1, 2, 4] + (-t2)*Y[3, 1, 3]
+                t1*Y[1, 2, 4] + t2*Y[1, 3, 3] + (-t2)*Y[3, 1, 3] + t2*Y[1, 4, 2]
             """
             if(t1 is None): t1 = self.base_ring()(var('t1'))
             if(t2 is None): t2 = self.base_ring()(var('t2'))
@@ -3047,9 +3042,9 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: pol.apply_morphism(1)
                 -x[1, 1, 3] - x[0, 0, 0]
                 sage: pol.apply_morphism(1, method="pi")
-                2*x[1, 0, 0] + 2*x[0, 1, 0] + x[0, 0, 0]
+                x[0, 0, 0] + 2*x[1, 0, 0] + 2*x[0, 1, 0]
                 sage: pol.apply_morphism(1, method="hatpi")
-                -x[0, 1, 0] - x[1, 2, 3]
+                -x[1, 2, 3] - x[0, 1, 0]
 
             The ``otype`` argument can be used on untyped polynomials (like
             elements of the monomial basis).
@@ -3062,10 +3057,10 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: A = MultivariatePolynomialAlgebra(QQ)
                 sage: pol = A.an_element()
                 sage: pol.apply_morphism(1, otype="B")
-                x[0, 2, 3] + 2*x[-1, 0, 0] + 2*x[0, 0, 0] + x[-1, 2, 3]
+                x[0, 2, 3] + x[-1, 2, 3] + 2*x[0, 0, 0] + 2*x[-1, 0, 0]
                 sage: ma = A.monomial_basis_with_type("A")
                 sage: pol = ma(pol); pol
-                2*xA[1, 0, 0] + 3*xA[0, 1, 0] + xA[0, 0, 0] + xA[1, 2, 3]
+                xA[1, 2, 3] + xA[0, 0, 0] + 2*xA[1, 0, 0] + 3*xA[0, 1, 0]
                 sage: pol.apply_morphism(1, otype="B")
                 Traceback (most recent call last):
                 ...
@@ -3075,7 +3070,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: pol.apply_morphism(1)
                 -xB[1, 1, 3] - xB[0, 0, 0]
                 sage: pol.apply_morphism(3)
-                xB[1, 2, 1] + xB[1, 2, -3] + xB[1, 2, 2] + xB[1, 2, -2] + xB[1, 2, 0] + xB[1, 2, -1]
+                xB[1, 2, 2] + xB[1, 2, 1] + xB[1, 2, 0] + xB[1, 2, -1] + xB[1, 2, -2] + xB[1, 2, -3]
             """
             pol = self._right_number_of_variables_pol(i,otype)
             morph = pol.parent().get_morphism(i,otype,method, **keywords)
@@ -3118,11 +3113,11 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 x[1, 2, 1] + x[1, 1, 2]
                 sage: pol = m[2,1,1]
                 sage: pol.apply_composed_morphism([("x",1),("d",1)])
-                x[1, 2, 1] + x[2, 1, 1]
+                x[2, 1, 1] + x[1, 2, 1]
                 sage: pol.apply_composed_morphism([("pi",1)])
-                x[1, 2, 1] + x[2, 1, 1]
+                x[2, 1, 1] + x[1, 2, 1]
                 sage: pol.apply_composed_morphism([("pi",2,"B"),("s",1,"C"),("hatpi",2,"D")])
-                -x[0, 1, 1] - x[-2, 1, 1] - x[-2, -1, 1] - x[-1, 1, 1] - x[-2, 0, 1] - x[-1, 0, 1]
+                -x[-2, 1, 1] - x[-1, 1, 1] - x[-2, 0, 1] - x[-1, 0, 1] - x[0, 1, 1] - x[-2, -1, 1]
                 sage: pol.apply_composed_morphism([("pi",3),("d",2,"C")])
                 x[2, 0, 1, 0] + x[2, 0, 0, 1]
 
@@ -3131,9 +3126,9 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: mb = A.monomial_basis_with_type("B")
                 sage: pol = mb.an_element()
                 sage: pol
-                2*xB[1, 0, 0] + xB[2, 2, 3] + xB[0, 0, 0] + 3*xB[0, 1, 0]
+                xB[2, 2, 3] + xB[0, 0, 0] + 2*xB[1, 0, 0] + 3*xB[0, 1, 0]
                 sage: pol.apply_composed_morphism([("d",2),("pi",1),("hatpi",3)])
-                -xB[2, 2, 1] - xB[2, 2, -1] - xB[2, 2, -2] - xB[2, 2, 0]
+                -xB[2, 2, 1] - xB[2, 2, 0] - xB[2, 2, -1] - xB[2, 2, -2]
                 sage: pol.apply_composed_morphism([("d",2,"C"),("pi",1),("hatpi",3)])
                 Traceback (most recent call last):
                 ...
@@ -3175,13 +3170,13 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: from multipolynomial_bases import MultivariatePolynomialAlgebra
                 sage: A = MultivariatePolynomialAlgebra(QQ)
                 sage: pol = A.an_element();pol
-                2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+                x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
                 sage: pol.apply_reduced_word(Permutation([2,3,1]).reduced_word())
                 x[1, 2, 1] + x[1, 1, 2]
                 sage: pol.apply_reduced_word(Permutation([2,3,1]).reduced_word(), method="pi")
-                2*x[1, 0, 0] + 2*x[0, 1, 0] + x[0, 0, 0] + 2*x[0, 0, 1]
+                x[0, 0, 0] + 2*x[1, 0, 0] + 2*x[0, 1, 0] + 2*x[0, 0, 1]
                 sage: pol.apply_reduced_word(Permutation([2,3,1]).reduced_word(), method="si")
-                3*x[1, 0, 0] + x[0, 0, 0] + 2*x[0, 0, 1] + x[2, 3, 1]
+                x[2, 3, 1] + x[0, 0, 0] + 2*x[0, 0, 1] + 3*x[1, 0, 0]
                 sage: mb = A.monomial_basis_with_type("B")
                 sage: pol = mb(pol)
                 sage: W = WeylGroup("B3")
@@ -3189,11 +3184,11 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: word
                 [1, 2, 3]
                 sage: pol.apply_reduced_word(word)
-                xB[1, 1, 0] + xB[1, 1, -1] + xB[1, 1, -2] + xB[1, 2, 0] + xB[1, 2, -1] + xB[1, 1, 1]
+                xB[1, 2, 0] + xB[1, 2, -1] + xB[1, 1, 1] + xB[1, 1, 0] + xB[1, 1, -1] + xB[1, 1, -2]
                 sage: pol.apply_reduced_word(word, method="pi")
-                2*xB[1, 0, 0] + 2*xB[0, 0, -1] + 2*xB[0, 1, 0] + 3*xB[0, 0, 0] + 2*xB[0, 0, 1]
+                3*xB[0, 0, 0] + 2*xB[1, 0, 0] + 2*xB[0, 1, 0] + 2*xB[0, 0, 1] + 2*xB[0, 0, -1]
                 sage: pol.apply_reduced_word(word, method="si")
-                3*xB[1, 0, 0] + 2*xB[0, 0, -1] + xB[0, 0, 0] + xB[2, 3, -1]
+                xB[2, 3, -1] + xB[0, 0, 0] + 2*xB[0, 0, -1] + 3*xB[1, 0, 0]
 
             """
             list = [(method,i) for i in word]
@@ -3224,7 +3219,7 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: ma = A.monomial_basis_with_type("A")
                 sage: pol = ma.an_element()
                 sage: pol._right_number_of_variables_pol(2)
-                2*xA[1, 0, 0] + xA[2, 2, 3] + xA[0, 0, 0] + 3*xA[0, 1, 0]
+                xA[2, 2, 3] + xA[0, 0, 0] + 2*xA[1, 0, 0] + 3*xA[0, 1, 0]
                 sage: pol._right_number_of_variables_pol(0)
                 Traceback (most recent call last):
                 ...
@@ -3236,37 +3231,39 @@ class FiniteRankPolynomialRingWithBasis(CombinatorialFreeModule):
                 sage: mb = A.monomial_basis_with_type("B")
                 sage: pol = mb(pol)
                 sage: pol._right_number_of_variables_pol(2)
-                2*xB[1, 0, 0] + xB[2, 2, 3] + xB[0, 0, 0] + 3*xB[0, 1, 0]
+                xB[2, 2, 3] + xB[0, 0, 0] + 2*xB[1, 0, 0] + 3*xB[0, 1, 0]
                 sage: pol._right_number_of_variables_pol(0)
                 Traceback (most recent call last):
                 ...
                 ValueError: 0 is not a valid operation number
                 sage: pol._right_number_of_variables_pol(3)
-                2*xB[1, 0, 0] + xB[2, 2, 3] + xB[0, 0, 0] + 3*xB[0, 1, 0]
+                xB[2, 2, 3] + xB[0, 0, 0] + 2*xB[1, 0, 0] + 3*xB[0, 1, 0]
 
-                TESTS::
+            TESTS::
+
                 sage: mc = A.monomial_basis_with_type("C")
                 sage: pol = mc(pol)
                 sage: pol._right_number_of_variables_pol(2)
-                2*xC[1, 0, 0] + xC[2, 2, 3] + xC[0, 0, 0] + 3*xC[0, 1, 0]
+                xC[2, 2, 3] + xC[0, 0, 0] + 2*xC[1, 0, 0] + 3*xC[0, 1, 0]
                 sage: pol._right_number_of_variables_pol(0)
                 Traceback (most recent call last):
                 ...
                 ValueError: 0 is not a valid operation number
                 sage: pol._right_number_of_variables_pol(3)
-                2*xC[1, 0, 0] + xC[2, 2, 3] + xC[0, 0, 0] + 3*xC[0, 1, 0]
+                xC[2, 2, 3] + xC[0, 0, 0] + 2*xC[1, 0, 0] + 3*xC[0, 1, 0]
                 sage: md = A.monomial_basis_with_type("D")
                 sage: pol = md(pol)
                 sage: pol._right_number_of_variables_pol(2)
-                2*xD[1, 0, 0] + xD[2, 2, 3] + xD[0, 0, 0] + 3*xD[0, 1, 0]
+                xD[2, 2, 3] + xD[0, 0, 0] + 2*xD[1, 0, 0] + 3*xD[0, 1, 0]
                 sage: pol._right_number_of_variables_pol(0)
                 Traceback (most recent call last):
                 ...
                 ValueError: 0 is not a valid operation number
                 sage: pol._right_number_of_variables_pol(3)
-                2*xD[1, 0, 0] + xD[2, 2, 3] + xD[0, 0, 0] + 3*xD[0, 1, 0]
+                xD[2, 2, 3] + xD[0, 0, 0] + 2*xD[1, 0, 0] + 3*xD[0, 1, 0]
                 sage: pol._right_number_of_variables_pol(1)
-                2*xD[1, 0, 0] + xD[2, 2, 3] + xD[0, 0, 0] + 3*xD[0, 1, 0]
+                xD[2, 2, 3] + xD[0, 0, 0] + 2*xD[1, 0, 0] + 3*xD[0, 1, 0]
+
             """
             min = self.parent().basis_tower()._right_number_of_variables(i, otype)
             if(self.nb_variables() < min):
@@ -3352,9 +3349,9 @@ class PolynomialRingWithBasisFromMorphism(PolynomialRingWithBasis):
             sage: MyBasis = A.from_morphism_basis(1,x,get_basis_keys,get_morphism_on_basis,"My Basis", "MyX"); MyBasis
             The Multivariate polynomial algebra on x over Rational Field on the My Basis
             sage: MyBasis.an_element()
-            2*MyX[1, 0, 0] + MyX[2, 2, 3] + MyX[0, 0, 0] + 3*MyX[0, 1, 0]
+            MyX[2, 2, 3] + MyX[0, 0, 0] + 2*MyX[1, 0, 0] + 3*MyX[0, 1, 0]
             sage: x(MyBasis.an_element())
-            2*x[1, 0, 0] + x[2, 2, 3] + x[0, 0, 0] + 3*x[0, 1, 0]
+            x[2, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
             sage: MyBasis([1,2,3])
             MyX[1, 2, 3]
             sage: MyBasis[1,2,3]
@@ -3363,8 +3360,6 @@ class PolynomialRingWithBasisFromMorphism(PolynomialRingWithBasis):
             The Multivariate polynomial algebra on x over Rational Field with 3 variables on the My Basis
             sage: x(MyBasis[1,2,3])
             x[1, 2, 3]
-
-
 
         We have recreated the basis on ambient space.
 
@@ -3490,10 +3485,16 @@ class FiniteRankPolynomialRingWithBasisFromMorphism(FiniteRankPolynomialRingWith
         """
         self._morphism_on_basis = polynomial_ring_tower._get_morphism_on_basis(abstract_polynomial_ring.nb_variables())
         self._morphism_to_basis = polynomial_ring_tower.morphism_to_basis().finite_rank_basis(abstract_polynomial_ring.nb_variables())
-        if(not keywords.has_key("triangular") or keywords["triangular"] is None):
+        if(keywords.get("triangular", None) is None):
             self._invertible = False
         else:
             self._invertible = True
+
+        if ("cmp" in keywords):
+            cmp = keywords["cmp"]
+            from functools import cmp_to_key
+            del keywords["cmp"]
+            keywords["key"] = cmp_to_key(cmp)
 
         FiniteRankPolynomialRingWithBasis.__init__(
             self,
@@ -3557,7 +3558,7 @@ class FiniteRankPolynomialRingWithBasisFromMorphism(FiniteRankPolynomialRingWith
             sage: A = MultivariatePolynomialAlgebra(QQ)
             sage: Schub = A.schubert_basis()
             sage: Schub.an_element() * Schub.an_element()
-            9*Y[0, 2, 0] + 21*Y[1, 1, 0] + 4*Y[1, 0, 0] + 6*Y[2, 3, 3] + 6*Y[2, 4, 2] + Y[0, 0, 0] + Y[4, 5, 5] + 4*Y[3, 2, 3] + 2*Y[2, 2, 3] + Y[4, 4, 6] + 6*Y[0, 1, 0] + 16*Y[2, 0, 0]
+            Y[0, 0, 0] + 6*Y[0, 1, 0] + 4*Y[1, 0, 0] + 9*Y[0, 2, 0] + 21*Y[1, 1, 0] + 16*Y[2, 0, 0] + 2*Y[2, 2, 3] + 6*Y[2, 3, 3] + 4*Y[3, 2, 3] + 6*Y[2, 4, 2] + Y[4, 4, 6] + Y[4, 5, 5]
             sage: Groth = A.grothendieck_negative_basis()
             sage: Groth.an_element() * Groth.an_element()
             Traceback (most recent call last):
@@ -3625,9 +3626,9 @@ class FiniteRankPolynomialRingWithBasisFromMorphism(FiniteRankPolynomialRingWith
                 sage: A = MultivariatePolynomialAlgebra(QQ)
                 sage: Schub = A.schubert_basis()
                 sage: pol = Schub.an_element(); pol
-                2*Y[1, 0, 0] + Y[2, 2, 3] + Y[0, 0, 0] + 3*Y[0, 1, 0]
+                Y[2, 2, 3] + Y[0, 0, 0] + 2*Y[1, 0, 0] + 3*Y[0, 1, 0]
                 sage: pol.expand()
-                xA[2, 3, 2] + 5*xA[1, 0, 0] + xA[3, 2, 2] + xA[0, 0, 0] + xA[2, 2, 3] + 3*xA[0, 1, 0]
+                xA[3, 2, 2] + xA[2, 3, 2] + xA[2, 2, 3] + xA[0, 0, 0] + 5*xA[1, 0, 0] + 3*xA[0, 1, 0]
 
             """
             return self.parent()._morphism(self)

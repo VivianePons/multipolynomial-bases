@@ -42,13 +42,13 @@ class PolynomialRingWithBasisFromAmbientSpace(PolynomialRingWithBasis):
 
     INPUT:
 
-    -``abstract_polynomial_ring``, The facade abstract polynomial ring of
-    which ``self`` is a representation
+    - ``abstract_polynomial_ring``, The facade abstract polynomial ring of
+      which ``self`` is a representation
     - ``group_type`` the group type of the ambient space bases (``A``, ``B``,
-    ``C`` or ``D``)
+      ``C`` or ``D``)
     - ``basis_name``, the name of the basis
-    -``basis_repr`` (optional), the string representating the monomials,
-     by default it is ``abstract_polynomial_ring._main_repr_var``
+    - ``basis_repr`` (optional), the string representating the monomials,
+      by default it is ``abstract_polynomial_ring._main_repr_var``
 
     EXAMPLES::
 

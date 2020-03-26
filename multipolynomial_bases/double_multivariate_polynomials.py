@@ -11,7 +11,7 @@ EXAMPLES::
     sage: A.<x,y> = MultivariatePolynomialAlgebra(QQ); A
     The Multivariate polynomial algebra on x over The Multivariate polynomial algebra on y over Rational Field
     sage: A.an_element()
-    2*y[0]*x[1, 0, 0] + 3*y[0]*x[0, 1, 0] + y[0]*x[0, 0, 0] + y[0]*x[1, 2, 3]
+    y[0]*x[1, 2, 3] + y[0]*x[0, 0, 0] + 2*y[0]*x[1, 0, 0] + 3*y[0]*x[0, 1, 0]
 
 ``x`` and ``y`` correspond to the monomial basis on the two sets of variables::
 
@@ -20,14 +20,14 @@ EXAMPLES::
     sage: y
     The Multivariate polynomial algebra on y over Rational Field on the monomial basis
     sage: x.an_element()
-    2*y[0]*x[1, 0, 0] + 3*y[0]*x[0, 1, 0] + y[0]*x[0, 0, 0] + y[0]*x[1, 2, 3]
+    y[0]*x[1, 2, 3] + y[0]*x[0, 0, 0] + 2*y[0]*x[1, 0, 0] + 3*y[0]*x[0, 1, 0]
     sage: y.an_element()
-    2*y[1, 0, 0] + 3*y[0, 1, 0] + y[0, 0, 0] + y[1, 2, 3]
+    y[1, 2, 3] + y[0, 0, 0] + 2*y[1, 0, 0] + 3*y[0, 1, 0]
 
 By default, all actions are done on the ``x`` variable set::
 
     sage: pol = x[1,2,3] + x[2,2,4]*y[1,2,3]; pol
-    (y[1,2,3])*x[2, 2, 4] + y[0]*x[1, 2, 3]
+    y[0]*x[1, 2, 3] + (y[1,2,3])*x[2, 2, 4]
     sage: pol.divided_difference(1)
     (-y[0])*x[1, 1, 3]
 
@@ -43,7 +43,7 @@ You can change the bases of the ``x`` polynomial by the usual coercion system::
     sage: Schub = A.schubert_basis(); Schub
     The Multivariate polynomial algebra on x over The Multivariate polynomial algebra on y over Rational Field on the Schubert basis of type A
     sage: Schub(A.an_element())
-    (-y[0])*Yx[1, 3, 2] + (-y[0])*Yx[3, 2, 1] + (-y[0])*Yx[1, 0, 0] + y[0]*Yx[1, 2, 3] + y[0]*Yx[0, 0, 0] + y[0]*Yx[4, 1, 1] + y[0]*Yx[3, 1, 2] + 3*y[0]*Yx[0, 1, 0] + y[0]*Yx[2, 3, 1] + (-y[0])*Yx[2, 1, 3]
+    y[0]*Yx[0, 0, 0] + 3*y[0]*Yx[0, 1, 0] + (-y[0])*Yx[1, 0, 0] + y[0]*Yx[1, 2, 3] + (-y[0])*Yx[2, 1, 3] + (-y[0])*Yx[1, 3, 2] + y[0]*Yx[3, 1, 2] + y[0]*Yx[2, 3, 1] + (-y[0])*Yx[3, 2, 1] + y[0]*Yx[4, 1, 1]
 
 You can also change the base for the ``y``::
 
@@ -52,7 +52,7 @@ You can also change the base for the ``y``::
     sage: pol = y[1,2,3] * x[2,2,4]; pol
     (y[1,2,3])*x[2, 2, 4]
     sage: pol.change_coeffs_bases(YSchub)
-    (-Yy[1,3,2]+Yy[3,1,2]-Yy[3,2,1]+Yy[2,3,1]-Yy[2,1,3]+Yy[4,1,1]+Yy[1,2,3])*x[2, 2, 4]
+    (Yy[1,2,3]-Yy[2,1,3]-Yy[1,3,2]+Yy[3,1,2]+Yy[2,3,1]-Yy[3,2,1]+Yy[4,1,1])*x[2, 2, 4]
 
 
 Also, you can obtain the ring where the roles of `x` and `y` are exchanged::
@@ -60,7 +60,7 @@ Also, you can obtain the ring where the roles of `x` and `y` are exchanged::
     sage: A2 =  A.inversed_ring(); A2
     The Multivariate polynomial algebra on y over The Multivariate polynomial algebra on x over Rational Field
     sage: A2.an_element()
-    2*x[0]*y[1, 0, 0] + 3*x[0]*y[0, 1, 0] + x[0]*y[0, 0, 0] + x[0]*y[1, 2, 3]
+    x[0]*y[1, 2, 3] + x[0]*y[0, 0, 0] + 2*x[0]*y[1, 0, 0] + 3*x[0]*y[0, 1, 0]
 
 There is a coercion between ``A`` and ``A2``::
 
@@ -79,7 +79,7 @@ doesn't look for a parent where the coercion could be made::
     ...
     TypeError: unsupported operand parent(s) for +: 'The Multivariate polynomial algebra on x over The Multivariate polynomial algebra on y over Rational Field with 3 variables on the monomial basis' and 'The Multivariate polynomial algebra on y over The Multivariate polynomial algebra on x over Rational Field with 3 variables on the monomial basis'
     sage: A2(A.an_element()) + A2.an_element()
-    2*x[0]*y[1, 0, 0] + 3*x[0]*y[0, 1, 0] + (2*x[1,0,0]+3*x[0,1,0]+2*x[0,0,0]+x[1,2,3])*y[0, 0, 0] + x[0]*y[1, 2, 3]
+    x[0]*y[1, 2, 3] + (x[1,2,3]+2*x[0,0,0]+2*x[1,0,0]+3*x[0,1,0])*y[0, 0, 0] + 2*x[0]*y[1, 0, 0] + 3*x[0]*y[0, 1, 0]
 
 Some special bases have been implemented for double polynomials::
 
@@ -89,9 +89,9 @@ Some special bases have been implemented for double polynomials::
     sage: DSchub[0,1]
     y[0]*YY[0, 1]
     sage: DSchub[0,1].expand()
-    y[0]*xA[0, 1] + y[0]*xA[1, 0] + (-yA[0,1]-yA[1,0])*xA[0, 0]
+    y[0]*xA[1, 0] + y[0]*xA[0, 1] + (-yA[0,1]-yA[1,0])*xA[0, 0]
     sage: DSchub[0,1]^2
-    (-yA[0,1,0]+yA[0,0,1])*YY[0, 1] + y[0]*YY[0, 2] + y[0]*YY[1, 1]
+    y[0]*YY[0, 2] + y[0]*YY[1, 1] + (-yA[0,1,0]+yA[0,0,1])*YY[0, 1]
     sage: DSchub(x[0,1])
     y[0]*YY[0, 1] + (-y[0])*YY[1, 0] + (yA[0,1])*YY[0, 0]
     sage: DSchub(y[0,1]*x[0,1])
@@ -108,7 +108,7 @@ Some special bases have been implemented for double polynomials::
     sage: DGroth[3,2,3].isobaric_divided_difference(1)
     y[0]*GG[2, 2, 3]
     sage: DGroth[3,2,3].hat_isobaric_divided_difference(1)
-    (-y[0])*GG[3, 2, 3] + y[0]*GG[2, 2, 3]
+    y[0]*GG[2, 2, 3] + (-y[0])*GG[3, 2, 3]
 """
 from __future__ import absolute_import
 
@@ -140,13 +140,13 @@ class DoubleMultivariatePolynomialAlgebra_generic(MultivariatePolynomialAlgebra_
         - ``repr_var1``, a string representing the main variable set, default is `x`
         - ``repr_var2``, a string representing the secondary variable set, default is `y`
         - ``inversed_ring``, the ring where the roles of the two sets of variables are inversed.
-        By default, nothing is sent and the ring is created, the field is then used to avoid infinite
-        recursion
+          By default, nothing is sent and the ring is created, the field is then used to avoid infinite
+          recursion
 
     OUTPUT:
 
         - The abstract ring of multivariate polynomials on ``repr_var1`` over te abstract ring
-        of multivariate polynomials on ``repr_var2`` over ``R``
+          of multivariate polynomials on ``repr_var2`` over ``R``
 
     TESTS::
 
@@ -180,9 +180,10 @@ class DoubleMultivariatePolynomialAlgebra_generic(MultivariatePolynomialAlgebra_
     def coeffs_ring(self):
         """r
         returns the multivariate polynomial ring on the second set of variables
-         used as coefficients of the main ring on the first set of variables
+        used as coefficients of the main ring on the first set of variables
 
-        OUPUT :
+        OUPUT:
+
             - the ring of multivariate polynomials on the second set of variables
 
         EXAMPLES::
@@ -202,8 +203,9 @@ class DoubleMultivariatePolynomialAlgebra_generic(MultivariatePolynomialAlgebra_
         are exchanged
 
         OUTPUT:
+
             - the ring of multivariate polynomials on the second set of variables
-            over the ring of multivariate polynomials on the first set of variables
+              over the ring of multivariate polynomials on the first set of variables
 
         EXAMPLES::
 
@@ -216,10 +218,9 @@ class DoubleMultivariatePolynomialAlgebra_generic(MultivariatePolynomialAlgebra_
             There is a coercion between `D` and `D2`::
 
             sage: pol = x.an_element() * y.an_element(); pol
-            (4*y[1,0,0]+6*y[0,1,0]+2*y[0,0,0]+2*y[1,2,3])*x[1, 0, 0] + (6*y[1,0,0]+9*y[0,1,0]+3*y[0,0,0]+3*y[1,2,3])*x[0, 1, 0] + (2*y[1,0,0]+3*y[0,1,0]+y[0,0,0]+y[1,2,3])*x[0, 0, 0] + (2*y[1,0,0]+3*y[0,1,0]+y[0,0,0]+y[1,2,3])*x[1, 2, 3]
+            (y[1,2,3]+y[0,0,0]+2*y[1,0,0]+3*y[0,1,0])*x[1, 2, 3] + (y[1,2,3]+y[0,0,0]+2*y[1,0,0]+3*y[0,1,0])*x[0, 0, 0] + (2*y[1,2,3]+2*y[0,0,0]+4*y[1,0,0]+6*y[0,1,0])*x[1, 0, 0] + (3*y[1,2,3]+3*y[0,0,0]+6*y[1,0,0]+9*y[0,1,0])*x[0, 1, 0]
             sage: A2(pol)
-            (4*x[1,0,0]+6*x[0,1,0]+2*x[0,0,0]+2*x[1,2,3])*y[1, 0, 0] + (6*x[1,0,0]+9*x[0,1,0]+3*x[0,0,0]+3*x[1,2,3])*y[0, 1, 0] + (2*x[1,0,0]+3*x[0,1,0]+x[0,0,0]+x[1,2,3])*y[0, 0, 0] + (2*x[1,0,0]+3*x[0,1,0]+x[0,0,0]+x[1,2,3])*y[1, 2, 3]
-
+            (x[1,2,3]+x[0,0,0]+2*x[1,0,0]+3*x[0,1,0])*y[1, 2, 3] + (x[1,2,3]+x[0,0,0]+2*x[1,0,0]+3*x[0,1,0])*y[0, 0, 0] + (2*x[1,2,3]+2*x[0,0,0]+4*x[1,0,0]+6*x[0,1,0])*y[1, 0, 0] + (3*x[1,2,3]+3*x[0,0,0]+6*x[1,0,0]+9*x[0,1,0])*y[0, 1, 0]
 
         But this coercion doesn't allow for operations including polynomials from both ``A`` and ``A2`` as the coercion
         only exists between abstract polynomial rings but not between the concrete bases : sage coercion system
@@ -338,7 +339,7 @@ class Finite_rank_double_bases(Category):
                 sage: pol = x[1,0,0] * y[1,2,3]; pol
                 (y[1,2,3])*x[1, 0, 0]
                 sage: pol.change_coeffs_bases(AY.schubert_basis())
-                (-Yy[1,3,2]+Yy[3,1,2]-Yy[3,2,1]+Yy[2,3,1]-Yy[2,1,3]+Yy[4,1,1]+Yy[1,2,3])*x[1, 0, 0]
+                (Yy[1,2,3]-Yy[2,1,3]-Yy[1,3,2]+Yy[3,1,2]+Yy[2,3,1]-Yy[3,2,1]+Yy[4,1,1])*x[1, 0, 0]
 
             """
             return sum( [ self.parent().term(x,new_base(y)) for (x,y) in self ] )
@@ -368,9 +369,9 @@ class Finite_rank_double_bases(Category):
                 sage: from multipolynomial_bases import MultivariatePolynomialAlgebra
                 sage: A.<x,y> = MultivariatePolynomialAlgebra(QQ)
                 sage: pol = A.an_element(); pol
-                2*y[0]*x[1, 0, 0] + 3*y[0]*x[0, 1, 0] + y[0]*x[0, 0, 0] + y[0]*x[1, 2, 3]
+                y[0]*x[1, 2, 3] + y[0]*x[0, 0, 0] + 2*y[0]*x[1, 0, 0] + 3*y[0]*x[0, 1, 0]
                 sage: pol.swap_coeffs_elements()
-                (2*x[1,0,0]+3*x[0,1,0]+x[0,0,0]+x[1,2,3])*y[0]
+                (x[1,2,3]+x[0,0,0]+2*x[1,0,0]+3*x[0,1,0])*y[0]
             """
             inversed_ring = self.inversed_ring()
             coeffs_ring = inversed_ring.coeffs_ring()
@@ -404,9 +405,9 @@ class DoubleSchubertBasis(LinearBasisOnVectors):
         sage: DSchub[0,1]
         y[0]*YY[0, 1]
         sage: DSchub[0,1].expand()
-        y[0]*xA[0, 1] + y[0]*xA[1, 0] + (-yA[0,1]-yA[1,0])*xA[0, 0]
+        y[0]*xA[1, 0] + y[0]*xA[0, 1] + (-yA[0,1]-yA[1,0])*xA[0, 0]
         sage: DSchub[0,1]^2
-        (-yA[0,1,0]+yA[0,0,1])*YY[0, 1] + y[0]*YY[0, 2] + y[0]*YY[1, 1]
+        y[0]*YY[0, 2] + y[0]*YY[1, 1] + (-yA[0,1,0]+yA[0,0,1])*YY[0, 1]
         sage: DSchub(x[0,1])
         y[0]*YY[0, 1] + (-y[0])*YY[1, 0] + (yA[0,1])*YY[0, 0]
         sage: DSchub(y[0,1]*x[0,1])
@@ -468,7 +469,7 @@ class DoubleGrothendieckBasis(LinearBasisOnVectors):
         sage: DGroth[3,2,3].isobaric_divided_difference(1)
         y[0]*GG[2, 2, 3]
         sage: DGroth[3,2,3].hat_isobaric_divided_difference(1)
-        (-y[0])*GG[3, 2, 3] + y[0]*GG[2, 2, 3]
+        y[0]*GG[2, 2, 3] + (-y[0])*GG[3, 2, 3]
 
 
     """
@@ -583,7 +584,7 @@ class DoubleGrothendieckBasis(LinearBasisOnVectors):
                 sage: pol = DG[3,2,3]
                 sage: key = list(pol)[0][0]
                 sage: wrapp.hat_isobaric_divided_difference_on_basis(key)
-                (-y[0])*GG[3, 2, 3] + y[0]*GG[2, 2, 3]
+                y[0]*GG[2, 2, 3] + (-y[0])*GG[3, 2, 3]
                 sage: pol = DG[2,3,3]
                 sage: key = list(pol)[0][0]
                 sage: wrapp.hat_isobaric_divided_difference_on_basis(key)

@@ -10,6 +10,10 @@ That is why we know offer it as an extra Sage package.
 Installation
 -------------
 
+Requirement
+~~~~~~~~~~~
+
+sage 9.
 
 Easy way
 ~~~~~~~~~

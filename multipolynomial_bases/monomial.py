@@ -33,11 +33,10 @@ class MonomialBasis(PolynomialRingWithBasis):
 
     INPUT:
 
-    -``abstract_polynomial_ring``, The facade abstract polynomial ring of
-    which ``self`` is a representation
-    -``basis_repr`` (optional), the string representating the monomials,
-     by default it is ``abstract_polynomial_ring._main_repr_var``
-
+    - ``abstract_polynomial_ring``, The facade abstract polynomial ring of
+      which ``self`` is a representation
+    - ``basis_repr`` (optional), the string representating the monomials,
+      by default it is ``abstract_polynomial_ring._main_repr_var``
 
     EXAMPLES::
 
@@ -46,11 +45,9 @@ class MonomialBasis(PolynomialRingWithBasis):
         sage: x
         The Multivariate polynomial algebra on x over Rational Field on the monomial basis
         sage: x.an_element()
-        2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+        x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
         sage: pol = x[2,2,1] + x[3,2]; pol
         x[2, 2, 1] + x[3, 2, 0]
-
-
 
     TESTS::
 
@@ -326,7 +323,7 @@ class MonomialBasis(PolynomialRingWithBasis):
                 sage: key = list(m[2,1,1])[0][0];key
                 [2, 1, 1]
                 sage: wrapp.isobaric_divided_difference_on_basis(key)
-                x[1, 2, 1] + x[2, 1, 1]
+                x[2, 1, 1] + x[1, 2, 1]
 
             """
             return self._generic_on_basis(key, "isobaric_divided_difference")
@@ -448,11 +445,12 @@ class FiniteMonomialBasis(FiniteRankPolynomialRingWithBasis):
     variables and the finite abstract polynomial ring on n variables.
 
     INPUT:
+
     - ``abstract_polynomial_ring`` the realization of Abstract polynomial
-    ring on ``n`` variables. The number of variables is contained in this
-    argument.
-    -``basis_repr`` (optional), the string representating the monomials,
-     by default it is ``abstract_polynomial_ring._main_repr_var``
+      ring on ``n`` variables. The number of variables is contained in this
+      argument.
+    - ``basis_repr`` (optional), the string representating the monomials,
+      by default it is ``abstract_polynomial_ring._main_repr_var``
 
     EXAMPLES::
 
@@ -462,7 +460,6 @@ class FiniteMonomialBasis(FiniteRankPolynomialRingWithBasis):
         sage: m3 = m.finite_rank_basis(3)
         sage: m3
         The Multivariate polynomial algebra on x over Rational Field with 3 variables on the monomial basis
-
 
     TESTS::
 
@@ -558,7 +555,7 @@ class FiniteMonomialBasis(FiniteRankPolynomialRingWithBasis):
                     sage: (pol+pol2)^-1
                     Traceback (most recent call last):
                     ...
-                    ValueError: x[1, 1, 1] + x[1, 2, 3] is not invertible in The Multivariate polynomial algebra on x over Rational Field with 3 variables on the monomial basis
+                    ValueError: x[1, 2, 3] + x[1, 1, 1] is not invertible in The Multivariate polynomial algebra on x over Rational Field with 3 variables on the monomial basis
 
             """
             if( len(self) ==1 ):

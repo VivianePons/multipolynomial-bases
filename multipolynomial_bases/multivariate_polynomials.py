@@ -19,11 +19,11 @@ EXAMPLES::
     sage: A
     The Multivariate polynomial algebra on x over Rational Field
     sage: A.an_element()
-    2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+    x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
     sage: x
     The Multivariate polynomial algebra on x over Rational Field on the monomial basis
     sage: x[1,1,2] + x[3,2,4]
-    x[3, 2, 4] + x[1, 1, 2]
+    x[1, 1, 2] + x[3, 2, 4]
     sage: x[1,1,2] * x[3,2,4]
     x[4, 3, 6]
 
@@ -41,22 +41,22 @@ Here is how to access a single variable::
 Get back a symbolic expression::
 
     sage: pol = A.an_element(); pol
-    2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+    x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
     sage: pol.to_expr()
     x1*x2^2*x3^3 + 2*x1 + 3*x2 + 1
 
 You can apply many different actions on the polynomial::
 
     sage: pol = A.an_element(); pol
-    2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+    x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
     sage: pol.divided_difference(2)
     -x[1, 2, 2] + 3*x[0, 0, 0]
     sage: pol.isobaric_divided_difference(2)
-    2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + 3*x[0, 0, 1]
+    x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0] + 3*x[0, 0, 1]
     sage: pol.hat_isobaric_divided_difference(2)
-    3*x[0, 0, 1] - x[1, 2, 3]
+    -x[1, 2, 3] + 3*x[0, 0, 1]
     sage: pol.si(1)
-    3*x[1, 0, 0] + 2*x[0, 1, 0] + x[0, 0, 0] + x[2, 1, 3]
+    x[2, 1, 3] + x[0, 0, 0] + 2*x[0, 1, 0] + 3*x[1, 0, 0]
 
 The main purpose of this module is to implement different bases of the
 polynomial algebra based on these actions::
@@ -66,14 +66,13 @@ polynomial algebra based on these actions::
     sage: Khat = A.demazure_hat_basis()
     sage: Groth = A.grothendieck_positive_basis()
     sage: Schub(pol)
-    -Y[1, 3, 2] - Y[3, 2, 1] - Y[1, 0, 0] + Y[1, 2, 3] + Y[0, 0, 0] + Y[4, 1, 1] + Y[3, 1, 2] + 3*Y[0, 1, 0] + Y[2, 3, 1] - Y[2, 1, 3]
+    Y[0, 0, 0] + 3*Y[0, 1, 0] - Y[1, 0, 0] + Y[1, 2, 3] - Y[2, 1, 3] - Y[1, 3, 2] + Y[3, 1, 2] + Y[2, 3, 1] - Y[3, 2, 1] + Y[4, 1, 1]
     sage: K(pol)
-    -K[2, 1, 3] - K[1, 3, 2] - K[3, 2, 1] - K[1, 0, 0] + K[1, 2, 3] + K[0, 0, 0] + K[3, 1, 2] + 3*K[0, 1, 0] + K[2, 3, 1]
+    K[0, 0, 0] + 3*K[0, 1, 0] - K[1, 0, 0] + K[1, 2, 3] - K[2, 1, 3] - K[1, 3, 2] + K[3, 1, 2] + K[2, 3, 1] - K[3, 2, 1]
     sage: Khat(pol)
-    2*^K[1, 0, 0] + 3*^K[0, 1, 0] + ^K[0, 0, 0] + ^K[1, 2, 3]
+    ^K[0, 0, 0] + 3*^K[0, 1, 0] + 2*^K[1, 0, 0] + ^K[1, 2, 3]
     sage: Groth(pol)
-    -G[1, 3, 2] - G[3, 2, 1] - G[1, 0, 0] + G[1, 2, 3] + G[0, 0, 0] + G[4, 1, 1] + G[2, 2, 3] + G[2, 3, 1] + G[3, 3, 3] + 3*G[1, 1, 0] - G[4, 1, 3] - 2*G[2, 3, 2] - G[3, 3, 2] + G[2, 3, 3] - G[2, 1, 3] + G[3, 2, 2] - G[3, 1, 3] + 3*G[0, 1, 0] + G[3, 1, 2] + G[1, 3, 3]
-
+    G[0, 0, 0] + 3*G[0, 1, 0] - G[1, 0, 0] + 3*G[1, 1, 0] + G[1, 2, 3] - G[2, 1, 3] - G[1, 3, 2] + G[3, 1, 2] + G[2, 3, 1] - G[3, 2, 1] + G[4, 1, 1] + G[1, 3, 3] + G[2, 2, 3] - G[3, 1, 3] - 2*G[2, 3, 2] + G[3, 2, 2] + G[2, 3, 3] - G[4, 1, 3] - G[3, 3, 2] + G[3, 3, 3]
 """
 from __future__ import absolute_import
 #*****************************************************************************
@@ -135,7 +134,7 @@ def MultivariatePolynomialAlgebra(base_ring, names = None, set_of_variables = 1)
         sage: x
         The Multivariate polynomial algebra on x over Rational Field on the monomial basis
         sage: x[1,1,2] + x[2,3,4]
-        x[2, 3, 4] + x[1, 1, 2]
+        x[1, 1, 2] + x[2, 3, 4]
         sage: x == A.monomial_basis()
         True
 
@@ -220,9 +219,9 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
     ::
 
         sage: pol = x[1,1,2] + x[3,4]; pol
-        x[3, 4, 0] + x[1, 1, 2]
+        x[1, 1, 2] + x[3, 4, 0]
         sage: pol * x[2,3]
-        x[5, 7, 0] + x[3, 4, 2]
+        x[3, 4, 2] + x[5, 7, 0]
 
     You can also access a single variable.
 
@@ -362,7 +361,7 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
             sage: from multipolynomial_bases import MultivariatePolynomialAlgebra
             sage: A = MultivariatePolynomialAlgebra(QQ)
             sage: A.an_element()
-            2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+            x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
         """
         return self.monomial_basis().an_element()
 
@@ -387,9 +386,9 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
             sage: from multipolynomial_bases import MultivariatePolynomialAlgebra
             sage: A = MultivariatePolynomialAlgebra(QQ)
             sage: p = A.an_element(); p
-            2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+            x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
             sage: A._element_constructor_(p)
-            2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+            x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
             sage: A._element_constructor_(1)
             Traceback (most recent call last):
             ...
@@ -520,7 +519,7 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
             sage: pol2.parent()
             The Multivariate polynomial algebra on x over Rational Field with 2 variables on the monomial basis
             sage: pol1 + pol2
-            x[1, 1, 0] + x[1, 2, 3]
+            x[1, 2, 3] + x[1, 1, 0]
             sage: (pol1 + pol2).parent()
             The Multivariate polynomial algebra on x over Rational Field with 3 variables on the monomial basis
         """
@@ -705,19 +704,20 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
         - ``on_basis_method`` -- a method that takes a vector (python list) and returns
           the converted polynomial associated with it
           The ``on_basis_method`` should have the following signature :
-            Input :
+          Input:
 
-                - ``v`` a python list representing the vector
-                - ``basis`` the ambient space basis used to make the conversion
-                - ``call_back`` a call_back method to use the conversion recursively
-                - ``**keywords`` extra parameters that could be used for convertion
+          - ``v`` a python list representing the vector
+          - ``basis`` the ambient space basis used to make the conversion
+          - ``call_back`` a call_back method to use the conversion recursively
+          - ``**keywords`` extra parameters that could be used for convertion
 
-            Output :
-                - a polynomial expanded into the sent ``basis`` and corresponding to
-                  the objected indexed by the sent vector ``v``
+          Output:
+
+          - a polynomial expanded into the sent ``basis`` and corresponding to
+            the objected indexed by the sent vector ``v``
+
         - ``extra_parameters``: (default : empty) a tuple containing the extra parameters
-        to be sent to the ``on_basis_method`` as tuples ``(key,val)``
-
+          to be sent to the ``on_basis_method`` as tuples ``(key,val)``
         - ``**keyword`` : parameters used to create the morphism to the ambient space basis,
           sent to ``CombinatorialFreeModule.module_morphism``. By default, ``triangular`` is
           set to ``upper`` : change it explicitly to ``None`` if you're basis is not.
@@ -743,9 +743,9 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
             sage: pol = myBasis[2,1,3];pol
             Y[2, 1, 3]
             sage: pol.expand()
-            xA[2, 2, 2] + xA[4, 1, 1] + xA[3, 2, 1] + xA[2, 3, 1] + xA[2, 1, 3] + xA[3, 1, 2]
+            xA[4, 1, 1] + xA[3, 2, 1] + xA[3, 1, 2] + xA[2, 3, 1] + xA[2, 2, 2] + xA[2, 1, 3]
             sage: myBasis(A.an_element())
-            -Y[1, 3, 2] - Y[3, 2, 1] - Y[1, 0, 0] + Y[1, 2, 3] + Y[0, 0, 0] + Y[4, 1, 1] + Y[3, 1, 2] + 3*Y[0, 1, 0] + Y[2, 3, 1] - Y[2, 1, 3]
+            Y[0, 0, 0] + 3*Y[0, 1, 0] - Y[1, 0, 0] + Y[1, 2, 3] - Y[2, 1, 3] - Y[1, 3, 2] + Y[3, 1, 2] + Y[2, 3, 1] - Y[3, 2, 1] + Y[4, 1, 1]
 
         We have recreated the Schubert basis. Let's see an example with parameters::
 
@@ -795,37 +795,35 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
             sage: Schub = A.schubert_basis(); Schub
             The Multivariate polynomial algebra on x over Rational Field on the Schubert basis of type A
             sage: Schub.an_element()
-            2*Y[1, 0, 0] + Y[2, 2, 3] + Y[0, 0, 0] + 3*Y[0, 1, 0]
+            Y[2, 2, 3] + Y[0, 0, 0] + 2*Y[1, 0, 0] + 3*Y[0, 1, 0]
             sage: Schub[1,2,3]
             Y[1, 2, 3]
 
         Let us see the coercions::
 
-            sage: Schub.an_element()
-            2*Y[1, 0, 0] + Y[2, 2, 3] + Y[0, 0, 0] + 3*Y[0, 1, 0]
             sage: y = Schub.an_element(); y
-            2*Y[1, 0, 0] + Y[2, 2, 3] + Y[0, 0, 0] + 3*Y[0, 1, 0]
+            Y[2, 2, 3] + Y[0, 0, 0] + 2*Y[1, 0, 0] + 3*Y[0, 1, 0]
             sage: y.expand()
-            xA[2, 3, 2] + 5*xA[1, 0, 0] + xA[3, 2, 2] + xA[0, 0, 0] + xA[2, 2, 3] + 3*xA[0, 1, 0]
+            xA[3, 2, 2] + xA[2, 3, 2] + xA[2, 2, 3] + xA[0, 0, 0] + 5*xA[1, 0, 0] + 3*xA[0, 1, 0]
             sage: xA = A.monomial_basis_with_type("A")
             sage: xA(y)
-            xA[2, 3, 2] + 5*xA[1, 0, 0] + xA[3, 2, 2] + xA[0, 0, 0] + xA[2, 2, 3] + 3*xA[0, 1, 0]
+            xA[3, 2, 2] + xA[2, 3, 2] + xA[2, 2, 3] + xA[0, 0, 0] + 5*xA[1, 0, 0] + 3*xA[0, 1, 0]
             sage: x = A.monomial_basis()
             sage: x (y )
-            x[2, 3, 2] + 5*x[1, 0, 0] + x[3, 2, 2] + x[0, 0, 0] + x[2, 2, 3] + 3*x[0, 1, 0]
+            x[3, 2, 2] + x[2, 3, 2] + x[2, 2, 3] + x[0, 0, 0] + 5*x[1, 0, 0] + 3*x[0, 1, 0]
             sage: xA.an_element(); Schub( xA.an_element())
-            2*xA[1, 0, 0] + xA[2, 2, 3] + xA[0, 0, 0] + 3*xA[0, 1, 0]
-            -Y[1, 0, 0] + 3*Y[0, 1, 0] + Y[0, 0, 0] - Y[2, 3, 2] + Y[2, 2, 3]
+            xA[2, 2, 3] + xA[0, 0, 0] + 2*xA[1, 0, 0] + 3*xA[0, 1, 0]
+            Y[0, 0, 0] + 3*Y[0, 1, 0] - Y[1, 0, 0] + Y[2, 2, 3] - Y[2, 3, 2]
             sage: x.an_element(); Schub(x.an_element())
-            2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
-            -Y[1, 3, 2] - Y[3, 2, 1] - Y[1, 0, 0] + Y[1, 2, 3] + Y[0, 0, 0] + Y[4, 1, 1] + Y[3, 1, 2] + 3*Y[0, 1, 0] + Y[2, 3, 1] - Y[2, 1, 3]
+            x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
+            Y[0, 0, 0] + 3*Y[0, 1, 0] - Y[1, 0, 0] + Y[1, 2, 3] - Y[2, 1, 3] - Y[1, 3, 2] + Y[3, 1, 2] + Y[2, 3, 1] - Y[3, 2, 1] + Y[4, 1, 1]
 
         Let us see some operations::
 
             sage: Schub[1,2] + Schub[3,0,0]
              Y[1, 2, 0] + Y[3, 0, 0]
             sage: Schub.an_element() * Schub.an_element()
-            9*Y[0, 2, 0] + 21*Y[1, 1, 0] + 4*Y[1, 0, 0] + 6*Y[2, 3, 3] + 6*Y[2, 4, 2] + Y[0, 0, 0] + Y[4, 5, 5] + 4*Y[3, 2, 3] + 2*Y[2, 2, 3] + Y[4, 4, 6] + 6*Y[0, 1, 0] + 16*Y[2, 0, 0]
+            Y[0, 0, 0] + 6*Y[0, 1, 0] + 4*Y[1, 0, 0] + 9*Y[0, 2, 0] + 21*Y[1, 1, 0] + 16*Y[2, 0, 0] + 2*Y[2, 2, 3] + 6*Y[2, 3, 3] + 4*Y[3, 2, 3] + 6*Y[2, 4, 2] + Y[4, 4, 6] + Y[4, 5, 5]
             sage: Schub[1,2] * Schub[3,0,0]
             Y[4, 2, 0] + Y[5, 1, 0]
         """
@@ -871,36 +869,35 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
             sage: Dem = A.demazure_basis("A"); Dem
             The Multivariate polynomial algebra on x over Rational Field on the Demazure basis of type A
             sage: Dem.an_element()
-            2*K[1, 0, 0] + K[2, 2, 3] + K[0, 0, 0] + 3*K[0, 1, 0]
+            K[2, 2, 3] + K[0, 0, 0] + 2*K[1, 0, 0] + 3*K[0, 1, 0]
             sage: Dem[1,2,3]
             K[1, 2, 3]
 
         Let us see some coercions::
 
             sage: k = Dem.an_element(); k
-            2*K[1, 0, 0] + K[2, 2, 3] + K[0, 0, 0] + 3*K[0, 1, 0]
+            K[2, 2, 3] + K[0, 0, 0] + 2*K[1, 0, 0] + 3*K[0, 1, 0]
             sage: k.expand()
-            xA[2, 3, 2] + 5*xA[1, 0, 0] + xA[3, 2, 2] + xA[0, 0, 0] + xA[2, 2, 3] + 3*xA[0, 1, 0]
+            xA[3, 2, 2] + xA[2, 3, 2] + xA[2, 2, 3] + xA[0, 0, 0] + 5*xA[1, 0, 0] + 3*xA[0, 1, 0]
             sage: xA = A.monomial_basis_with_type("A")
             sage: xA(k)
-            xA[2, 3, 2] + 5*xA[1, 0, 0] + xA[3, 2, 2] + xA[0, 0, 0] + xA[2, 2, 3] + 3*xA[0, 1, 0]
+            xA[3, 2, 2] + xA[2, 3, 2] + xA[2, 2, 3] + xA[0, 0, 0] + 5*xA[1, 0, 0] + 3*xA[0, 1, 0]
             sage: x = A.monomial_basis()
             sage: x(k)
-            x[2, 3, 2] + 5*x[1, 0, 0] + x[3, 2, 2] + x[0, 0, 0] + x[2, 2, 3] + 3*x[0, 1, 0]
+            x[3, 2, 2] + x[2, 3, 2] + x[2, 2, 3] + x[0, 0, 0] + 5*x[1, 0, 0] + 3*x[0, 1, 0]
             sage: xA.an_element(); Dem(xA.an_element())
-            2*xA[1, 0, 0] + xA[2, 2, 3] + xA[0, 0, 0] + 3*xA[0, 1, 0]
-            -K[1, 0, 0] + 3*K[0, 1, 0] + K[0, 0, 0] - K[2, 3, 2] + K[2, 2, 3]
+            xA[2, 2, 3] + xA[0, 0, 0] + 2*xA[1, 0, 0] + 3*xA[0, 1, 0]
+            K[0, 0, 0] + 3*K[0, 1, 0] - K[1, 0, 0] + K[2, 2, 3] - K[2, 3, 2]
             sage: x.an_element(); Dem(x.an_element())
-            2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
-            -K[2, 1, 3] - K[1, 3, 2] - K[3, 2, 1] - K[1, 0, 0] + K[1, 2, 3] + K[0, 0, 0] + K[3, 1, 2] + 3*K[0, 1, 0] + K[2, 3, 1]
-
+            x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
+            K[0, 0, 0] + 3*K[0, 1, 0] - K[1, 0, 0] + K[1, 2, 3] - K[2, 1, 3] - K[1, 3, 2] + K[3, 1, 2] + K[2, 3, 1] - K[3, 2, 1]
 
         Let us see some operations::
 
             sage: Dem[1,2] + Dem[3,0,0]
             K[1, 2, 0] + K[3, 0, 0]
             sage: Dem.an_element() * Dem.an_element()
-            9*K[0, 2, 0] + 4*K[4, 2, 2] + 16*K[2, 0, 0] + 21*K[1, 1, 0] + 4*K[1, 0, 0] + 6*K[2, 3, 3] + 6*K[2, 4, 2] + K[0, 0, 0] + K[4, 5, 5] + 4*K[3, 2, 3] + K[4, 4, 6] + 2*K[2, 2, 3] + 6*K[0, 1, 0]
+            K[0, 0, 0] + 6*K[0, 1, 0] + 4*K[1, 0, 0] + 9*K[0, 2, 0] + 21*K[1, 1, 0] + 16*K[2, 0, 0] + 2*K[2, 2, 3] + 6*K[2, 3, 3] + 4*K[3, 2, 3] + 6*K[2, 4, 2] + 4*K[4, 2, 2] + K[4, 4, 6] + K[4, 5, 5]
             sage: Dem[1,2] * Dem[3,0,0]
             K[4, 2, 0] + K[5, 1, 0]
 
@@ -911,7 +908,7 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
             sage: pol = DemB[2,1,-2]; pol
             K[2, 1, -2]
             sage: pol.expand()
-            xB[2, 1, 0] + xB[2, 2, 1] + xB[2, 1, 1] + xB[2, 1, -1] + xB[2, 2, 0] + xB[2, 1, -2] + xB[2, 2, -1] + xB[2, 1, 2]
+            xB[2, 2, 1] + xB[2, 2, 0] + xB[2, 2, -1] + xB[2, 1, 2] + xB[2, 1, 1] + xB[2, 1, 0] + xB[2, 1, -1] + xB[2, 1, -2]
 
 
         """
@@ -956,42 +953,42 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
             sage: Demh = A.demazure_hat_basis("A"); Demh
             The Multivariate polynomial algebra on x over Rational Field on the Demazure hat basis of type A
             sage: Demh.an_element()
-            2*^K[1, 0, 0] + ^K[2, 2, 3] + ^K[0, 0, 0] + 3*^K[0, 1, 0]
+            ^K[2, 2, 3] + ^K[0, 0, 0] + 2*^K[1, 0, 0] + 3*^K[0, 1, 0]
 
         Let us see some coercions::
 
             sage: kh = Demh[1,2,4]; kh
             ^K[1, 2, 4]
             sage: kh.expand()
-            xA[2, 2, 3] + xA[1, 2, 4] + xA[1, 3, 3]
+            xA[2, 2, 3] + xA[1, 3, 3] + xA[1, 2, 4]
             sage: xA = A.monomial_basis_with_type("A")
             sage: xA(kh)
-            xA[2, 2, 3] + xA[1, 2, 4] + xA[1, 3, 3]
+            xA[2, 2, 3] + xA[1, 3, 3] + xA[1, 2, 4]
             sage: x = A.monomial_basis()
             sage: x(kh)
             x[2, 2, 3] + x[1, 3, 3] + x[1, 2, 4]
             sage: Demh(xA[1,2,4])
-            ^K[2, 3, 2] + ^K[1, 2, 4] - ^K[1, 3, 3]
+            ^K[1, 2, 4] - ^K[1, 3, 3] + ^K[2, 3, 2]
             sage: Demh(x[1,2,4])
-            ^K[2, 3, 2] + ^K[1, 2, 4] - ^K[1, 3, 3]
+            ^K[1, 2, 4] - ^K[1, 3, 3] + ^K[2, 3, 2]
 
         Let us see some operations::
 
             sage: Demh[1,2] + Demh[3,0,0]
             ^K[1, 2, 0] + ^K[3, 0, 0]
             sage: Demh.an_element() * Demh.an_element()
-            9*^K[0, 2, 0] - ^K[5, 4, 5] + 3*^K[1, 1, 0] + 4*^K[1, 0, 0] + 6*^K[2, 3, 3] + ^K[0, 0, 0] + ^K[4, 4, 6] - ^K[4, 5, 5] + 2*^K[2, 2, 3] + 4*^K[3, 2, 3] + 6*^K[0, 1, 0] + 4*^K[2, 0, 0]
+            ^K[0, 0, 0] + 6*^K[0, 1, 0] + 4*^K[1, 0, 0] + 9*^K[0, 2, 0] + 3*^K[1, 1, 0] + 4*^K[2, 0, 0] + 2*^K[2, 2, 3] + 6*^K[2, 3, 3] + 4*^K[3, 2, 3] + ^K[4, 4, 6] - ^K[4, 5, 5] - ^K[5, 4, 5]
             sage: Demh[1,2] * Demh[3,0,0]
             ^K[4, 2, 0]
 
         We can also have type B, C or D hat key polynomials::
 
-            sage: DemhB = A.demazure_hat_basis("B"); Demh
-            The Multivariate polynomial algebra on x over Rational Field on the Demazure hat basis of type A
+            sage: DemhB = A.demazure_hat_basis("B"); DemhB
+            The Multivariate polynomial algebra on x over Rational Field on the Demazure hat basis of type B
             sage: pol = DemhB[2,1,-2]; pol
             ^K[2, 1, -2]
             sage: pol.expand()
-            xB[2, 1, -1] + xB[2, 1, 1] + xB[2, 1, 0] + xB[2, 1, -2]
+            xB[2, 1, 1] + xB[2, 1, 0] + xB[2, 1, -1] + xB[2, 1, -2]
 
         """
         from .linear_basis_on_vectors import DemazureBasisOnVectors
@@ -1039,7 +1036,7 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
             sage: Groth = A.grothendieck_negative_basis(); Groth
             The Multivariate polynomial algebra on x over Rational Field on the Grothendieck basis of type A with negative exposants
             sage: Groth.an_element()
-            2*G[1, 0, 0] + G[2, 2, 3] + G[0, 0, 0] + 3*G[0, 1, 0]
+            G[2, 2, 3] + G[0, 0, 0] + 2*G[1, 0, 0] + 3*G[0, 1, 0]
             sage: Groth[1,2,3]
             G[1, 2, 3]
 
@@ -1121,28 +1118,28 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
             sage: Groth = A.grothendieck_positive_basis(); Groth
             The Multivariate polynomial algebra on x over Rational Field on the Grothendieck basis of type A, with positive exposants
             sage: Groth.an_element()
-            2*G[1, 0, 0] + G[2, 2, 3] + G[0, 0, 0] + 3*G[0, 1, 0]
+            G[2, 2, 3] + G[0, 0, 0] + 2*G[1, 0, 0] + 3*G[0, 1, 0]
             sage: Groth[1,2,3]
             G[1, 2, 3]
 
         Let us see some coercions::
 
             sage: g = Groth.an_element(); g
-            2*G[1, 0, 0] + G[2, 2, 3] + G[0, 0, 0] + 3*G[0, 1, 0]
+            G[2, 2, 3] + G[0, 0, 0] + 2*G[1, 0, 0] + 3*G[0, 1, 0]
             sage: g.expand()
-            xA[3, 3, 3] - 3*xA[1, 1, 0] + xA[2, 3, 2] - xA[3, 3, 2] + 5*xA[1, 0, 0] - xA[2, 3, 3] + xA[3, 2, 2] + xA[0, 0, 0] - xA[3, 2, 3] + xA[2, 2, 3] + 3*xA[0, 1, 0]
+            xA[3, 2, 2] + xA[2, 3, 2] + xA[2, 2, 3] - xA[3, 3, 2] - xA[3, 2, 3] - xA[2, 3, 3] + xA[3, 3, 3] + xA[0, 0, 0] + 5*xA[1, 0, 0] + 3*xA[0, 1, 0] - 3*xA[1, 1, 0]
             sage: xA = A.monomial_basis_with_type("A")
             sage: xA(g)
-            xA[3, 3, 3] - 3*xA[1, 1, 0] + xA[2, 3, 2] - xA[3, 3, 2] + 5*xA[1, 0, 0] - xA[2, 3, 3] + xA[3, 2, 2] + xA[0, 0, 0] - xA[3, 2, 3] + xA[2, 2, 3] + 3*xA[0, 1, 0]
+            xA[3, 2, 2] + xA[2, 3, 2] + xA[2, 2, 3] - xA[3, 3, 2] - xA[3, 2, 3] - xA[2, 3, 3] + xA[3, 3, 3] + xA[0, 0, 0] + 5*xA[1, 0, 0] + 3*xA[0, 1, 0] - 3*xA[1, 1, 0]
             sage: x = A.monomial_basis()
             sage: x(g)
-            x[3, 3, 3] - 3*x[1, 1, 0] + x[2, 3, 2] - x[3, 3, 2] + 5*x[1, 0, 0] - x[2, 3, 3] + x[3, 2, 2] + x[0, 0, 0] - x[3, 2, 3] + x[2, 2, 3] + 3*x[0, 1, 0]
+            x[3, 2, 2] + x[2, 3, 2] + x[2, 2, 3] - x[3, 3, 2] - x[3, 2, 3] - x[2, 3, 3] + x[3, 3, 3] + x[0, 0, 0] + 5*x[1, 0, 0] + 3*x[0, 1, 0] - 3*x[1, 1, 0]
             sage: xA.an_element(); Groth(xA.an_element())
-            2*xA[1, 0, 0] + xA[2, 2, 3] + xA[0, 0, 0] + 3*xA[0, 1, 0]
-            G[3, 3, 3] + 3*G[1, 1, 0] - G[2, 3, 2] - G[3, 3, 2] - G[1, 0, 0] + G[2, 3, 3] + G[0, 0, 0] + 3*G[0, 1, 0] + G[2, 2, 3]
+            xA[2, 2, 3] + xA[0, 0, 0] + 2*xA[1, 0, 0] + 3*xA[0, 1, 0]
+            G[0, 0, 0] + 3*G[0, 1, 0] - G[1, 0, 0] + 3*G[1, 1, 0] + G[2, 2, 3] - G[2, 3, 2] + G[2, 3, 3] - G[3, 3, 2] + G[3, 3, 3]
             sage: x.an_element(); Groth(x.an_element())
-            2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
-            -G[1, 3, 2] - G[3, 2, 1] - G[1, 0, 0] + G[1, 2, 3] + G[0, 0, 0] + G[4, 1, 1] + G[2, 2, 3] + G[2, 3, 1] + G[3, 3, 3] + 3*G[1, 1, 0] - G[4, 1, 3] - 2*G[2, 3, 2] - G[3, 3, 2] + G[2, 3, 3] - G[2, 1, 3] + G[3, 2, 2] - G[3, 1, 3] + 3*G[0, 1, 0] + G[3, 1, 2] + G[1, 3, 3]
+            x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
+            G[0, 0, 0] + 3*G[0, 1, 0] - G[1, 0, 0] + 3*G[1, 1, 0] + G[1, 2, 3] - G[2, 1, 3] - G[1, 3, 2] + G[3, 1, 2] + G[2, 3, 1] - G[3, 2, 1] + G[4, 1, 1] + G[1, 3, 3] + G[2, 2, 3] - G[3, 1, 3] - 2*G[2, 3, 2] + G[3, 2, 2] + G[2, 3, 3] - G[4, 1, 3] - G[3, 3, 2] + G[3, 3, 3]
 
 
         Let us see some operations::
@@ -1150,9 +1147,9 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
             sage: Groth[1,2] + Groth[3,0,0]
             G[1, 2, 0] + G[3, 0, 0]
             sage: Groth.an_element() * Groth.an_element()
-            9*G[0, 2, 0] - 12*G[2, 1, 0] + 21*G[1, 1, 0] + 4*G[1, 0, 0] + 6*G[2, 3, 3] + 6*G[0, 1, 0] + 6*G[2, 4, 2] - 6*G[2, 4, 3] - 9*G[1, 2, 0] + G[0, 0, 0] + G[4, 4, 6] + G[4, 5, 5] + 4*G[3, 2, 3] + 2*G[2, 2, 3] - G[4, 5, 6] + 16*G[2, 0, 0]
+            G[0, 0, 0] + 6*G[0, 1, 0] + 4*G[1, 0, 0] + 9*G[0, 2, 0] + 21*G[1, 1, 0] + 16*G[2, 0, 0] - 9*G[1, 2, 0] - 12*G[2, 1, 0] + 2*G[2, 2, 3] + 6*G[2, 3, 3] + 4*G[3, 2, 3] + 6*G[2, 4, 2] - 6*G[2, 4, 3] + G[4, 4, 6] + G[4, 5, 5] - G[4, 5, 6]
             sage: Groth[1,2] * Groth[3,0,0]
-            G[4, 2, 0] - G[5, 2, 0] + G[5, 1, 0]
+            G[4, 2, 0] + G[5, 1, 0] - G[5, 2, 0]
 
         """
 
@@ -1179,7 +1176,7 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
         OUTPUT:
 
         - The Multivariate polynomial algebra on x over ``R`` on the Macdolald basis
-          of type A indexed by vectors where ``R ``is the algebra base ring defined
+          of type A indexed by vectors where ``R`` is the algebra base ring defined
           in the abstract algebra.
 
         EXAMPLES::
@@ -1191,7 +1188,7 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
             sage: Mac = A.macdonald_basis_on_vectors(); Mac
             The Multivariate polynomial algebra on x over Fraction Field of Multivariate Polynomial Ring in t1, t2, q over Rational Field on the Macdonald basis of type A (indexed by vectors)
             sage: Mac.an_element()
-            2*M[1, 0, 0] + M[2, 2, 3] + M[0, 0, 0] + 3*M[0, 1, 0]
+            M[2, 2, 3] + M[0, 0, 0] + 2*M[1, 0, 0] + 3*M[0, 1, 0]
             sage: Mac[1,2]
             M[1, 2]
 
@@ -1200,23 +1197,24 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
             sage: pol = Mac[1,2];pol
             M[1, 2]
             sage: pol.expand()
-            ((t2^2*q+t2^2)/q)*xA[0, 1] + 1/q*xA[1, 2] + t2^3*xA[0, 0] + t2^2*xA[1, 0] + ((t2*q+t2)/q)*xA[1, 1] + t2/q*xA[0, 2]
+            1/q*xA[1, 2] + ((t2*q+t2)/q)*xA[1, 1] + t2/q*xA[0, 2] + ((t2^2*q+t2^2)/q)*xA[0, 1] + t2^2*xA[1, 0] + t2^3*xA[0, 0]
             sage: xA = A.monomial_basis_with_type("A")
             sage: xA(pol)
-            ((t2^2*q+t2^2)/q)*xA[0, 1] + 1/q*xA[1, 2] + t2^3*xA[0, 0] + t2^2*xA[1, 0] + ((t2*q+t2)/q)*xA[1, 1] + t2/q*xA[0, 2]
+            1/q*xA[1, 2] + ((t2*q+t2)/q)*xA[1, 1] + t2/q*xA[0, 2] + ((t2^2*q+t2^2)/q)*xA[0, 1] + t2^2*xA[1, 0] + t2^3*xA[0, 0]
             sage: x = A.monomial_basis()
             sage: x(pol)
-            ((t2^2*q+t2^2)/q)*x[0, 1] + 1/q*x[1, 2] + t2^3*x[0, 0] + t2/q*x[0, 2] + t2^2*x[1, 0] + ((t2*q+t2)/q)*x[1, 1]
+            1/q*x[1, 2] + ((t2*q+t2)/q)*x[1, 1] + t2/q*x[0, 2] + ((t2^2*q+t2^2)/q)*x[0, 1] + t2^2*x[1, 0] + t2^3*x[0, 0]
             sage: Mac(x[1,0] + x[0,1])
-            ((t1*q-t1)/(t1*q+t2))*M[0, 1] + (1/(-t2))*M[1, 0] + (t1-t2)*M[0, 0]
+            (1/(-t2))*M[1, 0] + ((t1*q-t1)/(t1*q+t2))*M[0, 1] + (t1-t2)*M[0, 0]
+
 
         Let us see some operations::
 
             sage: Mac[1,2] + Mac[1,0]
             M[1, 2] + M[1, 0]
             sage: Mac[1,2] * Mac[1,0]
-            ((t1^2*t2*q^2-t1^2*t2*q-t2^3*q+t2^3)/(-t1*q-t2))*M[1, 2] + ((t1*q^2+t2*q^2)/(t1*q+t2))*M[1, 3] + ((t1^2*t2*q^3-t1^2*t2*q^2-t2^3*q^2+t2^3*q)/(-t1^2*q^2-2*t1*t2*q-t2^2))*M[2, 2]
-        """
+            ((t1*q^2+t2*q^2)/(t1*q+t2))*M[1, 3] + ((t1^2*t2*q^3-t1^2*t2*q^2-t2^3*q^2+t2^3*q)/(-t1^2*q^2-2*t1*t2*q-t2^2))*M[2, 2] + ((t1^2*t2*q^2-t1^2*t2*q-t2^3*q+t2^3)/(-t1*q-t2))*M[1, 2]
+            """
         if(t1 is None): t1 = self.base_ring()(var('t1'))
         if(t2 is None): t2 = self.base_ring()(var('t2'))
         if(q is None): q = self.base_ring()(var('q'))
@@ -1252,7 +1250,7 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
             sage: M2 = F2.monomial_basis(); M2
             The Multivariate polynomial algebra on x over Rational Field with 2 variables on the monomial basis
             sage: M2(M1.an_element())
-            3*x[2, 0] + 3*x[1, 0] + x[0, 0]
+            3*x[1, 0] + x[0, 0] + 3*x[2, 0]
 
             by creating ``F1`` and ``F2`` through ``A`` a coercion between their monomial basis ``M1`` and ``M2``
             has been created
@@ -1283,14 +1281,14 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
             sage: from multipolynomial_bases import MultivariatePolynomialAlgebra
             sage: A.<x> = MultivariatePolynomialAlgebra(QQ)
             sage: pol = x.an_element(); pol
-            2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+            x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
             sage: A.change_nb_variables(pol, 5)
-            x[1, 2, 3, 0, 0] + x[0, 0, 0, 0, 0] + 3*x[0, 1, 0, 0, 0] + 2*x[1, 0, 0, 0, 0]
+            x[1, 2, 3, 0, 0] + x[0, 0, 0, 0, 0] + 2*x[1, 0, 0, 0, 0] + 3*x[0, 1, 0, 0, 0]
             sage: xA = A.monomial_basis_with_type("A")
             sage: pol = xA.an_element(); pol
-            2*xA[1, 0, 0] + xA[2, 2, 3] + xA[0, 0, 0] + 3*xA[0, 1, 0]
+            xA[2, 2, 3] + xA[0, 0, 0] + 2*xA[1, 0, 0] + 3*xA[0, 1, 0]
             sage: A.change_nb_variables(pol, 5)
-            xA[2, 2, 3, 0, 0] + xA[0, 0, 0, 0, 0] + 3*xA[0, 1, 0, 0, 0] + 2*xA[1, 0, 0, 0, 0]
+            xA[2, 2, 3, 0, 0] + xA[0, 0, 0, 0, 0] + 2*xA[1, 0, 0, 0, 0] + 3*xA[0, 1, 0, 0, 0]
         """
         if(nb_variables < pol.nb_variables()):
             raise NotImplementedError("This method doesn't reduce the number of variables, use reduce_nb_variables")
@@ -1315,11 +1313,11 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
             sage: from multipolynomial_bases import MultivariatePolynomialAlgebra
             sage: A.<x> = MultivariatePolynomialAlgebra(QQ)
             sage: pol = x[1,2,2,0,0] + x[2,5];pol
-            x[2, 5, 0, 0, 0] + x[1, 2, 2, 0, 0]
+            x[1, 2, 2, 0, 0] + x[2, 5, 0, 0, 0]
             sage: pol.nb_variables()
             5
             sage: red = A.reduce_nb_variables(pol); red
-            x[2, 5, 0] + x[1, 2, 2]
+            x[1, 2, 2] + x[2, 5, 0]
             sage: red.nb_variables()
             3
             sage: red == pol
@@ -1398,7 +1396,7 @@ class FiniteRankMultivariatePolynomialAlgebra(UniqueRepresentation, Parent):
       unset number of variables. from which the ``FiniteRankMultivariatePolynomialAlgebra``
       comes from. A ``FiniteRankMultivariatePolynomialAlgebra`` always comes from a
       ``MultivariatePolynomialAlgebra`` which contains general informations like
-       the base ring.
+      the base ring.
     - ``nb_variables`` -- the number of variables
     - ``main_repr_var`` -- the letter corresponding to the set of variables,
       it is used to represent several bases, default is ``x``
@@ -1514,7 +1512,7 @@ class FiniteRankMultivariatePolynomialAlgebra(UniqueRepresentation, Parent):
             sage: B = FiniteRankMultivariatePolynomialAlgebra(A,3)
             sage: p = B.an_element()
             sage: B._element_constructor_(p)
-            2*x[1, 0, 0] + 3*x[0, 1, 0] + x[0, 0, 0] + x[1, 2, 3]
+            x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
             sage: B._element_constructor_(1)
             Traceback (most recent call last):
             ...
@@ -1537,7 +1535,7 @@ class FiniteRankMultivariatePolynomialAlgebra(UniqueRepresentation, Parent):
             sage: A = MultivariatePolynomialAlgebra(QQ)
             sage: B = FiniteRankMultivariatePolynomialAlgebra(A,7)
             sage: B.an_element()
-            2*x[1, 0, 0, 0, 0, 0, 0] + 3*x[0, 1, 0, 0, 0, 0, 0] + x[0, 0, 0, 0, 0, 0, 0] + x[1, 2, 3, 4, 5, 6, 7]
+            x[1, 2, 3, 4, 5, 6, 7] + x[0, 0, 0, 0, 0, 0, 0] + 2*x[1, 0, 0, 0, 0, 0, 0] + 3*x[0, 1, 0, 0, 0, 0, 0]
 
         """
         return self.a_realization().an_element()
@@ -1562,8 +1560,9 @@ class FiniteRankMultivariatePolynomialAlgebra(UniqueRepresentation, Parent):
         Returns the algebra ``self`` view in the monomials basis.
 
         INPUT:
-            - ``basis_repr``, the representation letter for the elements of the base, by default, it is the main representation for
-        the set of variable : ``self._main_repr_var``
+
+        - ``basis_repr``, the representation letter for the elements of the base, by default, it is the main representation for
+          the set of variable : ``self._main_repr_var``
 
         EXAMPLES::
 
@@ -1607,8 +1606,8 @@ class FiniteRankMultivariatePolynomialAlgebra(UniqueRepresentation, Parent):
         INPUT:
 
         - ``polynomial_ring_tower``: the basis of ``AbsractPolynomialRing`` which is a facade to this basis and represents
-        it on a undefined number of variables. It must have a `get_morphism_on_basis` method and a `get_basis_keys` method
-        as well as a ``morphism_to_basis``
+          it on a undefined number of variables. It must have a `get_morphism_on_basis` method and a `get_basis_keys` method
+          as well as a ``morphism_to_basis``
         - ``basis_name``: the name of the basis (used in repr)
         - ``basis_repr``: the basis representation for elements (exemple "x")
 
@@ -1653,17 +1652,17 @@ class FiniteRankMultivariatePolynomialAlgebra(UniqueRepresentation, Parent):
         ``polynomial_ring_tower``
 
         - ``polynomial_ring_tower``: the basis of ``AbsractPolynomialRing`` which is a facade to this basis and
-        represents it on a undefined number of variables. It should inherit from a basis.LinearBasisOnVectors
+          represents it on a undefined number of variables. It should inherit from a basis.LinearBasisOnVectors
         - ``basis_name``: the name of the basis (used in repr)
         - ``basis_repr``: the basis representation for elements
         - ``**keyword`` : parameters used to create the morphism to the ambient space basis,
           sent to ``CombinatorialFreeModule.module_morphism``.
 
-        OUTPUT :
+        OUTPUT:
 
-            - a basis named ``basis_name`` and defined by its conversion to an ambient space basis,
-             the type of the ambient space basis and the method of conversion are all contained into the
-             ``polynomial_ring_tower``
+        - a basis named ``basis_name`` and defined by its conversion to an ambient space basis,
+          the type of the ambient space basis and the method of conversion are all contained into the
+          ``polynomial_ring_tower``
 
 
         EXAMPLES::
