@@ -1,0 +1,608 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Double Polynomials &#8212; Multipolynomial bases 0.2 documentation</title>
+    <link rel="stylesheet" href="_static/sage.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="_static/MathJax.js?config=TeX-AMS_HTML-full,../mathjax_sage.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Main Polynomial bases" href="bases.html" />
+    <link rel="icon" href="_static/sageicon.png" type="image/x-icon" />
+    <!-- Thebe configuration for live code cells (https://github.com/minrk/thebelab)
+
+  If the page contains a code cell (a `pre` tag with a sage prompt), a
+  dedicated Activate button is added in the top right corner.
+
+  When pressed, the code cells are made active: the user can edit and
+  run them.
+
+  More specifically, when pressed (thebe_activate_button_function):
+
+  - the thebelab JavaScript library is fetched from the web;
+
+  - each code block containing a sage: prompt is made active (thebe_activate_cells)
+    (editable + Run button);
+
+  - if the page is served by a Jupyter server which has a sagemath
+    kernel, a local jupyter kernel is requested(thebe_bootstrap_local);
+
+  - otherwise a kernel is requested from mybinder (https://mybinder.org).
+  !-->
+<script type="text/x-thebe-config">
+  thebeConfig = {
+    binderOptions: {
+      repo: "mkoeppe/sage-numerical-interactive-mip",
+    },
+    stripPrompts: {
+      inPrompt: 'sage: ',
+      continuationPrompt: '....: ',
+      selector: 'pre:contains("sage: ")',
+    },
+    kernelOptions: {
+      name: "sagemath",
+    },
+    requestKernel: true
+  }
+</script>
+
+<!-- Load the Thebe activation and status field library  !-->
+<script src="_static/thebe_status_field.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="_static/thebe_status_field.css"/>
+
+<!-- Test whether some code cell contains Sage code
+     If yes, setup the ThebeLab activation and status field !-->
+<script>
+  $(function() {
+      var cellSelector = "pre:contains('sage: ')";
+      if ($(cellSelector).length > 0) {
+         $('<div class="thebe_status_field" style="position: fixed; right:0;"></div>')
+            .prependTo('div.body');
+         thebe_place_activate_button();
+      }
+  });
+</script>
+
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="bases.html" title="Main Polynomial bases"
+             accesskey="P">previous</a> |</li>
+  
+  <a href="http://www.sagemath.org"><img src="_static/sagelogo.png" style="vertical-align: middle" title="Sage Logo"></a>
+  
+        <li class="nav-item nav-item-0"><a href="index.html">Multipolynomial bases 0.2 documentation</a> &#187;</li>
+ 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-multipolynomial_bases.double_multivariate_polynomials">
+<span id="double-polynomials"></span><h1>Double Polynomials<a class="headerlink" href="#module-multipolynomial_bases.double_multivariate_polynomials" title="Permalink to this headline">¶</a></h1>
+<p>This module implements the ring of abstract polynomials over a double set of variables
+This ring is actually an <code class="docutils literal notranslate"><span class="pre">MultivariatePolynomialAlgebra</span></code> over antoher <code class="docutils literal notranslate"><span class="pre">MultivariatePolynomialAlgebra</span></code>
+but the module provides methods that are specific to double multivariate polynomials to make it easy
+to use</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">multipolynomial_bases</span> <span class="k">import</span> <span class="n">MultivariatePolynomialAlgebra</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">A</span><span class="o">.&lt;</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">MultivariatePolynomialAlgebra</span><span class="p">(</span><span class="n">QQ</span><span class="p">);</span> <span class="n">A</span>
+<span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">x</span> <span class="n">over</span> <span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">y</span> <span class="n">over</span> <span class="n">Rational</span> <span class="n">Field</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">A</span><span class="o">.</span><span class="n">an_element</span><span class="p">()</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> correspond to the monomial basis on the two sets of variables:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">x</span>
+<span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">x</span> <span class="n">over</span> <span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">y</span> <span class="n">over</span> <span class="n">Rational</span> <span class="n">Field</span> <span class="n">on</span> <span class="n">the</span> <span class="n">monomial</span> <span class="n">basis</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">y</span>
+<span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">y</span> <span class="n">over</span> <span class="n">Rational</span> <span class="n">Field</span> <span class="n">on</span> <span class="n">the</span> <span class="n">monomial</span> <span class="n">basis</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">an_element</span><span class="p">()</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">an_element</span><span class="p">()</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>By default, all actions are done on the <code class="docutils literal notranslate"><span class="pre">x</span></code> variable set:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">pol</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">];</span> <span class="n">pol</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">pol</span><span class="o">.</span><span class="n">divided_difference</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>You can obtain the polynomial ring on the <code class="docutils literal notranslate"><span class="pre">y</span></code> variables which correspond
+to the coeff ring:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">Coeffs</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">coeffs_ring</span><span class="p">();</span> <span class="n">Coeffs</span>
+<span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">y</span> <span class="n">over</span> <span class="n">Rational</span> <span class="n">Field</span>
+</pre></div>
+</div>
+<p>You can change the bases of the <code class="docutils literal notranslate"><span class="pre">x</span></code> polynomial by the usual coercion system:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">Schub</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">schubert_basis</span><span class="p">();</span> <span class="n">Schub</span>
+<span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">x</span> <span class="n">over</span> <span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">y</span> <span class="n">over</span> <span class="n">Rational</span> <span class="n">Field</span> <span class="n">on</span> <span class="n">the</span> <span class="n">Schubert</span> <span class="n">basis</span> <span class="n">of</span> <span class="nb">type</span> <span class="n">A</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">Schub</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">an_element</span><span class="p">())</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">Yx</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">Yx</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="n">Yx</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">Yx</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="n">Yx</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="n">Yx</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">Yx</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">Yx</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="n">Yx</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">Yx</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>You can also change the base for the <code class="docutils literal notranslate"><span class="pre">y</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">YSchub</span> <span class="o">=</span> <span class="n">Coeffs</span><span class="o">.</span><span class="n">schubert_basis</span><span class="p">();</span> <span class="n">YSchub</span>
+<span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">y</span> <span class="n">over</span> <span class="n">Rational</span> <span class="n">Field</span> <span class="n">on</span> <span class="n">the</span> <span class="n">Schubert</span> <span class="n">basis</span> <span class="n">of</span> <span class="nb">type</span> <span class="n">A</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">pol</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">];</span> <span class="n">pol</span>
+<span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">pol</span><span class="o">.</span><span class="n">change_coeffs_bases</span><span class="p">(</span><span class="n">YSchub</span><span class="p">)</span>
+<span class="p">(</span><span class="n">Yy</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">-</span><span class="n">Yy</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">-</span><span class="n">Yy</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">Yy</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">Yy</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">Yy</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">Yy</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Also, you can obtain the ring where the roles of <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> are exchanged:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">A2</span> <span class="o">=</span>  <span class="n">A</span><span class="o">.</span><span class="n">inversed_ring</span><span class="p">();</span> <span class="n">A2</span>
+<span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">y</span> <span class="n">over</span> <span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">x</span> <span class="n">over</span> <span class="n">Rational</span> <span class="n">Field</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">A2</span><span class="o">.</span><span class="n">an_element</span><span class="p">()</span>
+<span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>There is a coercion between <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">A2</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">pol</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">];</span> <span class="n">pol</span>
+<span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">A2</span><span class="p">(</span><span class="n">pol</span><span class="p">)</span>
+<span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>But this coercion doesn’t allow operations including polynomials from <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">A2</span></code> as the coercion
+only exists between abstract polynomial rings but not between the concrete bases : sage coercion system
+doesn’t look for a parent where the coercion could be made:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">A</span><span class="o">.</span><span class="n">an_element</span><span class="p">()</span> <span class="o">+</span> <span class="n">A2</span><span class="o">.</span><span class="n">an_element</span><span class="p">()</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+<span class="o">...</span>
+<span class="ne">TypeError</span><span class="p">:</span> <span class="n">unsupported</span> <span class="n">operand</span> <span class="n">parent</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="o">+</span><span class="p">:</span> <span class="s1">&#39;The Multivariate polynomial algebra on x over The Multivariate polynomial algebra on y over Rational Field with 3 variables on the monomial basis&#39;</span> <span class="ow">and</span> <span class="s1">&#39;The Multivariate polynomial algebra on y over The Multivariate polynomial algebra on x over Rational Field with 3 variables on the monomial basis&#39;</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">A2</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">an_element</span><span class="p">())</span> <span class="o">+</span> <span class="n">A2</span><span class="o">.</span><span class="n">an_element</span><span class="p">()</span>
+<span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">3</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Some special bases have been implemented for double polynomials:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">multipolynomial_bases</span> <span class="k">import</span> <span class="n">MultivariatePolynomialAlgebra</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">A</span><span class="o">.&lt;</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">MultivariatePolynomialAlgebra</span><span class="p">(</span><span class="n">QQ</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DSchub</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">double_schubert_basis</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DSchub</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DSchub</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">xA</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">xA</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">yA</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">yA</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="n">xA</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DSchub</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">^</span><span class="mi">2</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">yA</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">yA</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DSchub</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">yA</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DSchub</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+ <span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">yA</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DSchub</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DGroth</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">double_grothendieck_basis</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DGroth</span>
+<span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">x</span> <span class="n">over</span> <span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">y</span> <span class="n">over</span> <span class="n">Rational</span> <span class="n">Field</span> <span class="n">on</span> <span class="n">the</span> <span class="n">Double</span> <span class="n">Grothendieck</span> <span class="n">basis</span> <span class="n">of</span> <span class="nb">type</span> <span class="n">A</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DGroth</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">GG</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DGroth</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">xA</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">yA</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="n">xA</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DGroth</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">isobaric_divided_difference</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">GG</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DGroth</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">hat_isobaric_divided_difference</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">GG</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="n">GG</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="multipolynomial_bases.double_multivariate_polynomials.DoubleGrothendieckBasis">
+<em class="property">class </em><code class="descclassname">multipolynomial_bases.double_multivariate_polynomials.</code><code class="descname">DoubleGrothendieckBasis</code><span class="sig-paren">(</span><em>abstract_polynomial_ring</em>, <em>monomial_basis_with_type</em>, <em>basis_name</em>, <em>basis_repr</em><span class="sig-paren">)</span><a class="headerlink" href="#multipolynomial_bases.double_multivariate_polynomials.DoubleGrothendieckBasis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">multipolynomial_bases.linear_basis_on_vectors.LinearBasisOnVectors</span></code></p>
+<p>Explain this class</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">multipolynomial_bases</span> <span class="k">import</span> <span class="n">MultivariatePolynomialAlgebra</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">A</span><span class="o">.&lt;</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">MultivariatePolynomialAlgebra</span><span class="p">(</span><span class="n">QQ</span><span class="p">);</span> <span class="n">A</span>
+<span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">x</span> <span class="n">over</span> <span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">y</span> <span class="n">over</span> <span class="n">Rational</span> <span class="n">Field</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DGroth</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">double_grothendieck_basis</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DGroth</span>
+<span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">x</span> <span class="n">over</span> <span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">y</span> <span class="n">over</span> <span class="n">Rational</span> <span class="n">Field</span> <span class="n">on</span> <span class="n">the</span> <span class="n">Double</span> <span class="n">Grothendieck</span> <span class="n">basis</span> <span class="n">of</span> <span class="nb">type</span> <span class="n">A</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DGroth</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">GG</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DGroth</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">xA</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">yA</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="n">xA</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DGroth</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">isobaric_divided_difference</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">GG</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DGroth</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">hat_isobaric_divided_difference</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">GG</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="n">GG</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="multipolynomial_bases.double_multivariate_polynomials.DoubleGrothendieckBasis.on_basis_method">
+<code class="descname">on_basis_method</code><span class="sig-paren">(</span><em>x</em>, <em>basis</em>, <em>call_back</em><span class="sig-paren">)</span><a class="headerlink" href="#multipolynomial_bases.double_multivariate_polynomials.DoubleGrothendieckBasis.on_basis_method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="multipolynomial_bases.double_multivariate_polynomials.DoubleGrothendieckBasis._divided_difference_wrapper">
+<code class="descclassname">DoubleGrothendieckBasis.</code><code class="descname">_divided_difference_wrapper</code><a class="headerlink" href="#multipolynomial_bases.double_multivariate_polynomials.DoubleGrothendieckBasis._divided_difference_wrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#multipolynomial_bases.double_multivariate_polynomials.DoubleGrothendieckBasis._divided_difference_wrapper" title="multipolynomial_bases.double_multivariate_polynomials.DoubleGrothendieckBasis._divided_difference_wrapper"><code class="xref py py-class docutils literal notranslate"><span class="pre">DoubleGrothendieckBasis._divided_difference_wrapper</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="multipolynomial_bases.double_multivariate_polynomials.DoubleMultivariatePolynomialAlgebra_generic">
+<em class="property">class </em><code class="descclassname">multipolynomial_bases.double_multivariate_polynomials.</code><code class="descname">DoubleMultivariatePolynomialAlgebra_generic</code><span class="sig-paren">(</span><em>R</em>, <em>repr_var1='x'</em>, <em>repr_var2='y'</em>, <em>inversed_ring=None</em><span class="sig-paren">)</span><a class="headerlink" href="#multipolynomial_bases.double_multivariate_polynomials.DoubleMultivariatePolynomialAlgebra_generic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="multivariate_polynomials.html#multipolynomial_bases.multivariate_polynomials.MultivariatePolynomialAlgebra_generic" title="multipolynomial_bases.multivariate_polynomials.MultivariatePolynomialAlgebra_generic"><code class="xref py py-class docutils literal notranslate"><span class="pre">multipolynomial_bases.multivariate_polynomials.MultivariatePolynomialAlgebra_generic</span></code></a></p>
+<p>Implementation for double polynomial algebra</p>
+<dl class="docutils">
+<dt>INPUT:</dt>
+<dd><ul class="first last simple">
+<li><code class="docutils literal notranslate"><span class="pre">R</span></code>: the base ring of the algebra</li>
+<li><code class="docutils literal notranslate"><span class="pre">repr_var1</span></code>, a string representing the main variable set, default is <span class="math notranslate nohighlight">\(x\)</span></li>
+<li><code class="docutils literal notranslate"><span class="pre">repr_var2</span></code>, a string representing the secondary variable set, default is <span class="math notranslate nohighlight">\(y\)</span></li>
+<li><code class="docutils literal notranslate"><span class="pre">inversed_ring</span></code>, the ring where the roles of the two sets of variables are inversed.
+By default, nothing is sent and the ring is created, the field is then used to avoid infinite
+recursion</li>
+</ul>
+</dd>
+</dl>
+<p>OUTPUT:</p>
+<blockquote>
+<div><ul class="simple">
+<li>The abstract ring of multivariate polynomials on <code class="docutils literal notranslate"><span class="pre">repr_var1</span></code> over te abstract ring
+of multivariate polynomials on <code class="docutils literal notranslate"><span class="pre">repr_var2</span></code> over <code class="docutils literal notranslate"><span class="pre">R</span></code></li>
+</ul>
+</div></blockquote>
+<p>TESTS:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">multipolynomial_bases</span> <span class="k">import</span> <span class="n">MultivariatePolynomialAlgebra</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">A</span><span class="o">.&lt;</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">MultivariatePolynomialAlgebra</span><span class="p">(</span><span class="n">QQ</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">TestSuite</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="multipolynomial_bases.double_multivariate_polynomials.DoubleMultivariatePolynomialAlgebra_generic.coeffs_ring">
+<code class="descname">coeffs_ring</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#multipolynomial_bases.double_multivariate_polynomials.DoubleMultivariatePolynomialAlgebra_generic.coeffs_ring" title="Permalink to this definition">¶</a></dt>
+<dd><p>r
+returns the multivariate polynomial ring on the second set of variables
+used as coefficients of the main ring on the first set of variables</p>
+<p>OUPUT:</p>
+<blockquote>
+<div><ul class="simple">
+<li>the ring of multivariate polynomials on the second set of variables</li>
+</ul>
+</div></blockquote>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">multipolynomial_bases</span> <span class="k">import</span> <span class="n">MultivariatePolynomialAlgebra</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">A</span><span class="o">.&lt;</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">MultivariatePolynomialAlgebra</span><span class="p">(</span><span class="n">QQ</span><span class="p">);</span> <span class="n">A</span>
+<span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">x</span> <span class="n">over</span> <span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">y</span> <span class="n">over</span> <span class="n">Rational</span> <span class="n">Field</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">A</span><span class="o">.</span><span class="n">coeffs_ring</span><span class="p">()</span>
+<span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">y</span> <span class="n">over</span> <span class="n">Rational</span> <span class="n">Field</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="multipolynomial_bases.double_multivariate_polynomials.DoubleMultivariatePolynomialAlgebra_generic.double_grothendieck_basis">
+<code class="descname">double_grothendieck_basis</code><span class="sig-paren">(</span><em>group_type='A'</em>, <em>basis_name=None</em>, <em>basis_repr='GG'</em><span class="sig-paren">)</span><a class="headerlink" href="#multipolynomial_bases.double_multivariate_polynomials.DoubleMultivariatePolynomialAlgebra_generic.double_grothendieck_basis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="multipolynomial_bases.double_multivariate_polynomials.DoubleMultivariatePolynomialAlgebra_generic.double_schubert_basis">
+<code class="descname">double_schubert_basis</code><span class="sig-paren">(</span><em>group_type='A'</em>, <em>basis_name=None</em>, <em>basis_repr='YY'</em><span class="sig-paren">)</span><a class="headerlink" href="#multipolynomial_bases.double_multivariate_polynomials.DoubleMultivariatePolynomialAlgebra_generic.double_schubert_basis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="multipolynomial_bases.double_multivariate_polynomials.DoubleMultivariatePolynomialAlgebra_generic.gens">
+<code class="descname">gens</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#multipolynomial_bases.double_multivariate_polynomials.DoubleMultivariatePolynomialAlgebra_generic.gens" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a tuple whose entries are the generators for this
+object.</p>
+<p>In the case of the multivariate polynomial algebra, the number
+of actual generators is potentatially infinite. So this method
+actually return a tuple containing the monomial basis which can
+be seen as a multivariate gerator.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">multipolynomial_bases</span> <span class="k">import</span> <span class="n">MultivariatePolynomialAlgebra</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">A</span><span class="o">.&lt;</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">MultivariatePolynomialAlgebra</span><span class="p">(</span><span class="n">QQ</span><span class="p">);</span> <span class="n">A</span>
+<span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">x</span> <span class="n">over</span> <span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">y</span> <span class="n">over</span> <span class="n">Rational</span> <span class="n">Field</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span>
+<span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">x</span> <span class="n">over</span> <span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">y</span> <span class="n">over</span> <span class="n">Rational</span> <span class="n">Field</span> <span class="n">on</span> <span class="n">the</span> <span class="n">monomial</span> <span class="n">basis</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">y</span>
+<span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">y</span> <span class="n">over</span> <span class="n">Rational</span> <span class="n">Field</span> <span class="n">on</span> <span class="n">the</span> <span class="n">monomial</span> <span class="n">basis</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">A</span><span class="o">.</span><span class="n">gens</span><span class="p">()</span>
+<span class="p">[</span><span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">x</span> <span class="n">over</span> <span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">y</span> <span class="n">over</span> <span class="n">Rational</span> <span class="n">Field</span> <span class="n">on</span> <span class="n">the</span> <span class="n">monomial</span> <span class="n">basis</span><span class="p">,</span>
+ <span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">y</span> <span class="n">over</span> <span class="n">Rational</span> <span class="n">Field</span> <span class="n">on</span> <span class="n">the</span> <span class="n">monomial</span> <span class="n">basis</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">A</span><span class="o">.</span><span class="n">gens</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span>
+<span class="kc">True</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">A</span><span class="o">.</span><span class="n">gens</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">y</span>
+<span class="kc">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="multipolynomial_bases.double_multivariate_polynomials.DoubleMultivariatePolynomialAlgebra_generic.inversed_ring">
+<code class="descname">inversed_ring</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#multipolynomial_bases.double_multivariate_polynomials.DoubleMultivariatePolynomialAlgebra_generic.inversed_ring" title="Permalink to this definition">¶</a></dt>
+<dd><p>r
+returns the ring of multivariate polynomials where the roles of the two sets of variables
+are exchanged</p>
+<p>OUTPUT:</p>
+<blockquote>
+<div><ul class="simple">
+<li>the ring of multivariate polynomials on the second set of variables
+over the ring of multivariate polynomials on the first set of variables</li>
+</ul>
+</div></blockquote>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sage: from multipolynomial_bases import MultivariatePolynomialAlgebra
+sage: A.&lt;x,y&gt; = MultivariatePolynomialAlgebra(QQ); A
+The Multivariate polynomial algebra on x over The Multivariate polynomial algebra on y over Rational Field
+sage: A2 = A.inversed_ring(); A2
+The Multivariate polynomial algebra on y over The Multivariate polynomial algebra on x over Rational Field
+
+There is a coercion between `D` and `D2`::
+
+sage: pol = x.an_element() * y.an_element(); pol
+(y[1,2,3]+y[0,0,0]+2*y[1,0,0]+3*y[0,1,0])*x[1, 2, 3] + (y[1,2,3]+y[0,0,0]+2*y[1,0,0]+3*y[0,1,0])*x[0, 0, 0] + (2*y[1,2,3]+2*y[0,0,0]+4*y[1,0,0]+6*y[0,1,0])*x[1, 0, 0] + (3*y[1,2,3]+3*y[0,0,0]+6*y[1,0,0]+9*y[0,1,0])*x[0, 1, 0]
+sage: A2(pol)
+(x[1,2,3]+x[0,0,0]+2*x[1,0,0]+3*x[0,1,0])*y[1, 2, 3] + (x[1,2,3]+x[0,0,0]+2*x[1,0,0]+3*x[0,1,0])*y[0, 0, 0] + (2*x[1,2,3]+2*x[0,0,0]+4*x[1,0,0]+6*x[0,1,0])*y[1, 0, 0] + (3*x[1,2,3]+3*x[0,0,0]+6*x[1,0,0]+9*x[0,1,0])*y[0, 1, 0]
+</pre></div>
+</div>
+<p>But this coercion doesn’t allow for operations including polynomials from both <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">A2</span></code> as the coercion
+only exists between abstract polynomial rings but not between the concrete bases : sage coercion system
+doesn’t look for a parent where the coercion could be made</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="multipolynomial_bases.double_multivariate_polynomials.DoubleSchubertBasis">
+<em class="property">class </em><code class="descclassname">multipolynomial_bases.double_multivariate_polynomials.</code><code class="descname">DoubleSchubertBasis</code><span class="sig-paren">(</span><em>abstract_polynomial_ring</em>, <em>monomial_basis_with_type</em>, <em>basis_name</em>, <em>basis_repr</em><span class="sig-paren">)</span><a class="headerlink" href="#multipolynomial_bases.double_multivariate_polynomials.DoubleSchubertBasis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">multipolynomial_bases.linear_basis_on_vectors.LinearBasisOnVectors</span></code></p>
+<p>Explain this class</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">multipolynomial_bases</span> <span class="k">import</span> <span class="n">MultivariatePolynomialAlgebra</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">A</span><span class="o">.&lt;</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">MultivariatePolynomialAlgebra</span><span class="p">(</span><span class="n">QQ</span><span class="p">);</span> <span class="n">A</span>
+<span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">x</span> <span class="n">over</span> <span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">y</span> <span class="n">over</span> <span class="n">Rational</span> <span class="n">Field</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DSchub</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">double_schubert_basis</span><span class="p">();</span> <span class="n">DSchub</span>
+<span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">x</span> <span class="n">over</span> <span class="n">The</span> <span class="n">Multivariate</span> <span class="n">polynomial</span> <span class="n">algebra</span> <span class="n">on</span> <span class="n">y</span> <span class="n">over</span> <span class="n">Rational</span> <span class="n">Field</span> <span class="n">on</span> <span class="n">the</span> <span class="n">Double</span> <span class="n">Schubert</span> <span class="n">basis</span> <span class="n">of</span> <span class="nb">type</span> <span class="n">A</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DSchub</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DSchub</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">expand</span><span class="p">()</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">xA</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">xA</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">yA</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">yA</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="n">xA</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DSchub</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">^</span><span class="mi">2</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">yA</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">yA</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DSchub</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">yA</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DSchub</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">yA</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">DSchub</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="n">YY</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="multipolynomial_bases.double_multivariate_polynomials.DoubleSchubertBasis.cmp">
+<code class="descname">cmp</code><span class="sig-paren">(</span><em>key1</em>, <em>key2</em><span class="sig-paren">)</span><a class="headerlink" href="#multipolynomial_bases.double_multivariate_polynomials.DoubleSchubertBasis.cmp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="multipolynomial_bases.double_multivariate_polynomials.DoubleSchubertBasis.on_basis_method">
+<code class="descname">on_basis_method</code><span class="sig-paren">(</span><em>x</em>, <em>basis</em>, <em>call_back</em><span class="sig-paren">)</span><a class="headerlink" href="#multipolynomial_bases.double_multivariate_polynomials.DoubleSchubertBasis.on_basis_method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="multipolynomial_bases.double_multivariate_polynomials.Finite_rank_double_bases">
+<em class="property">class </em><code class="descclassname">multipolynomial_bases.double_multivariate_polynomials.</code><code class="descname">Finite_rank_double_bases</code><span class="sig-paren">(</span><em>s=None</em><span class="sig-paren">)</span><a class="headerlink" href="#multipolynomial_bases.double_multivariate_polynomials.Finite_rank_double_bases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sage.categories.category.Category</span></code></p>
+<p>r
+This category is an extra category for bases of double multivariate
+polynomials. It is used to add extra methods on double polynomials.</p>
+<dl class="docutils">
+<dt>OUTPUT:</dt>
+<dd>The category of finite rank bases for double polynomials</dd>
+<dt>EXAMPLES::</dt>
+<dd>sage: from multipolynomial_bases import MultivariatePolynomialAlgebra
+sage: A.&lt;x,y&gt; = MultivariatePolynomialAlgebra(QQ)
+sage: A._extra_bases_category
+The category of finite rank bases for double polynomials
+sage: A.an_element().parent().category()
+Join of Category of graded algebras with basis over The Multivariate polynomial algebra on y over Rational Field and The category of finite rank bases for double polynomials and Category of realizations of The Multivariate polynomial algebra on x over The Multivariate polynomial algebra on y over Rational Field with 3 variables</dd>
+</dl>
+<p>TESTS:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">multipolynomial_bases.double_multivariate_polynomials</span> <span class="k">import</span> <span class="n">Finite_rank_double_bases</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">C</span> <span class="o">=</span> <span class="n">Finite_rank_double_bases</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">C</span>
+<span class="n">The</span> <span class="n">category</span> <span class="n">of</span> <span class="n">finite</span> <span class="n">rank</span> <span class="n">bases</span> <span class="k">for</span> <span class="n">double</span> <span class="n">polynomials</span>
+<span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">multipolynomial_bases</span> <span class="k">import</span> <span class="n">MultivariatePolynomialAlgebra</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">A</span><span class="o">.&lt;</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">MultivariatePolynomialAlgebra</span><span class="p">(</span><span class="n">QQ</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">TestSuite</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">an_element</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">category</span><span class="p">())</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="multipolynomial_bases.double_multivariate_polynomials.Finite_rank_double_bases.ElementMethods">
+<code class="descname">ElementMethods</code><a class="headerlink" href="#multipolynomial_bases.double_multivariate_polynomials.Finite_rank_double_bases.ElementMethods" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#multipolynomial_bases.double_multivariate_polynomials.Finite_rank_double_bases.ElementMethods" title="multipolynomial_bases.double_multivariate_polynomials.Finite_rank_double_bases.ElementMethods"><code class="xref py py-class docutils literal notranslate"><span class="pre">Finite_rank_double_bases.ElementMethods</span></code></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="multipolynomial_bases.double_multivariate_polynomials.Finite_rank_double_bases.super_categories">
+<code class="descname">super_categories</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#multipolynomial_bases.double_multivariate_polynomials.Finite_rank_double_bases.super_categories" title="Permalink to this definition">¶</a></dt>
+<dd><p>TESTS:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">multipolynomial_bases.double_multivariate_polynomials</span> <span class="k">import</span> <span class="n">Finite_rank_double_bases</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">Finite_rank_double_bases</span><span class="p">()</span><span class="o">.</span><span class="n">super_categories</span><span class="p">()</span>
+<span class="p">[]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descclassname">Finite_rank_double_bases.</code><code class="descname">ElementMethods</code></dt>
+<dd><p>alias of <a class="reference internal" href="#multipolynomial_bases.double_multivariate_polynomials.Finite_rank_double_bases.ElementMethods" title="multipolynomial_bases.double_multivariate_polynomials.Finite_rank_double_bases.ElementMethods"><code class="xref py py-class docutils literal notranslate"><span class="pre">Finite_rank_double_bases.ElementMethods</span></code></a></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="bases.html"
+                        title="previous chapter">Main Polynomial bases</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/double_polynomials.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="bases.html" title="Main Polynomial bases"
+             >previous</a> |</li>
+  
+  <a href="http://www.sagemath.org"><img src="_static/sagelogo.png" style="vertical-align: middle" title="Sage Logo"></a>
+  
+        <li class="nav-item nav-item-0"><a href="index.html">Multipolynomial bases 0.2 documentation</a> &#187;</li>
+ 
+      </ul>
+    </div>
+    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016, Viviane Pons.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+    <script type="text/javascript">
+/*global jQuery, window */
+/* Sphinx sidebar toggle.  Putting this code at the end of the body
+ * enables the toggle for the live, static, and offline docs.  Note:
+ * sage.misc.html.math_parse() eats jQuery's dollar-sign shortcut. */
+var jq = jQuery;
+jq(document).ready(function () {
+    var bar, bod, bg, fg, key, tog, wid_old, wid_new, resize, get_state, set_state;
+    bod = jq('div.bodywrapper');
+    bar = jq('div.sphinxsidebar');
+    tog = jq('<div class="sphinxsidebartoggle"></div>');
+
+    /* Delayed resize helper.  Not perfect but good enough. */
+    resize = function () {
+        setTimeout(function () {
+            tog.height(bod.height());
+        }, 100);
+    };
+    jq(window).resize(function () {
+        resize();
+    });
+
+    /* Setup and add the toggle. See Sphinx v0.5.1 default.css. */
+    fg = jq('div.sphinxsidebar p a').css('color') || 'rgb(152, 219, 204)';
+    bg = jq('div.document').css('background-color') || 'rgb(28, 78, 99)';
+    wid_old = '230px';
+    wid_new = '5px';
+    tog.css('background-color', bg)
+        .css('border-width', '0px')
+        .css('border-right', wid_new + ' ridge ' + bg)
+        .css('cursor', 'pointer')
+        .css('position', 'absolute')
+        .css('left', '-' + wid_new)
+        .css('top', '0px')
+        .css('width', wid_new);
+    bod.css('position', 'relative');
+    bod.prepend(tog);
+    resize();
+
+    /* Cookie helpers. */
+    key = 'sphinxsidebar=';
+    set_state = function (s) {
+        var date = new Date();
+        /* Expiry in 7 days. */
+        date.setTime(date.getTime() + (7 * 24 * 3600 * 1000));
+        document.cookie = key + encodeURIComponent(s) + '; expires=' +
+            date.toUTCString() + '; path=/';
+    };
+    get_state = function () {
+        var i, c, crumbs = document.cookie.split(';');
+        for (i = 0; i < crumbs.length; i += 1) {
+            c = crumbs[i].replace(/^\s+/, '');
+            if (c.indexOf(key) === 0) {
+                return decodeURIComponent(c.substring(key.length, c.length));
+            }
+        }
+        return null;
+    };
+
+    /* Event handlers. */
+    tog.mouseover(function (ev) {
+        tog.css('border-right-color', fg);
+    }).mouseout(function (ev) {
+        tog.css('border-right-color', bg);
+    }).click(function (ev) {
+        if (bod.hasClass('wide')) {
+            bod.removeClass('wide');
+            bod.css('margin-left', wid_old);
+            bar.css('width', wid_old);
+            bar.show();
+            set_state('visible');
+        } else {
+            set_state('hidden');
+            bar.hide();
+            bar.css('width', '0px');
+            bod.css('margin-left', wid_new);
+            bod.addClass('wide');
+        }
+        resize();
+    });
+
+    /* Hide the normally visible sidebar? */
+    if (get_state() === 'hidden') {
+        tog.trigger('click');
+    } else {
+        set_state('visible');
+    }
+});
+    </script>
+  </body>
+</html>
