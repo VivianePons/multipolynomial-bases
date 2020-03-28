@@ -47,5 +47,5 @@ Once installed, you can use it in sage by importing the features::
 Documentation
 -------------
 
-The (partially written) documentation `is available here <https://www.lri.fr/~pons/sage_docs/multipolynomial_bases/>`_.
+The (partially written) documentation `is available here <http://openpyviv.com/multipolynomial-bases/>`_.
 
