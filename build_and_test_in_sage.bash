@@ -5,7 +5,7 @@ set -e
 cp -r /multipolynomial-bases .
 cd multipolynomial-bases
 
-apt-get update && apt-get install make
+RUN apt install make
 
 echo
 echo
