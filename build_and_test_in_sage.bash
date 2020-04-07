@@ -15,12 +15,12 @@ sage --version
 echo
 echo
 echo "==================================================================="
-echo "Installing Multipolynomial basis"
-make install
+echo "Installing Multipolynomial bases"
+sage -pip install --upgrade --no-index -v .
 
 echo
 echo
 echo "==================================================================="
-echo "Testing SnapPy"
-make test
+echo "Testing Myltupolynomial bases"
+sage setup.py test
 
