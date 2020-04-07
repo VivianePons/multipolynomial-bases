@@ -2,8 +2,8 @@
 
 set -e
 
-cp -r /multipolynomial-basis .
-cd multipolynomial-basis
+cp -r /multipolynomial-bases .
+cd multipolynomial-bases
 
 echo
 echo

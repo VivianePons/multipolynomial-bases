@@ -8,5 +8,4 @@ before_install:
   - docker pull sagemath/sagemath:9.0
 
 script:
-  - ls
   - docker run -v `pwd`:/multipolynomial-bases sagemath/sagemath:9.0 bash /multipolynomial-bases/build_and_test_in_sage.bash
