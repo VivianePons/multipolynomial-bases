@@ -5,6 +5,8 @@ set -e
 cp -r /multipolynomial-bases .
 cd multipolynomial-bases
 
+apt-get update && apt-get install make
+
 echo
 echo
 echo "==================================================================="
@@ -16,18 +18,18 @@ echo
 echo
 echo "==================================================================="
 echo "Installing Multipolynomial bases"
-sage -pip install --upgrade --no-index -v .
+make install
 
 echo
 echo
 echo "==================================================================="
 echo "Testing Myltupolynomial bases"
-sage setup.py test
+make test
 
 
 echo
 echo
 echo "==================================================================="
 echo "Building the doc"
-cd docs && sage -sh -c "make html"
+make doc
 
