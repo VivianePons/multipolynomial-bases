@@ -24,3 +24,10 @@ echo "==================================================================="
 echo "Testing Myltupolynomial bases"
 sage setup.py test
 
+
+echo
+echo
+echo "==================================================================="
+echo "Building the doc"
+cd docs && sage -sh -c "make html"
+
