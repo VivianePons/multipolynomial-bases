@@ -14,5 +14,4 @@ deploy:
     script: bash -x .travis-deploy-doc.sh
     on:
       branch: master
-      repo: VivianePons/multipolynomial-bases/
       condition: -r .travis_ci_gh_pages_deploy_key
