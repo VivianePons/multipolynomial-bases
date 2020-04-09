@@ -14,7 +14,7 @@ if [[ -r "$ABS_DEPLOY_KEY" ]]; then
     export GIT_SSH_COMMAND="ssh -v -i $ABS_DEPLOY_KEY -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
     rm -Rf gh-pages
     git clone --depth 1 git@github.com:${DEPLOY_DOC_TO_REPOSITORY}.git --depth 1 --branch=gh-pages gh-pages
-    BUILT_DOCS_DIR=`cd docs/build/html && pwd`
+    BUILT_DOCS_DIR=`cd /multipolynomial-bases/docs/build/html && pwd`
     cd gh-pages
     rm -Rf ./${DEPLOY_DOC_TO_DIRECTORY}/*
     mkdir -p ./${DEPLOY_DOC_TO_DIRECTORY}
