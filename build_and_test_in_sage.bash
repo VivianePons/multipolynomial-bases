@@ -52,9 +52,7 @@ set -e
 ABS_DEPLOY_KEY="`pwd`/.travis_ci_gh_pages_deploy_key"
 if [[ -r "$ABS_DEPLOY_KEY" ]]; then
     echo "Deployment key exists, attempting to upload"
-    if [[ -z "${DEPLOY_DOC_TO_REPOSITORY}" ]]; then
-        DEPLOY_DOC_TO_REPOSITORY="${TRAVIS_REPO_SLUG}"
-    fi
+    DEPLOY_DOC_TO_REPOSITORY="VivianePons/multipolynomial-bases"
     chmod 600 "$ABS_DEPLOY_KEY"
     export GIT_SSH_COMMAND="ssh -v -i $ABS_DEPLOY_KEY -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
     rm -Rf gh-pages
