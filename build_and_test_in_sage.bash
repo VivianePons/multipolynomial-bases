@@ -5,9 +5,18 @@ set -e
 cp -r /multipolynomial-bases .
 cd multipolynomial-bases
 
+echo
+echo
+echo "==================================================================="
+echo "Install make"
 sudo apt-get update && sudo apt-get install make
 
-sudo apt-get install git
+
+echo
+echo
+echo "==================================================================="
+echo "Insall git"
+sudo apt-get install -y git
 
 echo
 echo
