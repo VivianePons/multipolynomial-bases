@@ -1,5 +1,5 @@
 ======================
-Multipolynomial Bases.
+Multipolynomial Bases
 ======================
 
 This is module implementing bases of multipolynomial in Sage.
