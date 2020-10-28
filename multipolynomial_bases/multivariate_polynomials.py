@@ -1096,7 +1096,7 @@ class MultivariatePolynomialAlgebra_generic(UniqueRepresentation, Parent):
 
         Otherwise, we have for $ v_i > v_{i+1}$
 
-        $G_{\cdots v_{i+1} v_i-1 \cdots} = G_v \pi_i$ where $\pi_i$ is the ith isobar divided difference.
+        $G_{\cdots v_{i+1} v_i-1 \cdots} = \left( G_v \frac{1 - x_{i+1}}{x_i} \right) \pi_i$ where $\pi_i$ is the ith isobar divided difference.
 
         The vectors indexing the Grothendieck polynomials can as well been seen as lehmer codes.
 
