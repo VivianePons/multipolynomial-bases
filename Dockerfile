@@ -5,10 +5,12 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN pwd
 
+COPY . ${HOME}
+
 
 # RUN cd /home/sage
-RUN sage -pip install .
+RUN sage  -pip install --upgrade --no-index -v .
 # RUN cd /home
 
 
-COPY . ${HOME}
+
