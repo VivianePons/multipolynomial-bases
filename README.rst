@@ -7,6 +7,11 @@ using `SageMath <http://www.sagemath.org>`_. This work has been started in 2010 
 was distriuted in the Sage-combinat experimental package which does not exist anymore. 
 That is why we know offer it as an extra Sage package. 
 
+**Try examples using binder**
+
+.. image:: https://mybinder.org/badge_logo.svg
+ :target: https://mybinder.org/v2/gh/VivianePons/multipolynomial-bases/HEAD
+
 Installation
 -------------
 
