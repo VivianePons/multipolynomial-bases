@@ -8,7 +8,6 @@ RUN pwd
 # ImageMagick and Graphviz (for graph examples)
 RUN sudo apt-get -q update && sudo apt-get -qy dist-upgrade
 RUN sudo apt-get -qy install imagemagick
-COPY ./app/.magick/policy.xml /etc/ImageMagick-6/policy.xml
 RUN sudo apt-get -qy install graphviz
 
 COPY . ${HOME}
