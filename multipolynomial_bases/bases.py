@@ -51,7 +51,7 @@ def SchubertPolynomials(R, basis_name = None, basis_repr= "Y", **keywords):
         sage: Schub
         The Multivariate polynomial algebra on x over Rational Field on the Schubert basis of type A
         sage: Schub.an_element()
-        Y[2, 2, 3] + Y[0, 0, 0] + 2*Y[1, 0, 0] + 3*Y[0, 1, 0]
+        Y[0, 0, 0] + 3*Y[0, 1, 0] + 2*Y[1, 0, 0] + Y[2, 2, 3]
         sage: Schub[1,2,3] + Schub[2,2]
         Y[1, 2, 3] + Y[2, 2, 0]
 
@@ -62,12 +62,12 @@ def SchubertPolynomials(R, basis_name = None, basis_repr= "Y", **keywords):
         sage: Schub[2,3] * Schub[1,2]
         Y[3, 5] + Y[4, 4]
         sage: Schub[2,3].expand()
-        xA[3, 2] + xA[2, 3]
+        xA[2, 3] + xA[3, 2]
         sage: Schub[2,3].to_expr()
         x1^3*x2^2 + x1^2*x2^3
         sage: pol = Schub[3,2,3] + Schub[3,1,1]
         sage: pol.divided_difference(1)
-        Y[2, 2, 3] + Y[1, 2, 1]
+        Y[1, 2, 1] + Y[2, 2, 3]
         sage: pol.divided_difference(2)
         0
         sage: pol.isobaric_divided_difference(1)
@@ -82,11 +82,11 @@ def SchubertPolynomials(R, basis_name = None, basis_repr= "Y", **keywords):
         sage: pol = x[2,2,3] + x[3,1,2]; pol
         xA[2, 2, 3] + xA[3, 1, 2]
         sage: Schub(pol)
-        Y[3, 1, 2] - Y[3, 2, 1] + Y[2, 2, 3] - Y[2, 3, 2]
+        Y[2, 2, 3] - Y[2, 3, 2] + Y[3, 1, 2] - Y[3, 2, 1]
         sage: from multipolynomial_bases import DemazureHatPolynomials
         sage: Dem = DemazureHatPolynomials(QQ)
         sage: Schub(Dem[1,0,2])
-        Y[1, 0, 2] - Y[2, 0, 1] - Y[1, 2, 0] + Y[2, 1, 0] - Y[3, 0, 0]
+        Y[1, 0, 2] - Y[1, 2, 0] - Y[2, 0, 1] + Y[2, 1, 0] - Y[3, 0, 0]
 
     """
     A = MultivariatePolynomialAlgebra(R, **keywords)
@@ -131,7 +131,7 @@ def DemazurePolynomials(R, group_type ="A", basis_name = None, basis_repr = "K",
             sage: Dem = DemazurePolynomials(QQ); Dem
             The Multivariate polynomial algebra on x over Rational Field on the Demazure basis of type A
             sage: Dem.an_element()
-            K[2, 2, 3] + K[0, 0, 0] + 2*K[1, 0, 0] + 3*K[0, 1, 0]
+            K[0, 0, 0] + 3*K[0, 1, 0] + 2*K[1, 0, 0] + K[2, 2, 3]
             sage: Dem[1,2,2] + Dem[2,3,1]
             K[1, 2, 2] + K[2, 3, 1]
 
@@ -142,7 +142,7 @@ def DemazurePolynomials(R, group_type ="A", basis_name = None, basis_repr = "K",
             sage: Dem[2,3] * Dem[1,2]
             K[3, 5] + K[4, 4]
             sage: Dem[2,3].expand()
-            xA[3, 2] + xA[2, 3]
+            xA[2, 3] + xA[3, 2]
             sage: Dem[2,3].to_expr()
             x1^3*x2^2 + x1^2*x2^3
             sage: pol = Dem[3,2,3] + Dem[3,1,1]
@@ -151,9 +151,9 @@ def DemazurePolynomials(R, group_type ="A", basis_name = None, basis_repr = "K",
             sage: pol.divided_difference(2)
             0
             sage: pol.isobaric_divided_difference(1)
-            K[2, 3, 3] + K[1, 3, 1]
+            K[1, 3, 1] + K[2, 3, 3]
             sage: pol.isobaric_divided_difference(2)
-            K[3, 2, 3] + K[3, 1, 1]
+            K[3, 1, 1] + K[3, 2, 3]
 
         some coercions::
 
@@ -162,7 +162,7 @@ def DemazurePolynomials(R, group_type ="A", basis_name = None, basis_repr = "K",
             sage: pol = x[2,2,3] + x[3,1,2]; pol
             xA[2, 2, 3] + xA[3, 1, 2]
             sage: Dem(pol)
-            K[3, 1, 2] - K[3, 2, 1] + K[2, 2, 3] - K[2, 3, 2]
+            K[2, 2, 3] - K[2, 3, 2] + K[3, 1, 2] - K[3, 2, 1]
             sage: from multipolynomial_bases import SchubertPolynomials
             sage: Schub = SchubertPolynomials(QQ)
             sage: Dem(Schub[1,0,2])
@@ -211,7 +211,7 @@ def DemazureHatPolynomials(R, group_type ="A", basis_name = None, basis_repr = "
             sage: HatDem = DemazureHatPolynomials(QQ); HatDem
             The Multivariate polynomial algebra on x over Rational Field on the Demazure hat basis of type A
             sage: HatDem.an_element()
-            ^K[2, 2, 3] + ^K[0, 0, 0] + 2*^K[1, 0, 0] + 3*^K[0, 1, 0]
+            ^K[0, 0, 0] + 3*^K[0, 1, 0] + 2*^K[1, 0, 0] + ^K[2, 2, 3]
             sage: HatDem[1,2,2] + HatDem[2,3,1]
             ^K[1, 2, 2] + ^K[2, 3, 1]
 
@@ -231,11 +231,11 @@ def DemazureHatPolynomials(R, group_type ="A", basis_name = None, basis_repr = "
             sage: pol.divided_difference(2)
             -^K[3, 2, 2]
             sage: pol.isobaric_divided_difference(1)
-            ^K[2, 3, 3] + ^K[3, 2, 3] + ^K[1, 3, 1] + ^K[3, 1, 1]
+            ^K[1, 3, 1] + ^K[2, 3, 3] + ^K[3, 1, 1] + ^K[3, 2, 3]
             sage: pol.isobaric_divided_difference(2)
             ^K[3, 1, 1]
             sage: pol.hat_isobaric_divided_difference(1)
-            ^K[2, 3, 3] + ^K[1, 3, 1]
+            ^K[1, 3, 1] + ^K[2, 3, 3]
             sage: pol.hat_isobaric_divided_difference(2)
             -^K[3, 2, 3]
 
@@ -245,11 +245,11 @@ def DemazureHatPolynomials(R, group_type ="A", basis_name = None, basis_repr = "
             sage: pol = x[2,2,3] + x[3,1,2]; pol
             xA[2, 2, 3] + xA[3, 1, 2]
             sage: HatDem(pol)
-            ^K[3, 1, 2] + ^K[2, 2, 3]
+            ^K[2, 2, 3] + ^K[3, 1, 2]
             sage: from multipolynomial_bases import SchubertPolynomials
             sage: Schub = SchubertPolynomials(QQ)
             sage: HatDem(Schub([1,0,2]))
-            ^K[1, 0, 2] + ^K[2, 0, 1] + ^K[1, 2, 0] + ^K[2, 1, 0] + ^K[3, 0, 0]
+            ^K[1, 0, 2] + ^K[1, 2, 0] + ^K[2, 0, 1] + ^K[2, 1, 0] + ^K[3, 0, 0]
 
     """
     A = MultivariatePolynomialAlgebra(R, **keywords)
@@ -293,7 +293,7 @@ def GrothendieckPolynomials(R, basis_name = None, basis_repr= "G", **keywords):
         sage: Groth
         The Multivariate polynomial algebra on x over Rational Field on the Grothendieck basis of type A, with positive exposants
         sage: Groth.an_element()
-        G[2, 2, 3] + G[0, 0, 0] + 2*G[1, 0, 0] + 3*G[0, 1, 0]
+        G[0, 0, 0] + 3*G[0, 1, 0] + 2*G[1, 0, 0] + G[2, 2, 3]
         sage: Groth[1,2,3] + Groth[2,2]
         G[1, 2, 3] + G[2, 2, 0]
 
@@ -311,7 +311,7 @@ def GrothendieckPolynomials(R, basis_name = None, basis_repr= "G", **keywords):
         sage: pol.divided_difference(2)
         0
         sage: pol.isobaric_divided_difference(1)
-        G[1, 3, 1] + G[2, 3, 1] + G[3, 3, 1] + G[2, 3, 3] + G[2, 4, 2] - G[2, 4, 3] + G[3, 3, 3] + G[3, 4, 2] - G[3, 4, 3]
+        G[1, 3, 1] + G[2, 3, 1] + G[2, 3, 3] + G[2, 4, 2] - G[2, 4, 3] + G[3, 3, 1] + G[3, 3, 3] + G[3, 4, 2] - G[3, 4, 3]
         sage: pol.isobaric_divided_difference(2)
         G[3, 1, 1] + G[3, 2, 3]
 
@@ -321,11 +321,11 @@ def GrothendieckPolynomials(R, basis_name = None, basis_repr= "G", **keywords):
         sage: pol = x[2,2,3] + x[3,1,2]; pol
         xA[2, 2, 3] + xA[3, 1, 2]
         sage: Groth(pol)
-        G[3, 1, 2] - G[3, 2, 1] + G[2, 2, 3] - G[2, 3, 2] + G[3, 2, 2] + G[2, 3, 3] - G[3, 3, 2] + G[3, 3, 3]
+        G[2, 2, 3] - G[2, 3, 2] + G[2, 3, 3] + G[3, 1, 2] - G[3, 2, 1] + G[3, 2, 2] - G[3, 3, 2] + G[3, 3, 3]
         sage: from multipolynomial_bases import SchubertPolynomials
         sage: Schub = SchubertPolynomials(QQ)
         sage: Groth(Schub[1,0,2])
-        G[1, 0, 2] + G[1, 1, 2] + G[2, 0, 2] + G[1, 2, 2] + G[3, 0, 2] + G[2, 2, 2]
+        G[1, 0, 2] + G[1, 1, 2] + G[1, 2, 2] + G[2, 0, 2] + G[2, 2, 2] + G[3, 0, 2]
 
     """
     A = MultivariatePolynomialAlgebra(R, **keywords)

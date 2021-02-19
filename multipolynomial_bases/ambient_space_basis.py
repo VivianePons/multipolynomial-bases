@@ -359,7 +359,7 @@ class FiniteRankPolynomialRingWithBasisFromAmbientSpace(FiniteRankPolynomialRing
                     sage: (pol+pol2)^-1
                     Traceback (most recent call last):
                     ...
-                    ValueError: xA[2, 2, 3] + xA[1, 1, 1] is not invertible in The Multivariate polynomial algebra on x over Rational Field with 3 variables on the Monomial basis of type A
+                    ValueError: xA[1, 1, 1] + xA[2, 2, 3] is not invertible in The Multivariate polynomial algebra on x over Rational Field with 3 variables on the Monomial basis of type A
 
             """
             if( len(self) ==1 ):

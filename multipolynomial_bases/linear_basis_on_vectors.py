@@ -259,7 +259,7 @@ class SchubertBasisOnVectors(LinearBasisOnVectors):
             sage: schur = SF.schur()
             sage: y = schur([3,2,1]) + schur([2,1])
             sage: Schub.from_schur(y)
-            Y[1, 2, 3] + Y[0, 1, 2]
+            Y[0, 1, 2] + Y[1, 2, 3]
 
         """
         schur = list(schur)

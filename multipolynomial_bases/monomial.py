@@ -45,7 +45,7 @@ class MonomialBasis(PolynomialRingWithBasis):
         sage: x
         The Multivariate polynomial algebra on x over Rational Field on the monomial basis
         sage: x.an_element()
-        x[1, 2, 3] + x[0, 0, 0] + 2*x[1, 0, 0] + 3*x[0, 1, 0]
+        x[0, 0, 0] + 3*x[0, 1, 0] + 2*x[1, 0, 0] + x[1, 2, 3]
         sage: pol = x[2,2,1] + x[3,2]; pol
         x[2, 2, 1] + x[3, 2, 0]
 
@@ -323,7 +323,7 @@ class MonomialBasis(PolynomialRingWithBasis):
                 sage: key = list(m[2,1,1])[0][0];key
                 [2, 1, 1]
                 sage: wrapp.isobaric_divided_difference_on_basis(key)
-                x[2, 1, 1] + x[1, 2, 1]
+                x[1, 2, 1] + x[2, 1, 1]
 
             """
             return self._generic_on_basis(key, "isobaric_divided_difference")
@@ -555,7 +555,7 @@ class FiniteMonomialBasis(FiniteRankPolynomialRingWithBasis):
                     sage: (pol+pol2)^-1
                     Traceback (most recent call last):
                     ...
-                    ValueError: x[1, 2, 3] + x[1, 1, 1] is not invertible in The Multivariate polynomial algebra on x over Rational Field with 3 variables on the monomial basis
+                    ValueError: x[1, 1, 1] + x[1, 2, 3] is not invertible in The Multivariate polynomial algebra on x over Rational Field with 3 variables on the monomial basis
 
             """
             if( len(self) ==1 ):
