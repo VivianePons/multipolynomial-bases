@@ -5,11 +5,6 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN pwd
 
-# ImageMagick and Graphviz (for graph examples)
-RUN sudo apt-get -q update && sudo apt-get -qy dist-upgrade
-RUN sudo apt-get -qy install imagemagick
-RUN sudo apt-get -qy install graphviz
-
 COPY . ${HOME}
 
 
